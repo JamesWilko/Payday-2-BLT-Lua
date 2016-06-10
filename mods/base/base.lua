@@ -19,8 +19,7 @@ end
 
 -- Load Mod Manager
 if not LuaModManager then
-	local lmm_path = "mods/base/req/lua_mod_manager.lua"
-	dofile( lmm_path )
+	dofile("mods/base/req/lua_mod_manager.lua")
 end
 
 local C = LuaModManager.Constants
@@ -33,7 +32,9 @@ _wildcard_hooks	= _wildcard_hooks or {}
 
 -- Load JSON
 if not _loaded_json then
-	dofile( C.mods_directory .. C.lua_base_directory .. C.json_module )
+	for index, path in ipairs( C.json_modules ) do
+		dofile( C.mods_directory .. C.lua_base_directory .. path )
+	end
 	_loaded_json = true
 end
 
@@ -183,6 +184,8 @@ if not _loaded_mod_folders then
 					if file then
 
 						local file_contents = file:read("*all")
+						file:close()
+
 						local mod_content = nil
 						local json_success = pcall(function()
 							mod_content = json.decode(file_contents)
@@ -198,7 +201,6 @@ if not _loaded_mod_folders then
 						else
 							print("An error occured while loading mod.txt from: " .. mod_path)
 						end
-						file:close()
 
 					end
 

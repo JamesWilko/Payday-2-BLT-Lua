@@ -11,7 +11,11 @@ C.lua_base_directory = "base/"
 C.logs_directory = "logs/"
 C.downloads_directory = "downloads/"
 C.saves_directory = "saves/"
-C.json_module = "req/json.lua"
+C.json_modules = {
+	"req/json-1.0.lua",
+	"req/json-0.9.lua",
+	"req/json.lua"
+}
 C.mod_manager_file = "mod_manager.txt"
 C.mod_keybinds_file = "mod_keybinds.txt"
 C.mod_updates_file = "mod_updates.txt"
