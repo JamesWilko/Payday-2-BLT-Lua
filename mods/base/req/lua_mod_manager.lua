@@ -1,6 +1,6 @@
 
-if not _G["LuaModManager"] then
-	declare( "LuaModManager", {} )
+if not _G.LuaModManager then
+	rawset(_G, "LuaModManager", {})
 end
 LuaModManager = LuaModManager or {}
 LuaModManager.Constants = LuaModManager.Constants or {}

@@ -20,11 +20,11 @@ function LMM:UpdatePersistScripts()
 		local exists = _G[global]
 
 		if not exists then
-			declare( "PersistScriptPath", path )
+			rawset(_G, "PersistScriptPath", path)
 			dofile( script )
 		end
 		
 	end
-	declare( "PersistScriptPath", nil )
+	rawset(_G, "PersistScriptPath", nil)
 
 end
