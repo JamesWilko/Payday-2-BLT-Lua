@@ -91,6 +91,6 @@
 	"base_language_ru" : "Russian",
 	"base_language_tr" : "Turkish",
 	"base_language_id" : "Indonesian",
-	"base_language_zh-cn" : "Chinese"
-
+	"base_language_zh-cn" : "Chinese",
+	"base_language_cht" : "Chinese (Traditional)"
 }
