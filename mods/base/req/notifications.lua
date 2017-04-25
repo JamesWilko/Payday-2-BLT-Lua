@@ -262,3 +262,9 @@ Hooks:Add("MenuComponentManagerPreSetActiveComponents", "Base_Notifications_Menu
 	end
 
 end)
+
+Hooks:Add("MenuComponentManagerOnCommunityChallengesCreated", "Base.Notifications.MenuComponentManagerOnCommunityChallengesCreated", function( mcm, node )
+	if mcm._community_challenges_gui then
+		mcm._community_challenges_gui:set_leftbottom(0, 400)
+	end
+end)
