@@ -1,20 +1,20 @@
 {
 	"name" : "Payday 2 BLT",
-	"description" : "The collection of lua files that allow the lua hook to function",
+	"description" : "The collection of lua files that allow the BLT to function",
 	"author" : "James Wilkinson",
 	"contact" : "jw@jameswilko.com",
 	"version" : "1.0",
 	"priority" : 1001,
 	"updates" : [
 		{
-			"revision" : 11,
+			"revision" : 13,
 			"identifier" : "payday2blt"
 		},
 		{
 			"revision" : "./mods/saves/blt_revision.txt",
 			"identifier" : "payday2bltdll",
 			"install_dir" : ".",
-			"display_name" : "Payday 2 BLT Hook DLL"
+			"display_name" : "Payday 2 BLT DLL"
 		}
 	],
 	"pre_hooks" : [
