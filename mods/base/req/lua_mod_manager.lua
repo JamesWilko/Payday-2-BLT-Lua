@@ -140,12 +140,14 @@ function LuaModManager:SetModEnabledState( mod_name, state )
 end
 
 function LuaModManager:HasModFromIdentifier(identifier)
-    for k, v in pairs(_mods) do
-        local updates = v.definition[C.mod_update_key]
-        if updates then
-            for i, update in pairs(updates) do
-                if update[C.mod_update_identifier_key] == identifier then
-                    return true
+    if _mods then
+        for k, v in pairs(_mods) do
+            local updates = v.definition[C.mod_update_key]
+            if updates then
+                for i, update in pairs(updates) do
+                    if update[C.mod_update_identifier_key] == identifier then
+                        return true
+                    end
                 end
             end
         end
