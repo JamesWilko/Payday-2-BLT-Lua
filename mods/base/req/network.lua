@@ -134,10 +134,7 @@ end
 
 Hooks:Add("ChatManagerOnReceiveMessage", "ChatManagerOnReceiveMessage_Network", function(channel_id, name, message, color, icon)
 
-	local s = "[{1}] {2}: {3}"
-	s = s:gsub("{1}", channel_id)
-	s = s:gsub("{2}", name)
-	s = s:gsub("{3}", message)
+	local s = string.format("[%s] %s: %s", channel_id, name, message)
 	log(s)
 
 	local senderID = nil
