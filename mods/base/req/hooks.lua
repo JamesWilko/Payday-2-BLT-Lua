@@ -309,5 +309,5 @@ function Hooks:RemovePostHook( id )
 end
 
 function Hooks:_PrePostHookError( func )
-	log("[Hooks] Error: Could not hook function '", tostring(func), "'!")
+	log(string.format("[Hooks] Error: Could not hook function '%s'", tostring(func)))
 end
