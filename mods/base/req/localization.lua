@@ -10,6 +10,12 @@ function LuaModManager:LoadAvailableLanguages()
 
 	-- Add all localisation files
 	local loc_files = file.GetFiles( LuaModManager.Constants.localisation_folder )
+	loc_files = false
+	if type(loc_files) ~= "table" then
+		loc_files = {
+			"en.txt"
+		}
+	end
 	for i, file_name in ipairs( loc_files ) do
 		local loc_code = string.gsub(file_name, ".txt", "")
 		if loc_code ~= "en" then
