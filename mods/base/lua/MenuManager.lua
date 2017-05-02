@@ -150,7 +150,7 @@ function ModMenuCreator.create_lua_mods_menu(self, node)
 		if type(hooks_table) == "table" then
 			for x, y in pairs( hooks_table ) do
 				local hook = y[ C.mod_hook_id_key ]
-				if not _hooks[ hook ] then
+				if hook and not _hooks[ hook ] then
 					hooks_str = hooks_str .. "    " .. tostring(hook) .. "\n"
 					_hooks[ hook ] = true
 				end
