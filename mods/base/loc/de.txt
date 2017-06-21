@@ -35,15 +35,20 @@
 
 	"base_mod_updates_all_up_to_date" : "Alle Mods aktuell!",
 	"base_mod_updates_updates_required" : " $count Aktualisierung(en) benoetigt",
+	"base_mod_updates_mod_required" : " $count Mod$s benoetigt",
 	"base_mod_updates_updates_required_row" : "        $mod",
 	"base_mod_updates_click_manager" : "[Update Manager oeffnen]",
-
 	"base_mod_updates_update_all" : "Alle Mods aktualisieren",
 	"base_mod_automically_check_for_updates" : "$mod_name Aktualisierungen",
 	"base_mod_automically_check_for_updates_desc" : "Beim Spielstart automatisch nach Aktualisierungen fuer $mod_name suchen",
 	"base_mod_check_for_updates_now" : "Aktualisiere $mod_name jetzt",
 	"base_mod_check_for_updates_now_desc" : "Jetzt nach Aktualisierungen fuer $mod_name suchen",
-
+	
+	"base_mod_notify_required" : "$mod_name Benachrichtigung",
+	"base_mod_notify_required_desc" : "Automatische Benachrichtigung, dass $mod_name für bestimmte Mods installiert sein muss.",
+	"base_mod_download_required_now" : "Downloade $mod_name jetzt",
+	"base_mod_download_required_now_desc" : "Downloade und Installiere $mod_name jetzt",
+	
 	"base_mod_updates_show_update_available" : "$mod_name Update verfuegbar",
 	"base_mod_updates_show_update_available_message" : "Es ist eine Aktualisierung fuer $mod_name verfuegbar!\nEs kann direkt heruntergeladen werden, wenn Du den Update Manager links-unten oeffnest!",
 
@@ -54,6 +59,14 @@
 	"base_mod_updates_update_now" : "Jetzt aktualisieren",
 	"base_mod_updates_update_later" : "Spater aktualisieren",
 
+	"base_mod_updates_show_required_available" : "Downloade $mod_name jetzt",
+	"base_mod_updates_show_required_available_message" : "$req_mod_name benoetigt $mod_name um zu funktionieren!\nWillst du $mod_name jetzt runterladen?",
+	"base_mod_updates_show_required_available_optional_message" : "$req_mod_name benoetigt $mod_name, damit alle Funktionen arbeiten!\nWillst du $mod_name jetzt runterladen?",
+	"base_mod_required_update_mod_now" : "Jetzt herunterladen",
+	"base_mod_required_update_later" : "Spaeter herunterladen",
+    "base_mod_updates_show_multiple_require_available" : "Mehrere Mods benoetigt",
+	"base_mod_updates_show_multiple_require_available_message" : "Die folgenden Mods werden benoetigt, damit bestimmte Mods vollstaendig funktionieren:\n$mods\nDu kannst sie im Update Manager aktualisieren",
+	
 	"base_mod_updates_show_multiple_update_available" : "Mehrere Aktualisierungen verfuegbar",
 	"base_mod_updates_show_multiple_update_available_message" : "Es stehen Aktualisierungen fuer folgende Mods bereit:\n$mods\nDu kannst Sie automatisch aktualiseren, wenn Du den Update Manager oeffnest!",
 	"base_mod_updates_update_all_now" : "Alle Mods aktualisieren",
@@ -76,5 +89,7 @@
 	"base_language_fr" : "French",
 	"base_language_ru" : "Russian",
 	"base_language_tr" : "Turkish",
-
+	"base_language_id" : "Indonesian",
+	"base_language_zh-cn" : "Chinese",
+	"base_language_cht" : "Chinese (Traditional)"
 }
