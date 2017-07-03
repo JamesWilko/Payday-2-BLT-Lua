@@ -35,7 +35,7 @@
 
 	"base_mod_updates_all_up_to_date" : "所有模组均是最新版！",
 	"base_mod_updates_updates_required" : " 缺少 $count 项更新",
-    "base_mod_updates_mod_required" : " 缺少 $count 个模组",
+	"base_mod_updates_mod_required" : " 缺少 $count 个模组",
 	"base_mod_updates_updates_required_row" : "        $mod",
 	"base_mod_updates_click_manager" : "[点击查看更新管理器]",
 
@@ -45,7 +45,7 @@
 	"base_mod_check_for_updates_now" : "立即更新 $mod_name",
 	"base_mod_check_for_updates_now_desc" : "立即在服务器检查 $mod_name 的更新",
     
-    "base_mod_notify_required" : "$mod_name 通知",
+	"base_mod_notify_required" : "$mod_name 通知",
 	"base_mod_notify_required_desc" : "当某些模组需要安装 $mod_name 时自动发出通知",
 	"base_mod_download_required_now" : "立即下载 $mod_name",
 	"base_mod_download_required_now_desc" : "立即下载并安装 $mod_name",
@@ -60,12 +60,12 @@
 	"base_mod_updates_update_now" : "立即更新",
 	"base_mod_updates_update_later" : "稍后更新",
 
-    "base_mod_updates_show_required_available" : "立即下载 $mod_name",
+	"base_mod_updates_show_required_available" : "立即下载 $mod_name",
 	"base_mod_updates_show_required_available_message" : "$req_mod_name 需要安装 $mod_name 才能发挥功能！\n想立即下载 $mod_name 吗？",
 	"base_mod_updates_show_required_available_optional_message" : "$req_mod_name 需要安装 $mod_name 才能发挥全部功能！\n想立即下载 $mod_name 吗？",
 	"base_mod_required_update_mod_now" : "立即下载",
 	"base_mod_required_update_later" : "稍后下载",
-    "base_mod_updates_show_multiple_require_available" : "缺少多个模组",
+	"base_mod_updates_show_multiple_require_available" : "缺少多个模组",
 	"base_mod_updates_show_multiple_require_available_message" : "部分模组需要安装以下模组才能发挥全部功能：\n$mods\n可以通过左下方的更新管理器下载它们！",
     
 	"base_mod_updates_show_multiple_update_available" : "多项更新可用",
@@ -92,5 +92,6 @@
 	"base_language_tr" : "土耳其语",
 	"base_language_id" : "印度尼西亚语",
 	"base_language_zh-cn" : "简体中文",
-
+	"base_language_cht" : "繁体中文",
+	"base_language_it" : "意大利语"
 }

@@ -10,6 +10,7 @@ function LuaModManager:LoadAvailableLanguages()
 
 	-- Add all localisation files
 	local loc_files = file.GetFiles( LuaModManager.Constants.localisation_folder )
+
 	if type(loc_files) ~= "table" then
 		loc_files = {
 			"en.txt"
