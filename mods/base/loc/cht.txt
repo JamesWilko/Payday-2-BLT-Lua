@@ -85,7 +85,7 @@
 
 	"base_language_select" : "語言",
 	"base_language_select_desc" : "選擇 BLT 顯示的語言",
-	"base_language_en" : "英語",
+	"base_language_en" : "英語 English",
 	"base_language_de" : "德語",
 	"base_language_fr" : "法語",
 	"base_language_ru" : "俄語",
