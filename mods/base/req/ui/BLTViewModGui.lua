@@ -324,41 +324,47 @@ function BLTViewModGui:_setup_buttons( mod )
 		next_row_height = button_h + padding
 	end
 
-	local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
+	if self._mod:HasUpdates() then
+
+		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
+		btn = BLTUIButton:new( buttons_panel, {
+			x = 0,
+			y = next_row_height or 0,
+			w = button_w,
+			h = button_h,
+			title = managers.localization:text("blt_mod_updates_enabled"),
+			text = managers.localization:text("blt_mod_updates_enabled_help"),
+			image = icon,
+			image_size = 96,
+			texture_rect = rect,
+			callback = callback( self, self, "clbk_toggle_updates_state" )
+		} )
+		table.insert( self._buttons, btn )
+		self._updates_button = btn
+
+		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_stamina" )
+		btn = BLTUIButton:new( buttons_panel, {
+			x = button_w + padding,
+			y = next_row_height or 0,
+			w = button_w,
+			h = button_h,
+			title = managers.localization:text("blt_mod_check_for_updates"),
+			text = managers.localization:text("blt_mod_check_for_updates_desc"),
+			image = icon,
+			image_size = 96,
+			texture_rect = rect,
+			callback = callback( self, self, "clbk_check_for_updates" )
+		} )
+		table.insert( self._buttons, btn )
+		self._check_update_button = btn
+
+		next_row_height = (next_row_height or 0) + button_h + padding
+
+	end
+
 	btn = BLTUIButton:new( buttons_panel, {
 		x = 0,
-		y = next_row_height or 0,
-		w = button_w,
-		h = button_h,
-		title = managers.localization:text("blt_mod_updates_enabled"),
-		text = managers.localization:text("blt_mod_updates_enabled_help"),
-		image = icon,
-		image_size = 96,
-		texture_rect = rect,
-		callback = callback( self, self, "clbk_toggle_updates_state" )
-	} )
-	table.insert( self._buttons, btn )
-	self._updates_button = btn
-
-	local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_stamina" )
-	btn = BLTUIButton:new( buttons_panel, {
-		x = button_w + padding,
-		y = next_row_height or 0,
-		w = button_w,
-		h = button_h,
-		title = managers.localization:text("blt_mod_check_for_updates"),
-		text = managers.localization:text("blt_mod_check_for_updates_desc"),
-		image = icon,
-		image_size = 96,
-		texture_rect = rect,
-		callback = callback( self, self, "clbk_check_for_updates" )
-	} )
-	table.insert( self._buttons, btn )
-	self._check_update_button = btn
-
-	btn = BLTUIButton:new( buttons_panel, {
-		x = 0,
-		y = (next_row_height or 0) + button_h + padding,
+		y = (next_row_height or 0),
 		w = button_w,
 		h = button_h * 0.5,
 		title = managers.localization:text("blt_mod_toggle_dev"),

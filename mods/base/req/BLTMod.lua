@@ -242,6 +242,10 @@ function BLTMod:GetModImage()
 
 end
 
+function BLTMod:HasUpdates()
+	return table.size(self:GetUpdates()) > 0
+end
+
 function BLTMod:GetUpdates()
 	return self.updates or {}
 end

@@ -193,19 +193,23 @@ function BLTModItem:init( panel, index, mod )
 
 	end
 
-	local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
-	local icon_updates = self._panel:bitmap({
-		name = "",
-		texture = icon,
-		texture_rect = rect,
-		color = Color.white,
-		alpha = mod:AreUpdatesEnabled() and 1 or 0.4,
-		layer = 10,
-		w = icon_size,
-		h = icon_size,
-	})
-	icon_updates:set_left( padding )
-	icon_updates:set_top( icon_y )
+	if mod:HasUpdates() then
+
+		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
+		local icon_updates = self._panel:bitmap({
+			name = "",
+			texture = icon,
+			texture_rect = rect,
+			color = Color.white,
+			alpha = mod:AreUpdatesEnabled() and 1 or 0.4,
+			layer = 10,
+			w = icon_size,
+			h = icon_size,
+		})
+		icon_updates:set_left( padding )
+		icon_updates:set_top( icon_y )
+
+	end
 
 end
 
