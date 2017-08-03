@@ -1,4 +1,4 @@
-
+--[[
 local C = LuaModManager.Constants
 LuaModManager.Constants._keybinds_menu_id = "base_keybinds_menu"
 local keybinds_menu_id = C._keybinds_menu_id
@@ -116,3 +116,4 @@ function LuaModManager:AttemptRunKeybind( keybind, state )
 	end
 
 end
+]]

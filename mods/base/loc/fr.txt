@@ -75,6 +75,6 @@
 	"base_language_en" : "Anglais",
 	"base_language_de" : "Allemand",
 	"base_language_ru" : "Russe",
-	"base_language_tr" : "Turque",
+	"base_language_tr" : "Turque"
 
 }

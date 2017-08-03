@@ -1,6 +1,21 @@
 
 _G.Utils = _G.Utils or {}
 
+if false then
+	
+	_G.print = function(...)
+		local s = ""
+		for i, str in ipairs( {...} ) do
+			if type(str) == "string" then
+				str = string.gsub(str, "%%", "%%%%%")
+			end
+			s = string.format("%s%s%s", s, i > 1 and "\t" or "", tostring(str))
+		end
+		log(s)
+	end
+
+end
+
 --[[
 	CloneClass( class )
 		Copies an existing class into an orig table, so that class functions can be overwritten and called again easily
@@ -25,7 +40,7 @@ function _G.PrintTable( tbl, cmp )
 			if type(v) == "table" and not cmp[v] then
 				cmp[v] = true
 				log( string.format("[\"%s\"] = table", tostring(k)) );
-				PrintTable (v, cmp)
+				-- PrintTable (v, cmp)
 			else
 				log( string.format("\"%s\" = %s", tostring(k), tostring(v)) )
 			end
@@ -75,6 +90,7 @@ function Utils.DoSaveTable( tbl, cmp, fileName, fileIsOpen, preText )
 
 end
 
+Vector3 = Vector3 or {}
 Vector3.StringFormat = "%08f,%08f,%08f"
 Vector3.MatchFormat = "([-0-9.]+),([-0-9.]+),([-0-9.]+)"
 
@@ -285,4 +301,58 @@ end
 ]]
 function Utils:ToggleItemToBoolean( item )
 	return item:value() == "on" and true or false
+end
+
+--[[
+	Utils:EscapeURL( item )
+		Escapes characters in a URL to turn it into a usable URL
+	input_url, 	The url to escape the characters of
+	return, 	A url string with escaped characters
+]]
+function Utils:EscapeURL( input_url )
+	local url = input_url:gsub(" ", "%%20")
+	url = url:gsub("!", "%%21")
+	url = url:gsub("#", "%%23")
+	url = url:gsub("-", "%%2D")
+	return url
+end
+
+function Utils:TimestampToEpoch( year, month, day )
+	-- Adapted from http://stackoverflow.com/questions/4105012/convert-a-string-date-to-a-timestamp
+	local offset = os.time() - os.time(os.date("!*t"))
+	local time = os.time({
+		day = day,
+		month = month,
+		year = year,
+	})
+	return (time or 0) + (offset or 0)
+end
+
+function string.split(str, delim, maxNb)
+
+	-- Eliminate bad cases...
+	if string.find(str, delim) == nil then
+		return { str }
+	end
+	maxNb = maxNb or 0
+
+	local result = {}
+	local pat = "(.-)" .. delim .. "()"
+	local nb = 0
+	local lastPos
+	for part, pos in string.gfind(str, pat) do
+		nb = nb + 1
+		result[nb] = part
+		lastPos = pos
+		if nb == maxNb then
+			break
+		end
+	end
+
+	-- Handle the last field
+	if nb ~= maxNb then
+		result[nb + 1] = string.sub(str, lastPos)
+	end
+	return result
+
 end

@@ -3,24 +3,22 @@ NotificationsManager = NotificationsManager or {}
 local Notify = NotificationsManager
 Notify._notifications = {}
 Notify._current_notification = 1
-Notify._NOTIFICATION_TIME = 6.5
-Notify._time_to_next_notification = Notify._NOTIFICATION_TIME
 
 Hooks:RegisterHook("NotificationManagerOnNotificationsUpdated")
 
-function Notify:GetNotifications()
+function NotificationsManager:GetNotifications()
 	return self._notifications
 end
 
-function Notify:GetCurrentNotification()
+function NotificationsManager:GetCurrentNotification()
 	return self._notifications[ self._current_notification ]
 end
 
-function Notify:GetCurrentNotificationIndex()
+function NotificationsManager:GetCurrentNotificationIndex()
 	return self._current_notification
 end
 
-function Notify:AddNotification( id, title, message, priority, callback )
+function NotificationsManager:AddNotification( id, title, message, priority, callback )
 
 	if not id then
 		log("[Error] Attempting to add notification with no id!")
@@ -54,7 +52,7 @@ function Notify:AddNotification( id, title, message, priority, callback )
 
 end
 
-function Notify:UpdateNotification( id, new_title, new_message, new_priority, new_callback )
+function NotificationsManager:UpdateNotification( id, new_title, new_message, new_priority, new_callback )
 
 	if not id then
 		log("[Error] Attempting to update notification with no id!")
@@ -89,7 +87,7 @@ function Notify:UpdateNotification( id, new_title, new_message, new_priority, ne
 
 end
 
-function Notify:RemoveNotification( id )
+function NotificationsManager:RemoveNotification( id )
 
 	if not id then
 		log("[Error] Attempting to remove notification with no id!")
@@ -110,12 +108,12 @@ function Notify:RemoveNotification( id )
 
 end
 
-function Notify:ClearNotifications()
+function NotificationsManager:ClearNotifications()
 	self._notifications = {}
 	self:_OnUpdated()
 end
 
-function Notify:NotificationExists( id )
+function NotificationsManager:NotificationExists( id )
 
 	for k, v in ipairs( self._notifications ) do
 		if v.id == id then
@@ -127,7 +125,7 @@ function Notify:NotificationExists( id )
 
 end
 
-function Notify:ShowNextNotification( suppress_sound )
+function NotificationsManager:ShowNextNotification( suppress_sound )
 
 	self._current_notification = self._current_notification + 1
 	if self._current_notification > #self._notifications then
@@ -141,7 +139,7 @@ function Notify:ShowNextNotification( suppress_sound )
 
 end
 
-function Notify:ShowPreviousNotification( suppress_sound )
+function NotificationsManager:ShowPreviousNotification( suppress_sound )
 
 	self._current_notification = self._current_notification - 1
 	if self._current_notification < 1 then
@@ -155,7 +153,7 @@ function Notify:ShowPreviousNotification( suppress_sound )
 
 end
 
-function Notify:ClickNotification( suppress_sound )
+function NotificationsManager:ClickNotification( suppress_sound )
 
 	local notif = self:GetCurrentNotification()
 	if notif and notif.callback then
@@ -185,86 +183,9 @@ function Notify:MarkNotificationAsRead( id )
 
 end
 
-function Notify:_OnUpdated()
+function NotificationsManager:_OnUpdated()
 	if not self:GetCurrentNotification().read then
 		managers.menu_component:post_event("job_appear")
 	end
 	Hooks:Call("NotificationManagerOnNotificationsUpdated", self, self._notifications)
 end
-
-function Notify:_ResetTimeToNextNotification()
-	NotificationsManager._time_to_next_notification = NotificationsManager._NOTIFICATION_TIME
-end
-
--- Auto-scroll notifications
-Hooks:Add("MenuUpdate", "Base_Notifications_MenuUpdate", function(t, dt)
-
-	if #NotificationsManager:GetNotifications() > 1 then
-
-		local hovering = false
-		if managers.menu_component._notifications_gui then
-			hovering = managers.menu_component._notifications_gui._hovering_on_notification
-		end
-
-		if not hovering then
-
-			NotificationsManager._time_to_next_notification = NotificationsManager._time_to_next_notification - dt
-			if NotificationsManager._time_to_next_notification <= 0 then
-				NotificationsManager:ShowNextNotification( true )
-				NotificationsManager:_ResetTimeToNextNotification()
-			end
-
-		end
-
-	end
-
-end)
-
--- Add notifications GUI to main menu
-Hooks:Add("MenuComponentManagerInitialize", "Base_Notifications_MenuComponentManagerInitialize", function(menu)
-
-	menu._create_notifications_gui = function( self )
-		self:create_notifications_gui()
-	end
-
-	menu.create_notifications_gui = function( self )
-		self:close_notifications_gui()
-		self._notifications_gui = NotificationsGuiObject:new( self._ws )
-	end
-
-	menu.refresh_notifications_gui = function( self )
-		if self._notifications_gui then
-			self:create_notifications_gui()
-		end
-	end
-
-	menu.close_notifications_gui = function( self )
-		if self._notifications_gui then
-			self._notifications_gui:close()
-			self._notifications_gui = nil
-		end
-	end
-
-	menu._active_components.lua_mod_notifications = {
-		create = callback(menu, menu, "create_notifications_gui"),
-		close = callback(menu, menu, "close_notifications_gui")
-	}
-
-end)
-
-Hooks:Add("MenuComponentManagerPreSetActiveComponents", "Base_Notifications_MenuComponentManagerPreSetActiveComponents", function(menu, components, node)
-
-	if node then
-		local node_name = node._parameters.name
-		if node._default_item_name and node_name == "main" then
-			table.insert( components, "lua_mod_notifications" )
-		end
-	end
-
-end)
-
-Hooks:Add("MenuComponentManagerOnCommunityChallengesCreated", "Base.Notifications.MenuComponentManagerOnCommunityChallengesCreated", function( mcm, node )
-	if mcm._community_challenges_gui then
-		mcm._community_challenges_gui:set_leftbottom(0, 400)
-	end
-end)

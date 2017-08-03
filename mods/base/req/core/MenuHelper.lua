@@ -1,8 +1,7 @@
 
 _G.MenuHelper = _G.MenuHelper or {}
-local Menu = _G.MenuHelper
 
-function Menu:SetupMenu( menu, id )
+function MenuHelper:SetupMenu( menu, id )
 	if menu[id] == nil then
 		log("[Error] Could not find '" .. id .. "' in menu!")
 		return
@@ -10,7 +9,7 @@ function Menu:SetupMenu( menu, id )
 	self.menu_to_clone = menu[id]
 end
 
-function Menu:SetupMenuButton( menu, id, button_id )
+function MenuHelper:SetupMenuButton( menu, id, button_id )
 	if menu[id] == nil then
 		log("[Error] Could not find '" .. id .. "' in menu!")
 		return
@@ -21,7 +20,7 @@ function Menu:SetupMenuButton( menu, id, button_id )
 	self.menubutton_to_clone = menu[id]:items()[button_id]
 end
 
-function Menu:NewMenu( menu_id )
+function MenuHelper:NewMenu( menu_id )
 
 	self.menus = self.menus or {}
 
@@ -33,20 +32,20 @@ function Menu:NewMenu( menu_id )
 
 end
 
-function Menu:GetMenu( menu_id )
-	local menu = self.menus[menu_id]
+function MenuHelper:GetMenu( menu_id )
+	local menu = (self.menus or {})[menu_id]
 	if menu == nil then
 		log("[Error] Could not find menu with id '" .. tostring(menu_id) .. "'!")
 	end
 	return menu
 end
 
-function Menu:AddBackButton( menu_id )
+function MenuHelper:AddBackButton( menu_id )
 	local menu = self:GetMenu( menu_id )
 	MenuManager:add_back_button( menu )
 end
 
-function Menu:AddButton( button_data )
+function MenuHelper:AddButton( button_data )
 
 	local data = {
 		type = "CoreMenuItem.Item",
@@ -76,7 +75,7 @@ function Menu:AddButton( button_data )
 
 end
 
-function Menu:AddDivider( divider_data )
+function MenuHelper:AddDivider( divider_data )
 
 	local data = {
 		type = "MenuItemDivider",
@@ -96,7 +95,7 @@ function Menu:AddDivider( divider_data )
 
 end
 
-function Menu:AddToggle( toggle_data )
+function MenuHelper:AddToggle( toggle_data )
 
 	local data = {
 		type = "CoreMenuItemToggle.ItemToggle",
@@ -154,7 +153,7 @@ function Menu:AddToggle( toggle_data )
 
 end
 
-function Menu:AddSlider( slider_data )
+function MenuHelper:AddSlider( slider_data )
 
 	local data = {
 		type = "CoreMenuItemSlider.ItemSlider",
@@ -187,7 +186,7 @@ function Menu:AddSlider( slider_data )
 
 end
 
-function Menu:AddMultipleChoice( multi_data )
+function MenuHelper:AddMultipleChoice( multi_data )
 
 	local data = {
 		type = "MenuItemMultiChoice"
@@ -219,7 +218,7 @@ function Menu:AddMultipleChoice( multi_data )
 
 end
 
-function Menu:AddKeybinding( bind_data )
+function MenuHelper:AddKeybinding( bind_data )
 
 	local data = {
 		type = "MenuItemCustomizeController",
@@ -247,31 +246,8 @@ function Menu:AddKeybinding( bind_data )
 
 end
 
-function Menu:AddInput( input_data )
-	local data = {
-		type = "MenuItemInput",
-	}
 
-	local params = {
-		name = input_data.id,
-		text_id = input_data.title,
-		help_id = input_data.desc,
-		callback = input_data.callback,
-		disabled_color = input_data.disabled_color or Color( 0.25, 1, 1, 1 ),
-		localize = input_data.localized,
-	}
-
-	local menu = self:GetMenu( input_data.menu_id )
-	local item = menu:create_item( data, params )
-	item._priority = input_data.priority
-	item:set_value( input_data.value or "" )
-
-	menu._items_list = menu._items_list or {}
-	table.insert( menu._items_list, item )
-end
-
-
-function Menu:BuildMenu( menu_id, data )
+function MenuHelper:BuildMenu( menu_id, data )
 
 	-- Check menu exists
 	local menu = self.menus[menu_id]
@@ -374,7 +350,7 @@ function Menu:BuildMenu( menu_id, data )
 
 end
 
-function Menu:AddMenuItem( parent_menu, child_menu, name, desc, menu_position, subposition )
+function MenuHelper:AddMenuItem( parent_menu, child_menu, name, desc, menu_position, subposition )
 
 	if parent_menu == nil then
 		log( string.gsub("[Menus][Warning] Parent menu for child '{1}' is null, ignoring...", "{1}", child_menu) )
@@ -534,7 +510,8 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 
 					local key = ""
 					if item.keybind_id then
-						key = LuaModManager:GetPlayerKeybind( item.keybind_id ) or ""
+						-- key = LuaModManager:GetPlayerKeybind( item.keybind_id ) or ""
+						key = ""
 					end
 
 					MenuHelper:AddKeybinding({
@@ -549,7 +526,7 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 						localized = localized,
 					})
 
-					LuaModManager:AddKeybinding( item.keybind_id, parent_class[item.func] )
+					-- LuaModManager:AddKeybinding( item.keybind_id, parent_class[item.func] )
 
 				end
 
@@ -567,19 +544,6 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 					})
 				end
 
-				if type == "input" then
-					MenuHelper:AddInput({
-						id = id,
-						title = title,
-						desc = desc,
-						callback = callback,
-						value = value,
-						menu_id = menu_id,
-						priority = priority,
-						localized = localized,
-					})
-				end
-
 			end
 
 		end)
@@ -590,7 +554,7 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 
 end
 
-function Menu:ResetItemsToDefaultValue( item, items_table, value )
+function MenuHelper:ResetItemsToDefaultValue( item, items_table, value )
 
 	if type(items_table) ~= "table" then
 		local s = tostring(items_table)

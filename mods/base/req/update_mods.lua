@@ -49,8 +49,8 @@ end)
 
 function LuaModUpdates:RemoveTemporaryDLL()
 	log("[Updates] Attempting to remove temporary hook dll...")
-	local hook_result, hook_error = os.remove( LuaModManager.Constants.hook_dll_temp_name )
-	if not hook_result then
+	local hook_result, hook_error, error_code = os.remove( LuaModManager.Constants.hook_dll_temp_name )
+	if not hook_result and error_code ~= 2 then
 		log("[Warning] Could not remove hook dll: " .. tostring(hook_error))
 	end
 end
@@ -75,6 +75,8 @@ function LuaModUpdates:CheckForUpdates( callback )
 		end
 	end
 
+	url_path = url_path .. "&steamid=" .. tostring( Steam:userid() )
+
 	if i > 0 then
 		LuaModUpdates:FetchUpdatesFromAPI( url_path, callback )
 	end
@@ -83,14 +85,8 @@ end
 
 function LuaModUpdates:FetchUpdatesFromAPI( path, callback )
 
-	-- Escape characters for URL
-	local url = path:gsub(" ", "%%20")
-	url = url:gsub("!", "%%21")
-	url = url:gsub("#", "%%23")
-	url = url:gsub("-", "%%2D")
-
 	-- Get data from API
-	dohttpreq( url, function( data, id )
+	dohttpreq( Utils:EscapeURL( path ), function( data, id )
 		
 		if data:is_nil_or_empty() then
 			log("[Error] Could not connect to PaydayMods.com API!")

@@ -1,4 +1,8 @@
+
+LuaModUpdates = {}
+--[[
 function LuaModUpdates:ShowMultiRequiredAvailableMessage( req_mods )
+
     local mods = clone(req_mods)
     
     for k, v in pairs(mods) do
@@ -126,6 +130,7 @@ function LuaModUpdates:ShowModRequiredMessage( mod_tbl )
         QuickMenu:new( menu_title, menu_message, menu_options, true )
     end
 end
+]]
 
 -- Updates menu
 local mod_updates_menu = "base_lua_mod_updates_menu"

@@ -195,7 +195,7 @@ function NotificationsGuiObject:init(ws)
 	self._hovering_on_notification = false
 
 	self:LoadNotifications()
-
+	
 end
 
 function NotificationsGuiObject:_rec_round_object(object)
@@ -372,6 +372,9 @@ end
 Hooks:Add("MenuComponentManagerOnMousePressed", "Base_ModUpdates_MenuComponentManagerOnMousePressed", function( menu, o, button, x, y )
 
 	if menu._notifications_gui and menu._notifications_gui._panel and menu._notifications_gui._panel:inside(x, y) then
+
+		-- TEMP: Way to open the mods page
+		managers.menu:open_node("blt_mods")
 
 		local x_percent = ( x - menu._notifications_gui._panel:x() ) / menu._notifications_gui._panel:w()
 		local num_notifs = #NotificationsManager:GetNotifications()

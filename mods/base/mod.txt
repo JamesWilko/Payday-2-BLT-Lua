@@ -1,96 +1,135 @@
 {
 	"name" : "Payday 2 BLT",
-	"description" : "The collection of lua files that allow the BLT to function",
+	"description" : "The collection of Lua files that allow the BLT hook to function.",
 	"author" : "James Wilkinson",
-	"contact" : "jw@jameswilko.com",
-	"version" : "1.0",
+	"contact" : "Details below, Twitter gets quicker answers than emails do.\nEmail: jw@jameswilko.com\nTwitter: @_JamesWilko",
+	"version" : "2.0",
+	"blt_version" : 2,
 	"priority" : 1001,
+	"image" : "base.tga",
+	"color" : "255 0 255",
+	"undisablable" : true,
+	"disable_safe_mode" : true,
 	"updates" : [
 		{
-			"revision" : 13,
+			"revision" : 14,
 			"identifier" : "payday2blt"
 		},
 		{
 			"revision" : "./mods/saves/blt_revision.txt",
 			"identifier" : "payday2bltdll",
 			"install_dir" : ".",
-			"display_name" : "Payday 2 BLT DLL"
+			"display_name" : "Payday 2 BLT Hook DLL"
 		}
 	],
 	"pre_hooks" : [
-		{ "hook_id" : "lib/entry", "script_path" : "req/utils.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/localization.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/menus.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/network.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/persist_scripts.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/quick_menu.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/update_mods.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/update_mods_menu.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/notifications.lua" }
+		{ "hook_id" : "lib/entry", "script_path" : "req/utils/UtilsCore.lua" },
+		{ "hook_id" : "lib/entry", "script_path" : "req/core/MenuHelper.lua" },
+		{ "hook_id" : "lib/entry", "script_path" : "req/core/Networking.lua" },
+		{ "hook_id" : "lib/entry7", "script_path" : "req/core/PersistScripts.lua" },
+		{ "hook_id" : "lib/entry", "script_path" : "req/utils/QuickMenu.lua" },
+
+		{ "hook_id" : "lib/entry7", "script_path" : "req/update_mods.lua" },
+		{ "hook_id" : "lib/entry7", "script_path" : "req/ui/update-mods-menu.lua" },
+		
+		{ "hook_id" : "lib/entry", "script_path" : "req/core/Notifications.lua" }
 	],
 	"hooks" : [
-		{ 	"hook_id" : "core/lib/utils/coreclass",
-			"script_path" : "req/hooks.lua"
+		{
+			"hook_id" : "core/lib/utils/coreclass",
+			"script_path" : "req/utils/UtilsClass.lua"
 		},
-		{ 	"hook_id" : "core/lib/utils/coreclass",
-			"script_path" : "req/delayed_calls.lua"
+		{ 
+			"hook_id" : "core/lib/utils/coreclass",
+			"script_path" : "req/core/DelayedCalls.lua"
 		},
-		{ 	"hook_id" : "core/lib/system/corepatchlua",
-			"script_path" : "lua/CorePatchLua.lua"
+		{ 
+			"hook_id" : "core/lib/managers/menu/coremenudata",
+			"script_path" : "lua/CoreMenuData.lua"
 		},
-		{ 	"hook_id" : "lib/managers/localizationmanager",
-			"script_path" : "lua/LocalizationManager.lua"
-		},
-		{ 	"hook_id" : "lib/managers/menumanager",
-			"script_path" : "lua/MenuManager.lua"
-		},
-		{ 	"hook_id" : "lib/setups/gamesetup",
+		{ 
+			"hook_id" : "lib/setups/gamesetup",
 			"script_path" : "lua/GameSetup.lua"
 		},
-		{ 	"hook_id" : "lib/setups/menusetup",
+		{ 
+			"hook_id" : "lib/setups/menusetup",
 			"script_path" : "lua/MenuSetup.lua"
 		},
-		{ 	"hook_id" : "lib/managers/menu/menunodegui",
+		{ 
+			"hook_id" : "lib/managers/menumanager",
+			"script_path" : "req/core/ModKeybinds.lua"
+		},
+		{
+			"hook_id" : "lib/managers/dialogs/specializationdialog",
+			"script_path" : "req/ui/download-progress-dialog.lua"
+		},
+		{
+			"hook_id" : "lib/managers/menu/specializationboxgui",
+			"script_path" : "req/ui/download-progress-box-gui.lua"
+		},
+		{ 
+			"hook_id" : "core/lib/system/corepatchlua",
+			"script_path" : "lua/CorePatchLua.lua"
+		},
+		{ 
+			"hook_id" : "lib/managers/localizationmanager",
+			"script_path" : "lua/LocalizationManager.lua"
+		},
+		{ 
+			"hook_id" : "lib/managers/menumanager",
+			"script_path" : "lua/MenuManager.lua"
+		},
+		{ 
+			"hook_id" : "lib/managers/menu/menunodegui",
 			"script_path" : "lua/MenuNodeGUI.lua"
 		},
-		{ 	"hook_id" : "lib/managers/menu/items/menuitemcustomizecontroller",
+		{ 
+			"hook_id" : "lib/managers/menu/items/menuitemcustomizecontroller",
 			"script_path" : "lua/MenuItemCustomizeController.lua"
 		},
-		{ 	"hook_id" : "core/lib/managers/menu/items/coremenuitemslider",
+		{ 
+			"hook_id" : "core/lib/managers/menu/items/coremenuitemslider",
 			"script_path" : "lua/CoreMenuItemSlider.lua"
 		},
-		{ 	"hook_id" : "core/lib/managers/menu/coremenulogic",
+		{ 
+			"hook_id" : "core/lib/managers/menu/coremenulogic",
 			"script_path" : "lua/CoreMenuLogic.lua"
 		},
-		{ 	"hook_id" : "lib/managers/chatmanager",
+		{ 
+			"hook_id" : "lib/managers/chatmanager",
 			"script_path" : "lua/ChatManager.lua"
 		},
-		{ 	"hook_id" : "lib/managers/menumanager",
-			"script_path" : "req/lua_mods_menu.lua"
-		},
-		{ 	"hook_id" : "lib/managers/menumanager",
-			"script_path" : "req/mod_keybinds.lua"
-		},
-		{	"hook_id" : "lib/managers/menu/menucomponentmanager",
+		{
+			"hook_id" : "lib/managers/menu/menucomponentmanager",
 			"script_path" : "lua/MenuComponentManager.lua"
 		},
-		{	"hook_id" : "lib/managers/menu/playerprofileguiobject",
-			"script_path" : "req/notifications_gui_object.lua"
-		},
-		{	"hook_id" : "lib/managers/dialogs/specializationdialog",
-			"script_path" : "req/download_progress_dialog.lua"
-		},
-		{	"hook_id" : "lib/managers/menu/specializationboxgui",
-			"script_path" : "req/download_progress_box_gui.lua"
-		},
-		{	"hook_id" : "lib/managers/systemmenumanager",
+		{
+			"hook_id" : "lib/managers/systemmenumanager",
 			"script_path" : "lua/SystemMenuManager.lua"
 		},
-		{ 	"hook_id" : "lib/network/base/basenetworksession",
+		{ 
+			"hook_id" : "lib/network/base/basenetworksession",
 			"script_path" : "lua/BaseNetworkSession.lua"
 		},
-		{ 	"hook_id" : "lib/network/base/networkmanager",
+		{ 
+			"hook_id" : "lib/network/base/networkmanager",
 			"script_path" : "lua/NetworkManager.lua"
+		},
+		{
+			"hook_id" : "lib/managers/menu/menucomponentmanager",
+			"script_path" : "req/ui/BLTModsGui.lua"
+		},
+		{ 
+			"hook_id" : "lib/managers/menu/menucomponentmanager",
+			"script_path" : "req/ui/BLTMenuNodes.lua"
+		},
+		{ 
+			"hook_id" : "lib/managers/menu/menucomponentmanager",
+			"script_path" : "req/ui/BLTDownloadManagerGui.lua"
+		},
+		{
+			"hook_id" : "lib/managers/menu/menucomponentmanager",
+			"script_path" : "req/ui/BLTNotificationsGui.lua"
 		}
 	]
 }
