@@ -112,14 +112,20 @@ function BLTModsGui:_setup()
 	self._scroll = ScrollablePanel:new( scroll_panel, "mods_scroll", {} )
 
 	-- Create download manager button
+	local title_text = managers.localization:text("blt_download_manager")
+	local downloads_count = table.size( BLT.Downloads:pending_downloads() )
+	if downloads_count > 0 then
+		title_text = title_text .. " (" .. managers.experience:cash_string(downloads_count, "") .. ")"
+	end
+
 	local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
 	local button = BLTUIButton:new( self._scroll:canvas(), {
 		x = 0,
 		y = 0,
 		w = (self._scroll:canvas():w() - (BLTModItem.layout.x + 1) * padding) / BLTModItem.layout.x,
 		h = 256,
-		title = "Download Manager",
-		text = "Update your BLT Mods.\nFor the love of god update your mods.",
+		title = title_text,
+		text = managers.localization:text("blt_download_manager_help"),
 		image = icon,
 		image_size = 108,
 		texture_rect = rect,

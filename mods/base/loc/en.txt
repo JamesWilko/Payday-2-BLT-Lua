@@ -142,6 +142,7 @@
 	"blt_update_later" : "Update Later",
 	
 	"blt_download_manager" : "Download Manager",
+	"blt_download_manager_help" : "Update your BLT Mods.\nFor the love of god update your mods.",
 	"blt_download_ready" : "Ready to Download",
 	"blt_download_waiting" : "Waiting...",
 	"blt_download_downloading" : "Downloading... $bytes;b/$total_bytes;b",

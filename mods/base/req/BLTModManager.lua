@@ -29,7 +29,95 @@ function BLTModManager:IsExcludedDirectory( directory )
 	return BLTModManager.Constants.ExcludedModDirectories[directory]
 end
 
+--------------------------------------------------------------------------------
+-- Autoupdates
+
+function BLTModManager:RunAutoCheckForUpdates()
+
+	-- Don't run the autocheck twice
+	if self._has_checked_for_updates then
+		return
+	end
+	self._has_checked_for_updates = true
+
+	-- Start checking all enabled mods for updates
+	local count = 0
+	for _, mod in ipairs( self:Mods() ) do
+		for _, update in ipairs( mod:GetUpdates() ) do
+			if update:IsEnabled() then
+				update:CheckForUpdates( callback(self, self, "clbk_got_update") )
+				count = count + 1
+			end
+		end
+	end
+
+	-- Place a notification that we're checking for autoupdates
+	if count > 0 then
+		local notifications = managers.menu_component:blt_notifications()
+		if notifications then
+
+			local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
+			self._updates_notification = notifications:add_notification( {
+				title = "Checking for Updates",
+				text = "We're checking for updates for your mods...",
+				icon = icon,
+				icon_texture_rect = rect,
+				color = Color.white,
+				priority = 1000,
+			} )
+
+		end
+	end
+
+end
+
+function BLTModManager:clbk_got_update( update, required, reason )
+
+	-- Add the pending download if required
+	if required then
+		BLT.Downloads:add_pending_download( update )
+	end
+
+	-- Check if any mods are still updating
+	local still_checking = false
+	for _, mod in ipairs( self:Mods() ) do
+		if mod:IsCheckingForUpdates() then
+			still_checking = true
+			break
+		end
+	end
+
+	local notifications = managers.menu_component:blt_notifications()
+	if notifications and not still_checking then
+
+		-- Remove the old notification
+		if self._updates_notification then
+			notifications:remove_notification( self._updates_notification )
+			self._updates_notification = nil
+		end
+
+		-- Add notification if we need updates
+		if table.size( BLT.Downloads:pending_downloads() ) > 0 then
+
+			local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
+			self._updates_notification = notifications:add_notification( {
+				title = "Updates Required",
+				text = "Updates are available for your mods, visit the download manager to update them!",
+				icon = icon,
+				icon_texture_rect = rect,
+				color = Color.white,
+				priority = 1000,
+			} )
+
+		end
+
+	end
+
+end
+
+--------------------------------------------------------------------------------
 -- Saving and Loading
+
 function BLTModManager:Load()
 
 	-- If we have old save files, then load their data

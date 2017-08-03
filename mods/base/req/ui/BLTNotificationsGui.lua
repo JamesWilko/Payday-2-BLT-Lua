@@ -154,16 +154,8 @@ function BLTNotificationsGui:_setup()
 	self._downloads_panel:set_right( self._panel:w() )
 	self._downloads_panel:set_top( 0 )
 
-	-- DEBUG
-	local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
-	self:add_notification( {
-		title = "Updates Available",
-		text = "Updates are available for your mods, visit the download manager to update them!",
-		icon = icon,
-		icon_texture_rect = rect,
-		color = Color.white,
-	} )
-
+	BLT.Mods:RunAutoCheckForUpdates()
+	
 end
 
 function BLTNotificationsGui:close()
