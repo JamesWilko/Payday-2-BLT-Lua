@@ -53,20 +53,17 @@ function BLTModManager:RunAutoCheckForUpdates()
 
 	-- Place a notification that we're checking for autoupdates
 	if count > 0 then
-		local notifications = managers.menu_component:blt_notifications()
-		if notifications then
 
-			local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
-			self._updates_notification = notifications:add_notification( {
-				title = "Checking for Updates",
-				text = "We're checking for updates for your mods...",
-				icon = icon,
-				icon_texture_rect = rect,
-				color = Color.white,
-				priority = 1000,
-			} )
+		local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
+		self._updates_notification = BLT.Notifications:add_notification( {
+			title = managers.localization:text("blt_checking_updates"),
+			text = managers.localization:text("blt_checking_updates_help"),
+			icon = icon,
+			icon_texture_rect = rect,
+			color = Color.white,
+			priority = 1000,
+		} )
 
-		end
 	end
 
 end
@@ -87,12 +84,11 @@ function BLTModManager:clbk_got_update( update, required, reason )
 		end
 	end
 
-	local notifications = managers.menu_component:blt_notifications()
-	if notifications and not still_checking then
+	if not still_checking then
 
 		-- Remove the old notification
 		if self._updates_notification then
-			notifications:remove_notification( self._updates_notification )
+			BLT.Notifications:remove_notification( self._updates_notification )
 			self._updates_notification = nil
 		end
 
@@ -100,9 +96,9 @@ function BLTModManager:clbk_got_update( update, required, reason )
 		if table.size( BLT.Downloads:pending_downloads() ) > 0 then
 
 			local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
-			self._updates_notification = notifications:add_notification( {
-				title = "Updates Required",
-				text = "Updates are available for your mods, visit the download manager to update them!",
+			self._updates_notification = BLT.Notifications:add_notification( {
+				title = managers.localization:text("blt_checking_updates_required"),
+				text = managers.localization:text("blt_checking_updates_required_help"),
 				icon = icon,
 				icon_texture_rect = rect,
 				color = Color.white,

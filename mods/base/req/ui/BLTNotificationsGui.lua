@@ -154,6 +154,12 @@ function BLTNotificationsGui:_setup()
 	self._downloads_panel:set_right( self._panel:w() )
 	self._downloads_panel:set_top( 0 )
 
+	-- Add notifications that have already been registered
+	for _, notif in ipairs( BLT.Notifications:get_notifications() ) do
+		self:add_notification( notif )
+	end
+
+	-- Check for updates when creating the notification UI as we show the check here
 	BLT.Mods:RunAutoCheckForUpdates()
 	
 end
@@ -282,10 +288,6 @@ function BLTNotificationsGui:remove_notification( uid )
 		self._notifications_count = table.size( self._notifications )
 		self:_update_bars()
 	end
-end
-
-function BLTNotificationsGui:update_notification( uid, parameters )
-	local notification, idx = self:_get_notification( uid )
 end
 
 function BLTNotificationsGui:_update_bars()

@@ -149,7 +149,12 @@
 	"blt_download_saving" : "Saving to disk...",
 	"blt_download_extracting" : "Extracting...",
 	"blt_download_done" : "Done!",
-	"blt_no_image" : "No Image"
 
+	"blt_checking_updates" : "Checking for Updates",
+	"blt_checking_updates_help" : "Checking for Updates",
+	"blt_checking_updates_required" : "Updates Required",
+	"blt_checking_updates_required_help" : "Updates are available for your mods, visit the download manager to update them!",
+
+	"blt_no_image" : "No Image"
 
 }

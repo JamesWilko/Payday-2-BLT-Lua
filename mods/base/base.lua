@@ -48,6 +48,7 @@ BLT:Require("req/BLTModule")
 BLT:Require("req/BLTLogs")
 BLT:Require("req/BLTModManager")
 BLT:Require("req/BLTDownloadManager")
+BLT:Require("req/BLTNotificationsManager")
 BLT:Require("req/BLTPersistScripts")
 BLT:Require("req/LuaModUpdater")
 
@@ -76,6 +77,7 @@ function BLT:Setup()
 	self.Mods = BLTModManager:new()
 	self.Downloads = BLTDownloadManager:new()
 	self.PersistScripts = BLTPersistScripts:new()
+	self.Notifications = BLTNotificationsManager:new()
 
 	-- Initialization functions
 	self.Logs:CleanLogs()
