@@ -107,33 +107,61 @@ function BLTNotificationsGui:_setup()
 	self:set_bar_width( BAR_W, true )
 	self._bar:set_visible( false )
 
-	local icon, rect = tweak_data.hud_icons:get_icon_data("crime_spree_shield_phalanx")
-	self:add_notification( {
-		title = "Title A",
-		text = "Notification A body",
-		icon = icon,
-		icon_texture_rect = rect,
-		color = Color.red,
-	} )
+	-- Downloads notification
+	self._downloads_panel = self._panel:panel({
+		name = "downloads",
+		w = 48,
+		h = 48,
+		layer = 100
+	})
 
-	local icon, rect = tweak_data.hud_icons:get_icon_data("crime_spree_taser_overcharge")
-	self:add_notification( {
-		title = "Title B",
-		text = "Notification B body",
-		icon = icon,
-		icon_texture_rect = rect,
-		color = Color.blue,
-		priority = 1000,
-	} )
+	local texture, rect = tweak_data.hud_icons:get_icon_data( "csb_throwables" )
+	self._downloads_panel:bitmap({
+		texture = texture,
+		texture_rect = rect,
+		w = self._downloads_panel:w(),
+		h = self._downloads_panel:h(),
+		color = Color.red
+	})
+	self._downloads_panel:rect({
+		x = 38/2.5-2,
+		y = 28/2.5,
+		w = 54/2.5,
+		h = 72/2.5-2,
+		color = Color.red
+	})
 
-	local icon, rect = tweak_data.hud_icons:get_icon_data("crime_spree_pager")
+	self._downloads_count = self._downloads_panel:text({
+		font_size = tweak_data.menu.pd2_medium_font_size,
+		font = tweak_data.menu.pd2_medium_font,
+		layer = 10,
+		blend_mode = "add",
+		color = tweak_data.screen_colors.title,
+		text = "2",
+		align = "center",
+		vertical = "center",
+	})
+
+	self._downloads_panel:set_visible( false )
+
+	-- Move other panels to fit the downloads notification in nicely
+	self._panel:set_w( self._panel:w() + 24 )
+	self._panel:set_h( self._panel:h() + 24 )
+	self._panel:set_top( self._panel:top() - 24 )
+	self._content_panel:set_top( self._content_panel:top() + 24 )
+	self._buttons_panel:set_top( self._buttons_panel:top() + 24 )
+
+	self._downloads_panel:set_right( self._panel:w() )
+	self._downloads_panel:set_top( 0 )
+
+	-- DEBUG
+	local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
 	self:add_notification( {
-		title = "Title C",
-		text = "Notification C body",
+		title = "Updates Available",
+		text = "Updates are available for your mods, visit the download manager to update them!",
 		icon = icon,
 		icon_texture_rect = rect,
-		color = Color.green,
-		priority = 10,
+		color = Color.white,
 	} )
 
 end
@@ -390,6 +418,16 @@ end
 local animating
 function BLTNotificationsGui:update( t, dt )
 
+	-- Update download count
+	local pending_downloads_count = table.size( BLT.Downloads:pending_downloads() )
+	if pending_downloads_count > 0 then
+		self._downloads_panel:set_visible( true )
+		self._downloads_count:set_text( managers.experience:cash_string( pending_downloads_count, "" ) )
+	else
+		self._downloads_panel:set_visible( false )
+	end
+
+	-- Update notifications
 	if self._notifications_count <= 1 then
 		return
 	end
@@ -435,6 +473,10 @@ function BLTNotificationsGui:mouse_moved( o, x, y )
 		end
 	end
 
+	if self._downloads_panel:inside( x, y ) then
+		return true, "link"
+	end
+
 end
 
 function BLTNotificationsGui:mouse_pressed( button, x, y )
@@ -457,6 +499,11 @@ function BLTNotificationsGui:mouse_pressed( button, x, y )
 			end
 			return true
 		end
+	end
+
+	if self._downloads_panel:inside( x, y ) then
+		managers.menu:open_node("blt_download_manager")
+		return true
 	end
 
 end
