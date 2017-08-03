@@ -27,11 +27,11 @@
 		{ "hook_id" : "lib/entry", "script_path" : "req/utils/UtilsCore.lua" },
 		{ "hook_id" : "lib/entry", "script_path" : "req/core/MenuHelper.lua" },
 		{ "hook_id" : "lib/entry", "script_path" : "req/core/Networking.lua" },
-		{ "hook_id" : "lib/entry7", "script_path" : "req/core/PersistScripts.lua" },
 		{ "hook_id" : "lib/entry", "script_path" : "req/utils/QuickMenu.lua" },
 
+		{ "hook_id" : "lib/entry7", "script_path" : "req/core/PersistScripts.lua" },
 		{ "hook_id" : "lib/entry7", "script_path" : "req/update_mods.lua" },
-		{ "hook_id" : "lib/entry7", "script_path" : "req/ui/update-mods-menu.lua" },
+		{ "hook_id" : "lib/entry7", "script_path" : "req/ui/update-mods-menu.lua" }
 	],
 	"hooks" : [
 		{
