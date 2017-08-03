@@ -121,7 +121,6 @@ function BLTDownloadManagerGui:_setup()
 			w = self._scroll:canvas():w(),
 			h = h,
 			update = download.update,
-			callback = callback( self, self, "clbk_perform_update", download.update )
 		} 
 		local button = BLTDownloadControl:new( self._scroll:canvas(), data )
 		table.insert( self._buttons, button )
@@ -133,15 +132,6 @@ function BLTDownloadManagerGui:_setup()
 	-- Update scroll
 	self._scroll:update_canvas_size()
 
-end
-
---------------------------------------------------------------------------------
-
-function BLTDownloadManagerGui:clbk_perform_update( mod_update )
-	if not BLT.Downloads:get_download( mod_update ) then
-		log("[Downloads] Start update for: ".. tostring(mod_update))
-		BLT.Downloads:start_download( mod_update )
-	end
 end
 
 --------------------------------------------------------------------------------
@@ -164,6 +154,9 @@ function BLTDownloadManagerGui:mouse_clicked( o, button, x, y )
 		if item:inside( x, y ) then
 			if item:parameters().callback then
 				item:parameters().callback()
+			end
+			if item.mouse_clicked then
+				item:mouse_clicked( button, x, y )
 			end
 			managers.menu_component:post_event( "menu_enter" )
 			return true
@@ -188,6 +181,9 @@ function BLTDownloadManagerGui:mouse_moved( button, x, y )
 	local used, pointer
 
 	for _, item in ipairs( self._buttons ) do
+		if item.mouse_moved then
+			item:mouse_moved( button, x, y )
+		end
 		if item:inside( x, y ) then
 			item:set_highlight( true )
 			used, pointer = true, "link"

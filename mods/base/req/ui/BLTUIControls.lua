@@ -204,9 +204,40 @@ function BLTDownloadControl:init( panel, parameters )
 		h = self._download_panel:w() - padding * 2,
 	})
 
+	-- Patch notes button panel
+	self._patch_panel = self._panel:panel({
+		w = math.min( self._panel:w() * 0.25, self._panel:h() ),
+		layer = 10
+	})
+	self._patch_panel:set_right( self._download_panel:x() - padding )
+
+	self._patch_background = self._patch_panel:rect({
+		color =	parameters.color or tweak_data.screen_colors.button_stage_3,
+		alpha = 0.4,
+		blend_mode = "add",
+		layer = -1
+	})
+	BoxGuiObject:new( self._patch_panel, { sides = { 1, 1, 1, 1 } } )
+
+	self._patch_panel:text({
+		font_size = small_font_size,
+		font = small_font,
+		layer = 10,
+		blend_mode = "add",
+		color = tweak_data.screen_colors.title,
+		alpha = 0.8,
+		text = "View Patch Notes",
+		align = "center",
+		vertical = "center",
+		w = self._patch_panel:w(),
+		h = self._patch_panel:h(),
+		wrap = true,
+		word_wrap = true
+	})
+
 	-- Info panel
 	self._info_panel = self._panel:panel({
-		w = self._panel:w() - self._download_panel:w() - padding,
+		w = self._panel:w() - self._download_panel:w() - self._patch_panel:w() - padding * 2,
 	})
 
 	self._info_panel:bitmap({
@@ -283,8 +314,8 @@ function BLTDownloadControl:init( panel, parameters )
 		vertical = "top",
 		x = padding * 2 + image_size,
 		y = padding,
-		w = self._info_panel:w() - padding * 2 - image_size,
-		h = self._info_panel:h() - padding * 2,
+		w = self._info_panel:w() - padding * 3 - image_size,
+		h = self._info_panel:h() - padding * 3,
 	})
 
 	local state = self._panel:text({
@@ -300,8 +331,8 @@ function BLTDownloadControl:init( panel, parameters )
 		vertical = "bottom",
 		x = padding * 2 + image_size,
 		y = padding,
-		w = self._info_panel:w() - padding * 2 - image_size,
-		h = self._info_panel:h() - padding * 2,
+		w = self._info_panel:w() - padding * 3 - image_size,
+		h = self._info_panel:h() - padding * 3,
 	})
 	self._download_state = state
 
@@ -317,7 +348,7 @@ function BLTDownloadControl:init( panel, parameters )
 		vertical = "center",
 		x = padding * 2 + image_size,
 		y = padding,
-		w = self._info_panel:w() - padding * 3 - image_size,
+		w = self._info_panel:w() - padding * 4 - image_size,
 		h = self._info_panel:h() - padding * 2,
 	})
 	download_progress:set_visible( false )
@@ -335,7 +366,48 @@ function BLTDownloadControl:init( panel, parameters )
 end
 
 function BLTDownloadControl:inside( x, y )
-	return self._download_panel:inside( x, y )
+	return self._download_panel:inside( x, y ) or self._patch_panel:inside( x, y )
+end
+
+function BLTDownloadControl:set_highlight( enabled, no_sound )
+end
+
+function BLTDownloadControl:mouse_moved( button, x, y )
+
+	local inside_download = self._download_panel:inside( x, y )
+	if self._highlight_download ~= inside_download then
+		self._background:set_color( inside_download and tweak_data.screen_colors.button_stage_2 or (self:parameters().color or tweak_data.screen_colors.button_stage_3) )
+		if inside_download and not no_sound then
+			managers.menu_component:post_event( "highlight" )
+		end
+		self._highlight_download = inside_download
+	end
+
+	local inside_patch = self._patch_panel:inside( x, y )
+	if self._highlight_patch ~= inside_patch then
+		self._patch_background:set_color( inside_patch and tweak_data.screen_colors.button_stage_2 or (self:parameters().color or tweak_data.screen_colors.button_stage_3) )
+		if inside_patch and not no_sound then
+			managers.menu_component:post_event( "highlight" )
+		end
+		self._highlight_patch = inside_patch
+	end
+
+end
+
+function BLTDownloadControl:mouse_clicked( button, x, y )
+
+	if self._download_panel:inside( x, y ) then
+		if not BLT.Downloads:get_download( self._parameters.update ) then
+			BLT.Downloads:start_download( self._parameters.update )
+			return true
+		end
+	end
+
+	if self._patch_panel:inside( x, y ) then
+		self._parameters.update:ViewPatchNotes()
+		return true
+	end
+
 end
 
 function BLTDownloadControl:update_download( download )

@@ -162,3 +162,7 @@ end
 function BLTUpdate:GetDisallowCallback()
 	return self.disallow_update
 end
+
+function BLTUpdate:ViewPatchNotes()
+	os.execute( "cmd /c start http://download.paydaymods.com/download/patchnotes/" .. self:GetId() )
+end
