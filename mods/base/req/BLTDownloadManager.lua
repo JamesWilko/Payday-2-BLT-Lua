@@ -10,6 +10,15 @@ end
 
 --------------------------------------------------------------------------------
 
+function BLTDownloadManager:get_pending_download( update )
+	for i, download in ipairs( self._pending_downloads ) do
+		if download.update:GetId() == update:GetId() then
+			return download, i
+		end
+	end
+	return false
+end
+
 function BLTDownloadManager:pending_downloads()
 	return self._pending_downloads
 end
@@ -42,18 +51,18 @@ function BLTDownloadManager:downloads()
 end
 
 function BLTDownloadManager:get_download( update )
-	for _, download in ipairs( self._downloads ) do
+	for i, download in ipairs( self._downloads ) do
 		if download.update:GetId() == update:GetId() then
-			return download
+			return download, i
 		end
 	end
 	return false
 end
 
 function BLTDownloadManager:get_download_from_http_id( http_id )
-	for _, download in ipairs( self._downloads ) do
+	for i, download in ipairs( self._downloads ) do
 		if download.http_id == http_id then
-			return download
+			return download, i
 		end
 	end
 	return false
@@ -146,7 +155,8 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 
 	end
 
-	download.coroutine:animate( save )
+	-- download.coroutine:animate( save )
+	download.state = "complete"
 
 end
 
@@ -162,10 +172,16 @@ function BLTDownloadManager:flush_complete_downloads()
 	log("[Downloads] Flushing complete downloads...")
 
 	for i = #self._downloads, 0, -1 do
-		log("checking download: " .. tostring(i))
-		if self._downloads[i] and self._downloads[i].state == "complete" then
+		local download = self._downloads[i]
+		if download and download.state == "complete" then
+
+			-- Remove download
 			table.remove( self._downloads, i )
-			log("removing download: " .. tostring(i))
+
+			-- Remove the pending download
+			local _, idx = self:get_pending_download( download.update )
+			table.remove( self._pending_downloads, idx )
+
 		end
 	end
 
