@@ -476,7 +476,15 @@ function BLTViewModGui:clbk_check_for_updates_finished( cache )
 	local requires_update = false
 	local error_reason
 	for update_id, data in pairs( cache ) do
+
+		-- An update for this mod needs updating
 		requires_update = data.requires_update or requires_update
+
+		-- Add the update to the download manager
+		if data.requires_update then
+			BLT.Downloads:add_pending_download( data.update )
+		end
+
 	end
 
 	-- Show updates dialog
@@ -488,6 +496,8 @@ function BLTViewModGui:clbk_check_for_updates_finished( cache )
 
 		local ok_button = {}
 		ok_button.text = managers.localization:text( "dialog_ok" )
+		ok_button.cancel_button = true
+
 		dialog_data.button_list = { ok_button }
 		managers.system_menu:show( dialog_data )
 
@@ -499,11 +509,13 @@ function BLTViewModGui:clbk_check_for_updates_finished( cache )
 
 		local ok_button = {}
 		ok_button.text = managers.localization:text( "dialog_ok" )
+		ok_button.cancel_button = true
+
 		dialog_data.button_list = { ok_button }
 		managers.system_menu:show( dialog_data )
 
 	else
-
+		
 		local dialog_data = {}
 		dialog_data.title = managers.localization:text( "blt_update_mod_title", { name = self._mod:GetName() } )
 		dialog_data.text = managers.localization:text( "blt_update_mod_available", { name = self._mod:GetName() } )
@@ -514,6 +526,7 @@ function BLTViewModGui:clbk_check_for_updates_finished( cache )
 
 		local ok_button = {}
 		ok_button.text = managers.localization:text( "dialog_ok" )
+		ok_button.cancel_button = true
 
 		dialog_data.button_list = { download_button, ok_button }
 		managers.system_menu:show( dialog_data )

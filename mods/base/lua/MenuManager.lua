@@ -144,3 +144,29 @@ end
 function MenuCallbackHandler:perform_blt_save()
 	BLT.Mods:Save()
 end
+
+--------------------------------------------------------------------------------
+-- Add BLT dll update notification
+
+function MenuCallbackHandler:blt_update_dll_dialog()
+	
+	local dialog_data = {}
+	dialog_data.title = managers.localization:text( "blt_update_dll_title" )
+	dialog_data.text = managers.localization:text( "blt_update_dll_text" )
+
+	local download_button = {}
+	download_button.text = managers.localization:text( "blt_update_dll_goto_website" )
+	download_button.callback_func = callback( self, self, "clbk_goto_paydaymods_download" )
+
+	local ok_button = {}
+	ok_button.text = managers.localization:text( "blt_update_later" )
+	ok_button.cancel_button = true
+
+	dialog_data.button_list = { download_button, ok_button }
+	managers.system_menu:show( dialog_data )
+
+end
+
+function MenuCallbackHandler:clbk_goto_paydaymods_download()
+	os.execute( "cmd /c start http://paydaymods.com/download/" )
+end

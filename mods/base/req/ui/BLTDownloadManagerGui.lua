@@ -29,6 +29,7 @@ function BLTDownloadManagerGui:init( ws, fullscreen_ws, node )
 
 	self._data = node:parameters().menu_component_data or {}
 	self._buttons = {}
+	self._downloads_map = {}
 
 	self:_setup()
 
@@ -37,6 +38,7 @@ end
 function BLTDownloadManagerGui:close()
 	self._ws:panel():remove( self._panel )
 	self._fullscreen_ws:panel():remove( self._fullscreen_panel )
+	BLT.Downloads:flush_complete_downloads()
 end
 
 function BLTDownloadManagerGui:_setup()
@@ -100,9 +102,61 @@ function BLTDownloadManagerGui:_setup()
 		vertical = "top",
 	})
 
+	-- Download scroll panel
+	local scroll_panel = self._panel:panel({
+		h = self._panel:h() - large_font_size - back_button:h() - padding * 2,
+		y = large_font_size + padding,
+	})
+	BoxGuiObject:new( scroll_panel:panel({layer=100}), { sides = { 1, 1, 1, 1 } })
+	BoxGuiObject:new( scroll_panel:panel({layer=100}), { sides = { 1, 1, 2, 2 } })
+
+	self._scroll = ScrollablePanel:new( scroll_panel, "downloads_scroll", {} )
+
+	-- Add download items
+	local h = 80
+	for i, download in ipairs( BLT.Downloads:pending_downloads() ) do
+
+		local data = {
+			y = (h + padding) * (i - 1),
+			w = self._scroll:canvas():w(),
+			h = h,
+			update = download.update,
+			callback = callback( self, self, "clbk_perform_update", download.update )
+		} 
+		local button = BLTDownloadControl:new( self._scroll:canvas(), data )
+		table.insert( self._buttons, button )
+
+		self._downloads_map[ download.update:GetId() ] = button
+
+	end
+
+	-- Update scroll
+	self._scroll:update_canvas_size()
+
 end
 
 --------------------------------------------------------------------------------
+
+function BLTDownloadManagerGui:clbk_perform_update( mod_update )
+	if not BLT.Downloads:get_download( mod_update ) then
+		log("[Downloads] Start update for: ".. tostring(mod_update))
+		BLT.Downloads:start_download( mod_update )
+	end
+end
+
+--------------------------------------------------------------------------------
+
+function BLTDownloadManagerGui:update( t, dt )
+
+	for _, download in ipairs( BLT.Downloads:downloads() ) do
+		local id = download.update:GetId()
+		local button = self._downloads_map[ id ]
+		if button then
+			button:update_download( download )
+		end
+	end
+
+end
 
 function BLTDownloadManagerGui:mouse_clicked( o, button, x, y )
 

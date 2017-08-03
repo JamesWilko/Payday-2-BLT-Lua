@@ -17,6 +17,8 @@ local function make_fine_text( text )
 	text:set_position( math.round( text:x() ), math.round( text:y() ) )
 end
 
+--------------------------------------------------------------------------------
+
 BLTUIButton = BLTUIButton or class()
 
 function BLTUIButton:init( panel, parameters )
@@ -145,4 +147,243 @@ function BLTUIButton:set_highlight( enabled, no_sound )
 			managers.menu_component:post_event( "highlight" )
 		end
 	end
+end
+
+--------------------------------------------------------------------------------
+
+BLTDownloadControl = BLTDownloadControl or class( BLTUIButton )
+
+function BLTDownloadControl:init( panel, parameters )
+
+	self._parameters = parameters
+	local mod = parameters.update:GetParentMod()
+
+	-- Main panel
+	self._panel = panel:panel({
+		x = parameters.x or 0,
+		y = parameters.y or 0,
+		w = parameters.w or 128,
+		h = parameters.h or 128,
+		layer = 10
+	})
+
+	-- Download button panel
+	self._download_panel = self._panel:panel({
+		w = math.min( self._panel:w() * 0.25, self._panel:h() )
+	})
+	self._download_panel:set_right( self._panel:w() )
+
+	self._background = self._download_panel:rect({
+		color =	parameters.color or tweak_data.screen_colors.button_stage_3,
+		alpha = 0.4,
+		blend_mode = "add",
+		layer = -1
+	})
+	BoxGuiObject:new( self._download_panel, { sides = { 1, 1, 1, 1 } } )
+
+	self._download_panel:bitmap({
+		texture = "guis/textures/test_blur_df",
+		w = self._download_panel:w(),
+		h = self._download_panel:h(),
+		render_template = "VertexColorTexturedBlur3D",
+		layer = -1,
+		halign = "scale",
+		valign = "scale"
+	})
+
+	local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
+	local image = self._download_panel:bitmap({
+		name = "image",
+		texture = icon,
+		texture_rect = rect,
+		color = Color.white,
+		layer = 10,
+		x = padding,
+		y = padding,
+		w = self._download_panel:w() - padding * 2,
+		h = self._download_panel:w() - padding * 2,
+	})
+
+	-- Info panel
+	self._info_panel = self._panel:panel({
+		w = self._panel:w() - self._download_panel:w() - padding,
+	})
+
+	self._info_panel:bitmap({
+		texture = "guis/textures/test_blur_df",
+		w = self._panel:w(),
+		h = self._panel:h(),
+		render_template = "VertexColorTexturedBlur3D",
+		layer = -1,
+		halign = "scale",
+		valign = "scale"
+	})
+	BoxGuiObject:new( self._info_panel, { sides = { 1, 1, 1, 1 } } )
+
+	local download_name = parameters.update:GetName() or "No Name"
+	if mod:GetName() ~= download_name then
+		download_name = download_name .. " (" .. mod:GetName() .. ")"
+	end
+
+	-- Mod image
+	local image_path
+	local image_size = self._info_panel:h() - padding * 2
+	if mod:HasModImage() then
+		image_path = mod:GetModImage()
+	end
+
+	if image_path then
+		local image = self._info_panel:bitmap({
+			name = "image",
+			texture = image_path,
+			color = Color.white,
+			layer = 10,
+			x = padding,
+			y = padding,
+			w = image_size,
+			h = image_size,
+		})
+	else
+
+		local no_image_panel = self._info_panel:panel({
+			x = padding,
+			y = padding,
+			w = image_size,
+			h = image_size,
+			layer = 10
+		})
+		BoxGuiObject:new( no_image_panel, { sides = { 1, 1, 1, 1 } } )
+
+		local no_image_text = no_image_panel:text({
+			name = "no_image_text",
+			font_size = small_font_size * 0.8,
+			font = small_font,
+			layer = 10,
+			blend_mode = "add",
+			color = tweak_data.screen_colors.title,
+			text = "No Image",
+			align = "center",
+			vertical = "center",
+			w = no_image_panel:w(),
+			h = no_image_panel:h()
+		})
+
+	end
+
+	-- Download info
+	local title = self._info_panel:text({
+		name = "title",
+		font_size = medium_font_size,
+		font = medium_font,
+		layer = 10,
+		blend_mode = "add",
+		color = tweak_data.screen_colors.title,
+		text = download_name,
+		align = "left",
+		vertical = "top",
+		x = padding * 2 + image_size,
+		y = padding,
+		w = self._info_panel:w() - padding * 2 - image_size,
+		h = self._info_panel:h() - padding * 2,
+	})
+
+	local state = self._panel:text({
+		name = "state",
+		font_size = small_font_size,
+		font = small_font,
+		layer = 10,
+		blend_mode = "add",
+		color = tweak_data.screen_colors.title,
+		alpha = 0.8,
+		text = "Ready to Download",
+		align = "left",
+		vertical = "bottom",
+		x = padding * 2 + image_size,
+		y = padding,
+		w = self._info_panel:w() - padding * 2 - image_size,
+		h = self._info_panel:h() - padding * 2,
+	})
+	self._download_state = state
+
+	local download_progress = self._info_panel:text({
+		name = "download_progress",
+		font_size = large_font_size,
+		font = large_font,
+		layer = 10,
+		blend_mode = "add",
+		color = tweak_data.screen_colors.title,
+		text = "100%",
+		align = "right",
+		vertical = "center",
+		x = padding * 2 + image_size,
+		y = padding,
+		w = self._info_panel:w() - padding * 3 - image_size,
+		h = self._info_panel:h() - padding * 2,
+	})
+	download_progress:set_visible( false )
+	self._download_progress = download_progress
+
+	self._download_progress_bg = self._info_panel:rect({
+		color = tweak_data.screen_colors.button_stage_2,
+		alpha = 0.4,
+		blend_mode = "add",
+		layer = -1
+	})
+	self._download_progress_bg:set_w( 0 )
+	self._download_progress_bg:set_visible( false )
+
+end
+
+function BLTDownloadControl:inside( x, y )
+	return self._download_panel:inside( x, y )
+end
+
+function BLTDownloadControl:update_download( download )
+
+	self._background:set_color( tweak_data.menu.default_disabled_text_color )
+
+	local percent = (download.bytes or 0) / (download.total_bytes or 1)
+	if download.state == "complete" then
+		self:_update_complete( download, percent )
+	elseif download.state == "extracting" then
+		self:_update_extracting( download, percent )
+	elseif download.state == "saving" then
+		self:_update_saving( download, percent )
+	elseif download.state == "downloading" then
+		self:_update_download( download, percent )
+	elseif download.state == "waiting" then
+		self:_update_waiting( download, percent )
+	end
+
+end
+
+function BLTDownloadControl:_update_complete( download, percent )
+	self._download_state:set_text( "Done!" )
+	self._download_progress:set_text( "100%" )
+	self._download_progress_bg:set_visible( false )
+end
+
+function BLTDownloadControl:_update_extracting( download, percent )
+	self._download_state:set_text( "Extracting..." )
+	self._download_progress:set_text( "100%" )
+	self._download_progress_bg:set_visible( false )
+	self._download_progress_bg:set_w( self._info_panel:w() )
+end
+
+function BLTDownloadControl:_update_saving( download, percent )
+	self._download_state:set_text( "Writing to disk..." )
+	self._download_progress:set_text( "100%" )
+	self._download_progress_bg:set_w( self._info_panel:w() )
+end
+
+function BLTDownloadControl:_update_download( download, percent )
+	self._download_state:set_text( "Downloading... " .. managers.experience:cash_string(download.bytes, "") .. "b /" .. managers.experience:cash_string(download.total_bytes, "") .. "b" )
+	self._download_progress:set_visible( true )
+	self._download_progress:set_text( tostring(math.floor(percent * 100)) .. "%" )
+	self._download_progress_bg:set_visible( true )
+	self._download_progress_bg:set_w( percent * self._info_panel:w() )
+end
+
+function BLTDownloadControl:_update_waiting( download, percent )
+	self._download_state:set_text( "Waiting..." )
 end

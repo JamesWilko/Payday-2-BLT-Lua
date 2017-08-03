@@ -47,6 +47,7 @@ BLT:Require("req/BLTUpdate")
 BLT:Require("req/BLTModule")
 BLT:Require("req/BLTLogs")
 BLT:Require("req/BLTModManager")
+BLT:Require("req/BLTDownloadManager")
 BLT:Require("req/BLTPersistScripts")
 BLT:Require("req/LuaModUpdater")
 
@@ -73,6 +74,7 @@ function BLT:Setup()
 	-- self.Messages = MessageSystem:new()
 	self.Logs = BLTLogs:new()
 	self.Mods = BLTModManager:new()
+	self.Downloads = BLTDownloadManager:new()
 	self.PersistScripts = BLTPersistScripts:new()
 
 	-- Initialization functions
