@@ -97,7 +97,7 @@ function BLTDownloadManagerGui:_setup()
 		layer = 10,
 		blend_mode = "add",
 		color = tweak_data.screen_colors.title,
-		text = "Download Manager",
+		text = managers.localization:text("blt_download_manager"),
 		align = "left",
 		vertical = "top",
 	})

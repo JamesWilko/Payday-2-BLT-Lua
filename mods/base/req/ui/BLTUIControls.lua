@@ -292,7 +292,7 @@ function BLTDownloadControl:init( panel, parameters )
 			layer = 10,
 			blend_mode = "add",
 			color = tweak_data.screen_colors.title,
-			text = "No Image",
+			text = managers.localization:text("blt_no_image"),
 			align = "center",
 			vertical = "center",
 			w = no_image_panel:w(),
@@ -326,7 +326,7 @@ function BLTDownloadControl:init( panel, parameters )
 		blend_mode = "add",
 		color = tweak_data.screen_colors.title,
 		alpha = 0.8,
-		text = "Ready to Download",
+		text = managers.localization:text("blt_download_ready"),
 		align = "left",
 		vertical = "bottom",
 		x = padding * 2 + image_size,
@@ -430,26 +430,30 @@ function BLTDownloadControl:update_download( download )
 end
 
 function BLTDownloadControl:_update_complete( download, percent )
-	self._download_state:set_text( "Done!" )
+	self._download_state:set_text( managers.localization:text("blt_download_done") )
 	self._download_progress:set_text( "100%" )
 	self._download_progress_bg:set_visible( false )
 end
 
 function BLTDownloadControl:_update_extracting( download, percent )
-	self._download_state:set_text( "Extracting..." )
+	self._download_state:set_text( managers.localization:text("blt_download_extracting") )
 	self._download_progress:set_text( "100%" )
 	self._download_progress_bg:set_visible( false )
 	self._download_progress_bg:set_w( self._info_panel:w() )
 end
 
 function BLTDownloadControl:_update_saving( download, percent )
-	self._download_state:set_text( "Writing to disk..." )
+	self._download_state:set_text( managers.localization:text("blt_download_saving") )
 	self._download_progress:set_text( "100%" )
 	self._download_progress_bg:set_w( self._info_panel:w() )
 end
 
 function BLTDownloadControl:_update_download( download, percent )
-	self._download_state:set_text( "Downloading... " .. managers.experience:cash_string(download.bytes, "") .. "b /" .. managers.experience:cash_string(download.total_bytes, "") .. "b" )
+	local macros = {
+		bytes = managers.experience:cash_string(download.bytes, ""),
+		total_bytes = managers.experience:cash_string(download.total_bytes, "")
+	}
+	self._download_state:set_text( managers.localization:text("blt_download_downloading", macros) )
 	self._download_progress:set_visible( true )
 	self._download_progress:set_text( tostring(math.floor(percent * 100)) .. "%" )
 	self._download_progress_bg:set_visible( true )
@@ -457,5 +461,5 @@ function BLTDownloadControl:_update_download( download, percent )
 end
 
 function BLTDownloadControl:_update_waiting( download, percent )
-	self._download_state:set_text( "Waiting..." )
+	self._download_state:set_text( managers.localization:text("blt_download_waiting") )
 end

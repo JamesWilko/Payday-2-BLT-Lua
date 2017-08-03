@@ -139,6 +139,16 @@
 	"blt_update_dll_title" : "Critical Update",
 	"blt_update_dll_text" : "An update is available to the BLT DLL, you will need to update this yourself by downloading and installing it again from the website.\n\nPlease update ASAP as this is a critical update which may fix crashes with your game.",
 	"blt_update_dll_goto_website" : "Go to PaydayMods Download",
-	"blt_update_later" : "Update Later"
+	"blt_update_later" : "Update Later",
+	
+	"blt_download_manager" : "Download Manager",
+	"blt_download_ready" : "Ready to Download",
+	"blt_download_waiting" : "Waiting...",
+	"blt_download_downloading" : "Downloading... $bytes;b/$total_bytes;b",
+	"blt_download_saving" : "Saving to disk...",
+	"blt_download_extracting" : "Extracting...",
+	"blt_download_done" : "Done!",
+	"blt_no_image" : "No Image"
+
 
 }
