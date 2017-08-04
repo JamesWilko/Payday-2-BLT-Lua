@@ -50,7 +50,6 @@ BLT:Require("req/BLTModManager")
 BLT:Require("req/BLTDownloadManager")
 BLT:Require("req/BLTNotificationsManager")
 BLT:Require("req/BLTPersistScripts")
-BLT:Require("req/LuaModUpdater")
 
 -- BLT base functions
 function BLT:Initialize()

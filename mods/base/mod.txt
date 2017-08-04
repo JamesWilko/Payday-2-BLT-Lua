@@ -27,11 +27,7 @@
 		{ "hook_id" : "lib/entry", "script_path" : "req/utils/UtilsCore.lua" },
 		{ "hook_id" : "lib/entry", "script_path" : "req/core/MenuHelper.lua" },
 		{ "hook_id" : "lib/entry", "script_path" : "req/core/Networking.lua" },
-		{ "hook_id" : "lib/entry", "script_path" : "req/utils/QuickMenu.lua" },
-
-		{ "hook_id" : "lib/entry7", "script_path" : "req/core/PersistScripts.lua" },
-		{ "hook_id" : "lib/entry7", "script_path" : "req/update_mods.lua" },
-		{ "hook_id" : "lib/entry7", "script_path" : "req/ui/update-mods-menu.lua" }
+		{ "hook_id" : "lib/entry", "script_path" : "req/utils/QuickMenu.lua" }
 	],
 	"hooks" : [
 		{
@@ -57,14 +53,6 @@
 		{ 
 			"hook_id" : "lib/managers/menumanager",
 			"script_path" : "req/core/ModKeybinds.lua"
-		},
-		{
-			"hook_id" : "lib/managers/dialogs/specializationdialog",
-			"script_path" : "req/ui/download-progress-dialog.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/specializationboxgui",
-			"script_path" : "req/ui/download-progress-box-gui.lua"
 		},
 		{ 
 			"hook_id" : "core/lib/system/corepatchlua",
