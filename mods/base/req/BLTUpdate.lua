@@ -164,5 +164,11 @@ function BLTUpdate:GetDisallowCallback()
 end
 
 function BLTUpdate:ViewPatchNotes()
-	os.execute( "cmd /c start http://download.paydaymods.com/download/patchnotes/" .. self:GetId() )
+	local url = "http://download.paydaymods.com/download/patchnotes/" .. self:GetId()
+	if Steam:overlay_enabled() then
+		Steam:overlay_activate( "url", url )
+	else
+		os.execute( "cmd /c start " .. url )
+	end
 end
+

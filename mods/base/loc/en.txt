@@ -158,6 +158,7 @@
 	"blt_checking_updates_help" : "Checking for Updates",
 	"blt_checking_updates_required" : "Updates Required",
 	"blt_checking_updates_required_help" : "Updates are available for your mods, visit the download manager to update them!",
+	"blt_view_patch_notes" : "View Patch Notes",
 
 	"blt_no_image" : "No Image",
 	"blt_no_name" : "No Name",
