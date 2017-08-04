@@ -50,6 +50,8 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 		["_meta"] = "node",
 		["name"] = "blt_keybinds",
 		["back_callback"] = "perform_blt_save",
+		["modifier"] = "BLTKeybindMenuInitiator",
+		["refresh"] = "BLTKeybindMenuInitiator",
 		[1] = {
 			["_meta"] = "legend",
 			["name"] = "menu_legend_select"

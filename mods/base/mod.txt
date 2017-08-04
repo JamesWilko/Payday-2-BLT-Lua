@@ -71,10 +71,6 @@
 			"script_path" : "lua/MenuNodeGUI.lua"
 		},
 		{ 
-			"hook_id" : "lib/managers/menu/items/menuitemcustomizecontroller",
-			"script_path" : "lua/MenuItemCustomizeController.lua"
-		},
-		{ 
 			"hook_id" : "core/lib/managers/menu/items/coremenuitemslider",
 			"script_path" : "lua/CoreMenuItemSlider.lua"
 		},
