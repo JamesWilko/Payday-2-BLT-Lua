@@ -23,7 +23,7 @@ function BLTPersistScripts:update_persists()
 		for _, persist in ipairs( mod:GetPersistScripts() ) do
 
 			-- Check if the persist global has not been set
-			if not _G[persist.global] then
+			if not rawget( _G, persist.global ) then
 
 				-- Create the path here, otherwise Application.nice_path doesn't exist yet
 				if not persist.path then
