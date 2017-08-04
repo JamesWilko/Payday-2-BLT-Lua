@@ -183,5 +183,5 @@ end
 -- Add visibility callback for showing keybinds
 
 function MenuCallbackHandler:blt_show_keybinds_item()
-	return BLT.Keybinds and BLT.Keybinds:has_keybinds()
+	return BLT.Keybinds and BLT.Keybinds:has_menu_keybinds()
 end

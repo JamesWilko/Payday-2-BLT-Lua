@@ -66,7 +66,7 @@ function BLTMod:Setup()
 	-- Keybinds
 	if BLT.Keybinds then
 		for i, keybind_data in ipairs( self.json_data["keybinds"] or {} ) do
-			BLT.Keybinds:register_keybind( self, keybind_data )
+			BLT.Keybinds:register_keybind_json( self, keybind_data )
 		end
 	end
 

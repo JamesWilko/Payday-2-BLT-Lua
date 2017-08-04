@@ -10,10 +10,15 @@ function BLTKeybind:init( parent_mod, parameters )
 	self._id = parameters.id
 	self._key = {}
 	self._file = parameters.file
+	self._callback = parameters.callback
 
 	self._allow_menu = parameters.allow_menu or false
 	self._allow_game = parameters.allow_game or false
 
+	self._show_in_menu = parameters.show_in_menu
+	if self._show_in_menu == nil then
+		self._show_in_menu = true
+	end
 	self._name = parameters.name or false
 	self._desc = parameters.desc or false
 	self._localize = parameters.localize or false
@@ -31,12 +36,8 @@ end
 function BLTKeybind:SetKey( key, force )
 	if force then
 		self:_SetKey( force, key )
-	elseif managers and managers.menu then
-		if managers.menu:is_pc_controller() then
-			self:_SetKey( "pc", key )
-		else
-			self:_SetKey( "controller", key )
-		end
+	else
+		self:_SetKey( "pc", key )
 	end
 end
 
@@ -49,15 +50,7 @@ function BLTKeybind:_SetKey( idx, key )
 end
 
 function BLTKeybind:Key()
-	if managers and managers.menu then
-		if managers.menu:is_pc_controller() then
-			return self._key.pc
-		else
-			return self._key.controller
-		end
-	else
-		return self._key.pc
-	end
+	return self._key.pc
 end
 
 function BLTKeybind:Keys()
@@ -70,6 +63,14 @@ end
 
 function BLTKeybind:File()
 	return self._file
+end
+
+function BLTKeybind:Callback()
+	return self._callback
+end
+
+function BLTKeybind:ShowInMenu()
+	return self._show_in_menu
 end
 
 function BLTKeybind:Name()
@@ -116,12 +117,17 @@ function BLTKeybind:CanExecuteInState( state )
 end
 
 function BLTKeybind:Execute()
-	local path = Application:nice_path( self:ParentMod():GetPath() .. "/" .. self:File(), false )
-	dofile( path )
+	if self:File() then
+		local path = Application:nice_path( self:ParentMod():GetPath() .. "/" .. self:File(), false )
+		dofile( path )
+	end
+	if self:Callback() then
+		self:Callback()()
+	end
 end
 
 function BLTKeybind:__tostring()
-	return "[BLTKeybind " .. tostring(self:Id()) .. " | " .. (self:HasKey() and "[unbound]" or tostring(self:Key())) .. " => " .. tostring(self:File()) .. "]"
+	return "[BLTKeybind " .. tostring(self:Id()) .. "]"
 end
 
 --------------------------------------------------------------------------------
@@ -132,23 +138,42 @@ BLTKeybindsManager.__type = "BLTKeybindsManager"
 function BLTKeybindsManager:init()
 	BLTKeybindsManager.super.init( self )
 	self._keybinds = {}
+	self._potential_keybinds = {}
 end
 
-function BLTKeybindsManager:register_keybind( mod, json_data )
+function BLTKeybindsManager:register_keybind( mod, parameters )
+
+	-- Create the mod
+	local bind = BLTKeybind:new( mod, parameters )
+	table.insert( self._keybinds, bind )
+	log("[Keybind] Registered keybind " .. tostring(bind))
+
+	-- Check through the potential keybinds for the added bind and restore it's key
+	for i, bind_data in ipairs( self._potential_keybinds ) do
+		local success = self:_restore_keybind( bind_data )
+		if success then
+			table.remove( self._potential_keybinds, i )
+			break
+		end
+	end
+
+	return bind
+
+end
+
+function BLTKeybindsManager:register_keybind_json( mod, json_data )
 
 	local parameters = {
 		id = json_data["keybind_id"],
 		file = json_data["script_path"],
 		allow_menu = json_data["run_in_menu"],
 		allow_game = json_data["run_in_game"],
+		show_in_menu = json_data["show_in_menu"],
 		name = json_data["name"],
 		desc = json_data["description"],
 		localize = json_data["localized"],
 	}
-	local bind = BLTKeybind:new( mod, parameters )
-	table.insert( self._keybinds, bind )
-
-	log("[Keybind] Registered keybind " .. tostring(bind))
+	self:register_keybind( mod, parameters )
 
 end
 
@@ -158,6 +183,15 @@ end
 
 function BLTKeybindsManager:has_keybinds()
 	return table.size( self:keybinds() ) > 0
+end
+
+function BLTKeybindsManager:has_menu_keybinds()
+	for _, bind in ipairs( self:keybinds() ) do
+		if bind:ShowInMenu() then
+			return true
+		end
+	end
+	return false
 end
 
 function BLTKeybindsManager:get_keybind( id )
@@ -250,16 +284,28 @@ function BLTKeybindsManager:load( cache )
 
 			local bind = self:get_keybind( bind_data.id )
 			if bind then
-				for idx, key in pairs( bind_data ) do
-					if idx ~= "id" then
-						bind:SetKey( key, idx )
-					end
-				end
+				self:_restore_keybind( bind_data )
+			else
+				-- Store the bind so that we can restore it to any mods that are loaded later
+				table.insert( self._potential_keybinds, bind_data )
 			end
 
 		end
 	end
 
+end
+
+function BLTKeybindsManager:_restore_keybind( bind_data )
+	local bind = self:get_keybind( bind_data.id )
+	if bind then
+		for idx, key in pairs( bind_data ) do
+			if idx ~= "id" then
+				bind:SetKey( key, idx )
+			end
+		end
+		return true
+	end
+	return false
 end
 
 Hooks:Add("BLTOnSaveData", "BLTOnSaveData.BLTKeybindsManager", function( cache )
@@ -283,30 +329,34 @@ function BLTKeybindMenuInitiator:modify_node( node )
 	local last_mod
 	for i, bind in ipairs( BLT.Keybinds:keybinds() ) do
 
-		-- Seperate keybinds by mod
-		if last_mod and last_mod ~= bind:ParentMod() then
-			self:create_divider( node, tostring(i) )
+		if bind:ShowInMenu() then
+
+			-- Seperate keybinds by mod
+			if last_mod and last_mod ~= bind:ParentMod() then
+				self:create_divider( node, tostring(i) )
+			end
+			last_mod = bind:ParentMod()
+
+			-- Create the keybind
+			local data_node = {
+				type = "MenuItemCustomizeController",
+			}
+
+			local params = {
+				name = bind:Id(),
+				text_id = bind:Name(),
+				help_id = bind:Description(),
+				connection_name = bind:Id(),
+				binding = bind:Key(),
+				button = bind:Id(),
+				localize = false,
+				localize_help = false,
+			}
+
+			local new_item = node:create_item( data_node, params )
+			node:add_item( new_item )
+
 		end
-		last_mod = bind:ParentMod()
-
-		-- Create the keybind
-		local data_node = {
-			type = "MenuItemCustomizeController",
-		}
-
-		local params = {
-			name = bind:Id(),
-			text_id = bind:Name(),
-			help_id = bind:Description(),
-			connection_name = bind:Id(),
-			binding = bind:Key(),
-			button = bind:Id(),
-			localize = false,
-			localize_help = false,
-		}
-
-		local new_item = node:create_item( data_node, params )
-		node:add_item( new_item )
 
 	end
 

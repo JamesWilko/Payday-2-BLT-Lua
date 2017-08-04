@@ -15,6 +15,14 @@ function BLTModManager:Mods()
 	return self.mods
 end
 
+function BLTModManager:GetMod( id )
+	for _, mod in ipairs( self:Mods() ) do
+		if mod:GetId() == id then
+			return mod
+		end
+	end
+end
+
 function BLTModManager:SetModsList( mods_list )
 
 	-- Set mods
