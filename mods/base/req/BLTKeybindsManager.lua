@@ -109,7 +109,7 @@ end
 function BLTKeybind:CanExecuteInState( state )
 	if state == BLTKeybind.StateMenu then
 		return self:AllowExecutionInMenu()
-	elseif state == BLTKeybind.StateMenu then
+	elseif state == BLTKeybind.StateGame then
 		return self:AllowExecutionInGame()
 	end
 	return false
