@@ -502,6 +502,10 @@ function BLTNotificationsGui:mouse_pressed( button, x, y )
 
 end
 
+function BLTNotificationsGui:input_focus()
+	return nil
+end
+
 --------------------------------------------------------------------------------
 -- Patch MenuComponentManager to create the BLT Notifications component
 
