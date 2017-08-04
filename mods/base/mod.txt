@@ -6,7 +6,7 @@
 	"version" : "2.0",
 	"blt_version" : 2,
 	"priority" : 1001,
-	"image" : "base.tga",
+	"image" : "blt.png",
 	"color" : "255 0 255",
 	"undisablable" : true,
 	"disable_safe_mode" : true,
