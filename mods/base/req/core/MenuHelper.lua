@@ -36,6 +36,7 @@ function MenuHelper:GetMenu( menu_id )
 	local menu = (self.menus or {})[menu_id]
 	if menu == nil then
 		log("[Error] Could not find menu with id '" .. tostring(menu_id) .. "'!")
+		log( debug.traceback() )
 	end
 	return menu
 end

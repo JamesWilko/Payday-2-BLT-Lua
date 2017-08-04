@@ -145,6 +145,14 @@ function MenuCallbackHandler:perform_blt_save()
 	BLT.Mods:Save()
 end
 
+function MenuCallbackHandler:close_blt_mods()
+	managers.menu_component:close_blt_mods_gui()
+end
+
+function MenuCallbackHandler:close_blt_download_manager()
+	managers.menu_component:close_blt_downloads_gui()
+end
+
 --------------------------------------------------------------------------------
 -- Add BLT dll update notification
 
