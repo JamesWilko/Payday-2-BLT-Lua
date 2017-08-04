@@ -130,6 +130,7 @@ BLTKeybindsManager = BLTKeybindsManager or class( BLTModule )
 BLTKeybindsManager.__type = "BLTKeybindsManager"
 
 function BLTKeybindsManager:init()
+	BLTKeybindsManager.super.init( self )
 	self._keybinds = {}
 end
 
@@ -248,9 +249,11 @@ function BLTKeybindsManager:load( cache )
 		for _, bind_data in ipairs( cache.keybinds ) do
 
 			local bind = self:get_keybind( bind_data.id )
-			for idx, key in pairs( bind_data ) do
-				if idx ~= "id" then
-					bind:SetKey( key, idx )
+			if bind then
+				for idx, key in pairs( bind_data ) do
+					if idx ~= "id" then
+						bind:SetKey( key, idx )
+					end
 				end
 			end
 

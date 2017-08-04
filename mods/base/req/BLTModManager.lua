@@ -52,7 +52,7 @@ function BLTModManager:RunAutoCheckForUpdates()
 	end
 
 	-- Place a notification that we're checking for autoupdates
-	if count > 0 then
+	if count > 0 and BLT.Downloads and BLT.Notifications then
 
 		local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
 		self._updates_notification = BLT.Notifications:add_notification( {

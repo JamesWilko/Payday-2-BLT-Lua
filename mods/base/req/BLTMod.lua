@@ -64,8 +64,10 @@ function BLTMod:Setup()
 	self:AddHooks( "pre_hooks", BLT.hook_tables.pre, BLT.hook_tables.wildcards )
 
 	-- Keybinds
-	for i, keybind_data in ipairs( self.json_data["keybinds"] or {} ) do
-		BLT.Keybinds:register_keybind( self, keybind_data )
+	if BLT.Keybinds then
+		for i, keybind_data in ipairs( self.json_data["keybinds"] or {} ) do
+			BLT.Keybinds:register_keybind( self, keybind_data )
+		end
 	end
 
 	-- Persist Scripts

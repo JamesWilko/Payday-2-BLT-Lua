@@ -71,8 +71,9 @@ end
 
 function BLT:Setup()
 
+	log("[BLT] Setup...")
+
 	-- Setup modules
-	-- self.Messages = MessageSystem:new()
 	self.Logs = BLTLogs:new()
 	self.Mods = BLTModManager:new()
 	self.Downloads = BLTDownloadManager:new()
@@ -121,13 +122,15 @@ function BLT:OverrideRequire()
 	self.require = _G.require
 
 	-- Override require function to run hooks
-	_G.require = function( path )
+	_G.require = function( ... )
 
+		local args = { ... }
+		local path = args[1]
 		local path_lower = path:lower()
 		local require_result = nil
 
 		self:RunHookTable( self.hook_tables.pre, path_lower )
-		require_result = self.require( path )
+		require_result = self.require( ... )
 		self:RunHookTable( self.hook_tables.post, path_lower )
 
 		for k, v in ipairs( self.hook_tables.wildcards ) do
@@ -142,7 +145,7 @@ end
 
 function BLT:FindMods()
 
-	print("[BLT] Loading mods for state: ", _G)
+	log("[BLT] Loading mods for state: " .. tostring(_G))
 
 	-- Get all folders in mods directory
 	local mods_list = {}
@@ -158,7 +161,7 @@ function BLT:FindMods()
 		-- Check if this directory is excluded from being checked for mods (logs, saves, etc.)
 		if not self.Mods:IsExcludedDirectory( directory ) then
 
-			print("[BLT] Loading mod: ", directory)
+			log("[BLT] Loading mod: " .. tostring(directory))
 
 			local mod_path = "mods/" .. directory .. "/"
 			local mod_defintion = mod_path .. "mod.txt"
@@ -182,11 +185,11 @@ function BLT:FindMods()
 					local new_mod = BLTMod:new( directory, mod_content )
 					table.insert( mods_list, new_mod )
 				else
-					print("[BLT] An error occured while loading mod.txt from: ", mod_path)
+					log("[BLT] An error occured while loading mod.txt from: " .. tostring(mod_path))
 				end
 
 			else
-				print("[BLT] Could not read or find mod.txt in", directory)
+				log("[BLT] Could not read or find mod.txt in " .. tostring(directory))
 			end
 
 		end
@@ -199,30 +202,6 @@ end
 
 function BLT:ProcessModsList( mods_list )
 
-	--[[
-	-- Prioritize
-	table.sort( mods_list, function(a, b)
-		return a.priority > b.priority
-	end)
-
-	-- Add mod hooks to tables
-	for index, mod in ipairs( mods_list ) do
-
-		if self.Mods:IsModEnabled( mod.path ) and self.Mods:HasRequiredMod( mod ) then
-
-			-- Load persist scripts
-			self:_AddPersistScript( mod )
-
-			-- Load keybinds
-			self:_AddKeybindScript( mod )
-
-		else
-			log(string.format("[Mods] Mod '%s' is disabled!", mod.path))
-		end
-
-	end
-	]]
-
 	-- Prioritize mod load order
 	table.sort( mods_list, function(a, b)
 		return a:GetPriority() > b:GetPriority()
@@ -230,40 +209,6 @@ function BLT:ProcessModsList( mods_list )
 
 	return mods_list
 
-end
-
-function BLT:_AddPersistScript( mod )
-
-	local persists = mod.definition[C.mod_persists_key]
-	if persists then
-		for k, v in pairs( persists ) do
-			self.Mods:AddPersistScript( v, mod.path )
-		end
-	end
-
-end
-
-function BLT:_AddKeybindScript( mod )
-
-	local keybinds = mod.definition[C.mod_keybinds_key]
-	if keybinds then
-		for k, v in pairs( keybinds ) do
-			self.Mods:AddJsonKeybinding( v, mod.path )
-		end
-	end
-
-end
-
-function BLT:RegisterMessage( message_name )
-	--[[
-	if not self._message_enum then
-		for message, idx in pairs( _G.Message ) do
-			self._message_enum = math.max( self._message_enum, idx )
-		end
-	end
-	self._message_enum = self._message_enum + 1
-	_G.Message[message_name] = self._message_enum
-	]]
 end
 
 -- Perform startup
