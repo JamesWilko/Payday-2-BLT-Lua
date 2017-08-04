@@ -106,7 +106,7 @@ function BLTModsGui:_setup()
 
 	-- Mods scroller
 	local scroll_panel = self._panel:panel({
-		h = self._panel:h() - large_font_size,
+		h = self._panel:h() - large_font_size * 2 - padding * 2,
 		y = large_font_size,
 	})
 	self._scroll = ScrollablePanel:new( scroll_panel, "mods_scroll", {} )
@@ -162,8 +162,9 @@ function BLTModsGui:mouse_moved( button, x, y )
 
 	local used, pointer
 
+	local inside_scroll = alive(self._scroll) and self._scroll:panel():inside( x, y )
 	for _, item in ipairs( self._buttons ) do
-		if item:inside( x, y ) then
+		if item:inside( x, y ) and inside_scroll then
 			item:set_highlight( true )
 			used, pointer = true, "link"
 		else
@@ -183,7 +184,23 @@ function BLTModsGui:mouse_moved( button, x, y )
 		end
 	end
 
+	if alive(self._scroll) and not used then
+		used, pointer = self._scroll:mouse_moved( button, x, y )
+	end
+
 	return used, pointer
+
+end
+
+function BLTModsGui:mouse_clicked( o, button, x, y )
+
+	if managers.menu_scene and managers.menu_scene:input_focus() then
+		return false
+	end
+
+	if alive(self._scroll) then
+		return self._scroll:mouse_clicked( o, button, x, y )
+	end
 
 end
 
@@ -193,22 +210,26 @@ function BLTModsGui:mouse_pressed( button, x, y )
 		return false
 	end
 
-	for _, item in ipairs( self._buttons ) do
-		if item:inside( x, y ) then
+	if alive(self._scroll) and self._scroll:panel():inside( x, y ) then
 
-			if item.mod then
-				self._inspecting = item:mod()
-				managers.menu:open_node( "view_blt_mod" )
-				managers.menu_component:post_event( "menu_enter" )
-			elseif item.parameters then
-				local clbk = item:parameters().callback
-				if clbk then
-					clbk()
+		for _, item in ipairs( self._buttons ) do
+			if item:inside( x, y ) then
+
+				if item.mod then
+					self._inspecting = item:mod()
+					managers.menu:open_node( "view_blt_mod" )
+					managers.menu_component:post_event( "menu_enter" )
+				elseif item.parameters then
+					local clbk = item:parameters().callback
+					if clbk then
+						clbk()
+					end
 				end
-			end
 
-			return true
+				return true
+			end
 		end
+
 	end
 
 	if alive(self._back_button) and self._back_button:visible() then
@@ -218,6 +239,34 @@ function BLTModsGui:mouse_pressed( button, x, y )
 		end
 	end
 
+	if alive(self._scroll) then
+		return self._scroll:mouse_pressed( button, x, y )
+	end
+
+end
+
+function BLTModsGui:mouse_released( button, x, y )
+	
+	if managers.menu_scene and managers.menu_scene:input_focus() then
+		return false
+	end
+
+	if alive(self._scroll) then
+		return self._scroll:mouse_released( button, x, y )
+	end
+
+end
+
+function BLTModsGui:mouse_wheel_up( x, y )
+	if alive(self._scroll) then
+		self._scroll:scroll( x, y, 1 )
+	end
+end
+
+function BLTModsGui:mouse_wheel_down( x, y )
+	if alive(self._scroll) then
+		self._scroll:scroll( x, y, -1 )
+	end
 end
 
 --------------------------------------------------------------------------------

@@ -208,6 +208,18 @@ function BLTDownloadManagerGui:mouse_moved( button, x, y )
 
 end
 
+function BLTDownloadManagerGui:mouse_wheel_up( x, y )
+	if alive(self._scroll) then
+		self._scroll:scroll( x, y, 1 )
+	end
+end
+
+function BLTDownloadManagerGui:mouse_wheel_down( x, y )
+	if alive(self._scroll) then
+		self._scroll:scroll( x, y, -1 )
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Patch MenuComponentManager to create the BLT Download Manager component
 
