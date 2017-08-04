@@ -1,5 +1,6 @@
 
-BLTDownloadManager = BLTDownloadManager or class()
+BLTDownloadManager = BLTDownloadManager or class( BLTModule )
+BLTDownloadManager.__type = "BLTDownloadManager"
 
 function BLTDownloadManager:init()
 
@@ -155,7 +156,7 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 
 	end
 
-	-- download.coroutine:animate( save )
+	download.coroutine:animate( save )
 	download.state = "complete"
 
 end

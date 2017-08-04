@@ -115,3 +115,12 @@ Hooks:Add("MenuManager_Base_BuildModOptionsMenu", "MenuManager_Base_SetupModOpti
 	})
 
 end)
+
+--------------------------------------------------------------------------------
+-- Legacy support
+
+LuaModManager = LuaModManager or {}
+
+LuaModManager._languages = BLTLocalisation._languages
+LuaModManager.GetLanguageIndex = BLTLocalisation.GetLanguageIndex
+LuaModManager.GetIndexOfDefaultLanguage = BLTLocalisation.GetIndexOfDefaultLanguage

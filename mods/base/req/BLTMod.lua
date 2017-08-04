@@ -63,6 +63,11 @@ function BLTMod:Setup()
 	self:AddHooks( "hooks", BLT.hook_tables.post, BLT.hook_tables.wildcards )
 	self:AddHooks( "pre_hooks", BLT.hook_tables.pre, BLT.hook_tables.wildcards )
 
+	-- Keybinds
+	for i, keybind_data in ipairs( self.json_data["keybinds"] or {} ) do
+		BLT.Keybinds:register_keybind( self, keybind_data )
+	end
+
 	-- Persist Scripts
 	for i, persist_data in ipairs( self.json_data["persist_scripts"] or {} ) do
 		if persist_data and persist_data["global"] and persist_data["script_path"] then

@@ -1,5 +1,5 @@
 
-BLTModManager = class(BLTModule)
+BLTModManager = class( BLTModule )
 BLTModManager.__type = "BLTModManager"
 
 function BLTModManager:init()

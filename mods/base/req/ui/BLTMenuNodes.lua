@@ -9,8 +9,6 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 		["name"] = "blt_mods",
 		["back_callback"] = "perform_blt_save",
 		["menu_components"] = "blt_mods",
-		["no_item_parent"] = true,
-		["no_menu_wrapper"] = true,
 		["scene_state"] = "crew_management",
 		[1] = {
 			["_meta"] = "default_item",
@@ -23,13 +21,54 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	local new_node = {
 		["_meta"] = "node",
 		["name"] = "lua_mod_options_menu",
-		["back_callback"] = "save_progress",
-		["no_item_parent"] = true,
-		["no_menu_wrapper"] = true,
-		["scene_state"] = "crew_management",
+		["back_callback"] = "perform_blt_save",
 		[1] = {
+			["_meta"] = "legend",
+			["name"] = "menu_legend_select"
+		},
+		[2] = {
+			["_meta"] = "legend",
+			["name"] = "menu_legend_back"
+		},
+		[3] = {
 			["_meta"] = "default_item",
 			["name"] = "back"
+		},
+		[4] = {
+			["_meta"] = "item",
+			["name"] = "back",
+			["text_id"] = "menu_back",
+			["back"] = true,
+			["previous_node"] = true,
+			["visible_callback"] = "is_pc_controller"
+		}
+	}
+	table.insert( menu, new_node )
+
+	-- Create the menu node for BLT mod keybinds
+	local new_node = {
+		["_meta"] = "node",
+		["name"] = "blt_keybinds",
+		["back_callback"] = "perform_blt_save",
+		[1] = {
+			["_meta"] = "legend",
+			["name"] = "menu_legend_select"
+		},
+		[2] = {
+			["_meta"] = "legend",
+			["name"] = "menu_legend_back"
+		},
+		[3] = {
+			["_meta"] = "default_item",
+			["name"] = "back"
+		},
+		[4] = {
+			["_meta"] = "item",
+			["name"] = "back",
+			["text_id"] = "menu_back",
+			["back"] = true,
+			["previous_node"] = true,
+			["visible_callback"] = "is_pc_controller"
 		}
 	}
 	table.insert( menu, new_node )
@@ -38,10 +77,7 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	local new_node = {
 		["_meta"] = "node",
 		["name"] = "blt_download_manager",
-		["back_callback"] = "perform_blt_save",
 		["menu_components"] = "blt_download_manager",
-		["no_item_parent"] = true,
-		["no_menu_wrapper"] = true,
 		["scene_state"] = "crew_management",
 		[1] = {
 			["_meta"] = "default_item",
@@ -61,17 +97,26 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 					-- Insert items in reverse order
 					table.insert( node, i + 1, {
 						["_meta"] = "item",
+						["name"] = "blt_keybinds",
+						["text_id"] = "blt_options_menu_keybinds",
+						["help_id"] = "blt_options_menu_keybinds_desc",
+						["visible_callback"] = "blt_show_keybinds_item",
+						["next_node"] = "blt_keybinds",
+					} )
+
+					table.insert( node, i + 1, {
+						["_meta"] = "item",
 						["name"] = "blt_options",
-						["text_id"] = "base_options_menu_lua_mod_options",
-						["help_id"] = "base_options_menu_lua_mod_options_desc",
+						["text_id"] = "blt_options_menu_lua_mod_options",
+						["help_id"] = "blt_options_menu_lua_mod_options_desc",
 						["next_node"] = "lua_mod_options_menu",
 					} )
 
 					table.insert( node, i + 1, {
 						["_meta"] = "item",
 						["name"] = "blt_mods_new",
-						["text_id"] = "base_options_menu_blt_mods",
-						["help_id"] = "base_options_menu_blt_mods_desc",
+						["text_id"] = "blt_options_menu_blt_mods",
+						["help_id"] = "blt_options_menu_blt_mods_desc",
 						["next_node"] = "blt_mods",
 					} )
 

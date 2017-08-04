@@ -170,3 +170,10 @@ end
 function MenuCallbackHandler:clbk_goto_paydaymods_download()
 	os.execute( "cmd /c start http://paydaymods.com/download/" )
 end
+
+--------------------------------------------------------------------------------
+-- Add visibility callback for showing keybinds
+
+function MenuCallbackHandler:blt_show_keybinds_item()
+	return BLT.Keybinds:has_keybinds()
+end

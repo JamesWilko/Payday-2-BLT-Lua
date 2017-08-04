@@ -50,6 +50,7 @@ BLT:Require("req/BLTModManager")
 BLT:Require("req/BLTDownloadManager")
 BLT:Require("req/BLTNotificationsManager")
 BLT:Require("req/BLTPersistScripts")
+BLT:Require("req/BLTKeybindsManager")
 
 -- BLT base functions
 function BLT:Initialize()
@@ -75,6 +76,7 @@ function BLT:Setup()
 	self.Logs = BLTLogs:new()
 	self.Mods = BLTModManager:new()
 	self.Downloads = BLTDownloadManager:new()
+	self.Keybinds = BLTKeybindsManager:new()
 	self.PersistScripts = BLTPersistScripts:new()
 	self.Notifications = BLTNotificationsManager:new()
 
