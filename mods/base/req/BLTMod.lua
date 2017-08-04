@@ -37,7 +37,7 @@ function BLTMod:init( ident, data )
 	-- Parse color info
 	-- Stored as a table until first requested due to Color not existing yet
 	if data["color"] and type(data["color"]) == "string" then
-		local colors = string.split( data["color"], ' ' )
+		local colors = string.blt_split( data["color"], ' ' )
 		local cp = {}
 		for i = 1, 3 do
 			table.insert( cp, tonumber(colors[i] or 0) )

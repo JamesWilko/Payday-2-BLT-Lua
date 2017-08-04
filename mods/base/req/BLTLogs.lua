@@ -19,7 +19,7 @@ function BLTLogs:init()
 end
 
 function BLTLogs:LogNameToNumber( name )
-	local strs = string.split(name, "_")
+	local strs = string.blt_split(name, "_")
 	if #strs < 3 then
 		return -1
 	end

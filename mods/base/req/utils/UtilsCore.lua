@@ -328,7 +328,7 @@ function Utils:TimestampToEpoch( year, month, day )
 	return (time or 0) + (offset or 0)
 end
 
-function string.split(str, delim, maxNb)
+function string.blt_split(str, delim, maxNb)
 
 	-- Eliminate bad cases...
 	if string.find(str, delim) == nil then
