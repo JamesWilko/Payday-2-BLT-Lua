@@ -92,5 +92,71 @@
 	"base_language_tr" : "土耳共語",
 	"base_language_id" : "印語",
 	"base_language_zh-cn" : "簡體中文",	
-	"base_language_cht" : "正體中文"
+	"base_language_cht" : "正體中文",
+	
+	
+	
+	
+	"blt_options_menu_blt_mods" : "BLT 模組",
+	"blt_options_menu_blt_mods_desc" : "更新及管理你安裝的 BLT 模組。",
+	"blt_options_menu_lua_mod_options" : "模組設定",
+	"blt_options_menu_lua_mod_options_desc" : "個人化你已安裝的 BLT 模組。",
+	"blt_options_menu_keybinds" : "模組按鍵",
+	"blt_options_menu_keybinds_desc" : "設定你的 BLT 模組按鍵。",
+
+	"blt_mod_state_enabled" : "已開啟",
+	"blt_mod_state_enabled_desc" : "此模組在遊戲開始時會載入。",
+	"blt_mod_state_disabled" : "已關掉",
+	"blt_mod_state_disabled_desc" : "此模組在遊戲開始時並不會載入。",
+
+	"blt_mod_state_enabled_on_restart" : "重新打開遊戲時開啟",
+	"blt_mod_state_enabled_on_restart_desc" : "此模組在遊戲下次打開時會載入。",
+	"blt_mod_state_disabled_on_restart" : "重新打開遊戲時關掉",
+	"blt_mod_state_disabled_on_restart_desc" : "此模組在遊戲下次打開時並不會載入。",
+
+	"blt_mod_safemode_enabled" : "安全模式：\n已開啟",
+	"blt_mod_safemode_enabled_help" : "在主要遊戲更新後這模組會自動關掉以防止閃退。",
+	"blt_mod_safemode_disabled" : "安全模組：\n已關掉",
+	"blt_mod_safemode_disabled_help" : "在主要遊戲更新後這模組依然會繼續運作。",
+
+	"blt_mod_updates_enabled" : "自動更新：\n已開啟",
+	"blt_mod_updates_enabled_help" : "自動在 PaydayMods 伺服器上檢查此模組的更新。",
+	"blt_mod_updates_disabled" : "自動更新：\n已關掉",
+	"blt_mod_updates_disabled_help" : "不會自動在 PaydayMods 伺服器上檢查此模組的更新。",
+
+	"blt_mod_check_for_updates" : "檢查更新",
+	"blt_mod_check_for_updates_desc" : "現在在 PaydayMods 伺服器檢查更新。",
+
+	"blt_mod_toggle_dev" : "開關開發者資訊",
+	"blt_mod_toggle_dev_desc" : "顯示/隱藏此模組的開發者資訊",
+
+	"blt_update_mod_title" : "$name 更新",
+	"blt_update_mod_up_to_date" : "$name 已是最新版！",
+	"blt_update_mod_error" : "如果此模組已是最新版就不能檢查。\n$reason",
+	"blt_update_mod_available" : "$name 有可用更新！它被加到下載管理員了！",
+	"blt_update_mod_goto_manager" : "進入下載管理員",
+
+	"blt_update_dll_title" : "重大更新",
+	"blt_update_dll_text" : "BLT DLL 有可用更新，你需要自己在網頁上下載及重新安裝以更新。\n\n由於是重要更新，請盡快更新以修復可能引致閃退的問題。",
+	"blt_update_dll_goto_website" : "前往 PaydayMods 下載",
+	"blt_update_later" : "之後更新",
+	
+	"blt_download_manager" : "下載管理員",
+	"blt_download_manager_help" : "更新你的 BLT 模組。\n看在主的份上，更新你的模組。",
+	"blt_download_ready" : "準備好更新",
+	"blt_download_waiting" : "等待中 ...",
+	"blt_download_downloading" : "下載中 ... $bytes;b/$total_bytes;b",
+	"blt_download_saving" : "保存到硬盤中...",
+	"blt_download_extracting" : "解壓中...",
+	"blt_download_done" : "完成！",
+
+	"blt_checking_updates" : "檢查更新",
+	"blt_checking_updates_help" : "檢查更新",
+	"blt_checking_updates_required" : "需要更新",
+	"blt_checking_updates_required_help" : "你的模組有可用更新，前往更新管理員以更新它們！",
+	"blt_view_patch_notes" : "檢視更新紀錄",
+
+	"blt_no_image" : "沒有圖片",
+	"blt_no_name" : "沒有名稱",
+	"blt_no_desc" : "沒有介紹"
 }
