@@ -108,10 +108,14 @@
 	"blt_options_menu_keybinds" : "Mod Keybinds",
 	"blt_options_menu_keybinds_desc" : "Set your keybinds for your BLT mods",
 
+	"blt_mod_outdated" : "This mod is for an older BLT version and is no longer supported; the developer must update this mod to the latest version of the BLT. You will get errors and crashes by leaving this mod installed.",
+
 	"blt_mod_state_enabled" : "Enabled",
 	"blt_mod_state_enabled_desc" : "This mod is loaded when the game is started.",
 	"blt_mod_state_disabled" : "Disabled",
 	"blt_mod_state_disabled_desc" : "This mod will not be loaded by the game.",
+	"blt_mod_state_forced_disabled" : "Disabled",
+	"blt_mod_state_forced_disabled_desc" : "This mod is outdated and can not be loaded by the game.",
 
 	"blt_mod_state_enabled_on_restart" : "Enabled On Restart",
 	"blt_mod_state_enabled_on_restart_desc" : "This mod will be loaded next time the game is started.",

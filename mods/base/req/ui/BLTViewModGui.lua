@@ -158,6 +158,30 @@ function BLTViewModGui:_setup_mod_info( mod )
 		valign = "scale"
 	})
 
+	-- Load error
+	local error_text
+	if mod:LastError() then
+
+		error_text = info_panel:text({
+			name = "error",
+			x = padding,
+			y = padding,
+			w = info_panel:w() - padding * 2,
+			font_size = medium_font_size,
+			font = medium_font,
+			layer = 10,
+			blend_mode = "add",
+			color = tweak_data.screen_colors.important_1,
+			text = managers.localization:text( mod:LastError() ),
+			align = "left",
+			vertical = "top",
+			wrap = true,
+			word_wrap = true,
+		})
+		make_fine_text( error_text )
+
+	end
+
 	-- Mod description
 	local desc = info_panel:text({
 		name = "desc",
@@ -176,6 +200,9 @@ function BLTViewModGui:_setup_mod_info( mod )
 		word_wrap = true,
 	})
 	make_fine_text( desc )
+	if error_text then
+		desc:set_top( error_text:bottom() + padding )
+	end
 
 	-- Mod author
 	local author = info_panel:text({
@@ -287,6 +314,7 @@ function BLTViewModGui:_setup_buttons( mod )
 	local next_row_height
 
 	if not mod:IsUndisablable() then
+
 		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_locks" )
 		btn = BLTUIButton:new( buttons_panel, {
 			x = 0,
@@ -303,6 +331,7 @@ function BLTViewModGui:_setup_buttons( mod )
 		table.insert( self._buttons, btn )
 		self._enabled_button = btn
 		next_row_height = button_h + padding
+
 	end
 
 	if not mod:DisableSafeMode() and not mod:IsUndisablable() then

@@ -33,6 +33,13 @@ function BLTModItem:init( panel, index, mod )
 
 	self._mod = mod
 
+	local bg_color = mod:GetColor()
+	local text_color = tweak_data.screen_colors.title
+	if mod:LastError() then
+		bg_color = tweak_data.screen_colors.important_1
+		text_color = tweak_data.screen_colors.important_1
+	end
+
 	-- Main panel
 	self._panel = panel:panel({
 		x = (w + padding) * (column - 1),
@@ -44,7 +51,7 @@ function BLTModItem:init( panel, index, mod )
 
 	-- Background
 	self._background = self._panel:rect({
-		color = mod:GetColor(),
+		color = bg_color,
 		alpha = 0.2,
 		blend_mode = "add",
 		layer = -1
@@ -68,7 +75,7 @@ function BLTModItem:init( panel, index, mod )
 		font = medium_font,
 		layer = 10,
 		blend_mode = "add",
-		color = tweak_data.screen_colors.title,
+		color = text_color,
 		text = mod:GetName(),
 		align = "center",
 		vertical = "top",
@@ -87,7 +94,7 @@ function BLTModItem:init( panel, index, mod )
 		font = small_font,
 		layer = 10,
 		blend_mode = "add",
-		color = tweak_data.screen_colors.title,
+		color = text_color,
 		text = string.sub( mod:GetDescription(), 1, 120 ),
 		align = "left",
 		vertical = "top",

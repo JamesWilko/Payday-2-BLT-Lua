@@ -15,7 +15,7 @@ local io = io
 local file = file
 
 -- BLT Global table
-_G.BLT = {}
+_G.BLT = { version = 2.0 }
 _G.BLT.Base = {}
 
 _G.print = function(...)
@@ -91,6 +91,10 @@ function BLT:Setup()
 	rawset(_G, C.logs_path_global, C.mods_directory .. C.logs_directory)
 	rawset(_G, C.save_path_global, C.mods_directory .. C.saves_directory)
 
+end
+
+function BLT:GetVersion()
+	return self.version
 end
 
 function BLT:GetOS()

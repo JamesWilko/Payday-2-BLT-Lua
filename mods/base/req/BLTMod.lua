@@ -58,6 +58,12 @@ function BLTMod:Setup()
 
 	print("[BLT] Setting up mod: ", self:GetId())
 
+	-- Check mod is compatible with this version of the BLT
+	if self:GetBLTVersion() ~= BLT:GetVersion() then
+		self._outdated = true
+		self._last_error = "blt_mod_outdated"
+	end
+
 	-- Hooks data
 	self.hooks = {}
 	self:AddHooks( "hooks", BLT.hook_tables.post, BLT.hook_tables.wildcards )
@@ -130,15 +136,23 @@ function BLTMod:AddPersistScript( global, file )
 end
 
 function BLTMod:GetHooks()
-	return self.hooks["hooks"]
+	return (self.hooks or {})["hooks"]
 end
 
 function BLTMod:GetPreHooks()
-	return self.hooks["pre_hooks"]
+	return (self.hooks or {})["pre_hooks"]
 end
 
 function BLTMod:GetPersistScripts()
 	return self._persists or {}
+end
+
+function BLTMod:LastError()
+	return self._last_error
+end
+
+function BLTMod:IsOutdated()
+	return self._outdated
 end
 
 function BLTMod:IsEnabled()
