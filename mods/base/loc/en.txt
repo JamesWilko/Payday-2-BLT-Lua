@@ -109,9 +109,11 @@
 	"blt_options_menu_keybinds_desc" : "Set your keybinds for your BLT mods",
 
 	"blt_mod_outdated" : "This mod is for an older BLT version and is no longer supported; the developer must update this mod to the latest version of the BLT. You will get errors and crashes by leaving this mod installed.",
-	"blt_mod_missing_dependencies" : "This mod requires other mods which are not installed to function, so it has been disabled.",
+	"blt_mod_missing_dependencies" : "This mod requires other mods to function which are not installed, so it has been disabled.",
 	"blt_mod_missing_dependency" : "    Missing: $dependency",
 	"blt_mod_missing_dependency_download" : "    Missing: $dependency, added to Download Manager",
+	"blt_mod_dependency_disabled" : "This mod requires other mods which are not enabled, so it has been disabled.",
+	"blt_mod_disabled_dependency" : "    Disabled: $dependency",
 
 	"blt_mod_state_enabled" : "Enabled",
 	"blt_mod_state_enabled_desc" : "This mod is loaded when the game is started.",

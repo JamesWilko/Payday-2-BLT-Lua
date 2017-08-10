@@ -391,10 +391,15 @@ function BLTMod:GetMissingDependencies()
 	return self.missing_dependencies or {}
 end
 
+function BLTMod:GetDisabledDependencies()
+	return self.disabled_dependencies or {}
+end
+
 function BLTMod:AreDependenciesInstalled()
 
 	local installed = true
 	self.missing_dependencies = {}
+	self.disabled_dependencies = {}
 
 	-- Iterate all mods and updates to find dependencies, store any that are missing
 	for _, id in ipairs( self:GetDependencies() ) do
@@ -408,6 +413,11 @@ function BLTMod:AreDependenciesInstalled()
 				end
 			end
 			if found then
+				if not mod:IsEnabled() then
+					installed = false
+					table.insert( self.disabled_dependencies, mod )
+					table.insert( self._errors, "blt_mod_dependency_disabled" )
+				end
 				break
 			end
 		end

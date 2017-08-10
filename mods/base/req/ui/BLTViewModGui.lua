@@ -174,7 +174,12 @@ function BLTViewModGui:_setup_mod_info( mod )
 			local loc_str = dependency:GetServerData() and "blt_mod_missing_dependency_download" or "blt_mod_missing_dependency"
 			error_str = error_str .. managers.localization:text( loc_str , { dependency = dependency:GetServerName() } ) .. "\n"
 		end
-		error_str = error_str .. "\n"
+		error_str = error_str .. (#mod:GetMissingDependencies() > 0 and "\n" or "")
+
+		for _, dependency_mod in ipairs( mod:GetDisabledDependencies() ) do
+			error_str = error_str .. managers.localization:text( "blt_mod_disabled_dependency", { dependency = dependency_mod:GetName() } ) .. "\n"
+		end
+		error_str = error_str .. (#mod:GetDisabledDependencies() > 0 and "\n" or "")
 
 		-- Create the error text
 		error_text = info_panel:text({
