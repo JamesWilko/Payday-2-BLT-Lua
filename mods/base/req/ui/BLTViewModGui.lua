@@ -160,8 +160,23 @@ function BLTViewModGui:_setup_mod_info( mod )
 
 	-- Load error
 	local error_text
-	if mod:LastError() then
+	if mod:Errors() then
 
+		-- Build the errors string
+		local error_str = ""
+		for i, error in ipairs( mod:Errors() ) do
+			error_str = error_str .. (i > 1 and "\n" or "") .. managers.localization:text( error )
+		end
+		error_str = error_str .. "\n"
+
+		-- Append any missing dependencies and if they available
+		for _, dependency in ipairs( mod:GetMissingDependencies() ) do
+			local loc_str = dependency:GetServerData() and "blt_mod_missing_dependency_download" or "blt_mod_missing_dependency"
+			error_str = error_str .. managers.localization:text( loc_str , { dependency = dependency:GetServerName() } ) .. "\n"
+		end
+		error_str = error_str .. "\n"
+
+		-- Create the error text
 		error_text = info_panel:text({
 			name = "error",
 			x = padding,
@@ -172,7 +187,7 @@ function BLTViewModGui:_setup_mod_info( mod )
 			layer = 10,
 			blend_mode = "add",
 			color = tweak_data.screen_colors.important_1,
-			text = managers.localization:text( mod:LastError() ),
+			text = error_str,
 			align = "left",
 			vertical = "top",
 			wrap = true,

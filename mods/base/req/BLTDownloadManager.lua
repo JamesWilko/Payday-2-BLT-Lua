@@ -140,8 +140,9 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 		log("[Downloads] Removing old installation...")
 		wait()
 
-		local directory = Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), true )
-		SystemFS:delete_file( Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), false ) )
+		if download.update.GetInstallFolder then
+			SystemFS:delete_file( Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), false ) )
+		end
 
 		-- Start download extraction
 		log("[Downloads] Extracting...")

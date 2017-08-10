@@ -18,6 +18,8 @@ function BLTMod:init( ident, data )
 	assert( ident, "BLTMods can not be created without a mod identifier!" )
 	assert( data, "BLTMods can not be created without json data!" )
 
+	self._errors = {}
+
 	-- Mod information
 	self.json_data = data
 	self.id = ident
@@ -29,6 +31,7 @@ function BLTMod:init( ident, data )
 	self.author = data["author"] or self.author
 	self.contact = data["contact"] or self.contact
 	self.priority = data["priority"] or 0
+	self.dependencies = data["dependencies"] or {}
 	self.image_path = data["image"] or nil
 	self.disable_safe_mode = data["disable_safe_mode"] or false
 	self.undisablable = data["undisablable"] or false
@@ -61,7 +64,14 @@ function BLTMod:Setup()
 	-- Check mod is compatible with this version of the BLT
 	if self:GetBLTVersion() ~= BLT:GetVersion() then
 		self._outdated = true
-		self._last_error = "blt_mod_outdated"
+		table.insert( self._errors, "blt_mod_outdated" )
+	end
+
+	-- Check dependencies are installed for this mod
+	if not self:AreDependenciesInstalled() then
+		table.insert( self._errors, "blt_mod_missing_dependencies" )
+		self:RetrieveDependencies()
+		return
 	end
 
 	-- Hooks data
@@ -147,8 +157,21 @@ function BLTMod:GetPersistScripts()
 	return self._persists or {}
 end
 
+function BLTMod:Errors()
+	if #self._errors > 0 then
+		return self._errors
+	else
+		return false
+	end
+end
+
 function BLTMod:LastError()
-	return self._last_error
+	local n = #self._errors
+	if n > 0 then
+		return self._errors[n]
+	else
+		return false
+	end
 end
 
 function BLTMod:IsOutdated()
@@ -354,6 +377,66 @@ end
 
 function BLTMod:IsUndisablable()
 	return self.undisablable or false
+end
+
+function BLTMod:HasDependencies()
+	return table.size(self.dependencies) > 0
+end
+
+function BLTMod:GetDependencies()
+	return self.dependencies or {}
+end
+
+function BLTMod:GetMissingDependencies()
+	return self.missing_dependencies or {}
+end
+
+function BLTMod:AreDependenciesInstalled()
+
+	local installed = true
+	self.missing_dependencies = {}
+
+	-- Iterate all mods and updates to find dependencies, store any that are missing
+	for _, id in ipairs( self:GetDependencies() ) do
+
+		local found = false
+		for _, mod in ipairs( BLT.Mods:Mods() ) do
+			for _, update in ipairs( mod:GetUpdates() ) do
+				if update:GetId() == id then
+					found = true
+					break
+				end
+			end
+			if found then
+				break
+			end
+		end
+
+		if not found then
+			installed = false
+			local dependency = BLTModDependency:new( self, id )
+			table.insert( self.missing_dependencies, dependency )
+		end
+
+	end
+
+	return installed
+
+end
+
+function BLTMod:RetrieveDependencies()
+	for _, dependency in ipairs( self:GetMissingDependencies() ) do
+		dependency:Retrieve( function(dependency, exists_on_server)
+			self:clbk_retrieve_dependency( dependency, exists_on_server )
+		end )
+	end
+end
+
+function BLTMod:clbk_retrieve_dependency( dependency, exists_on_server )
+	-- Register the dependency as a download
+	if exists_on_server then
+		BLT.Downloads:add_pending_download( dependency )
+	end
 end
 
 function BLTMod:GetDeveloperInfo()

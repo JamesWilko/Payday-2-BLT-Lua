@@ -18,7 +18,7 @@ function BLTUpdate:init( parent_mod, data )
 	self.id = data["identifier"]
 	self.name = data["display_name"] or parent_mod:GetName()
 	self.revision = data["revision"] or 1
-	self.dir = data["install_dir"] or self.dir
+	self.dir = data["install_dir"] or "mods/"
 	self.folder = data["install_folder"] or parent_mod:GetId()
 	self.disallow_update = data["disallow_update"] or false
 
@@ -171,4 +171,3 @@ function BLTUpdate:ViewPatchNotes()
 		os.execute( "cmd /c start " .. url )
 	end
 end
-
