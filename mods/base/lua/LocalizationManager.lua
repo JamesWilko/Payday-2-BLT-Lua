@@ -11,14 +11,6 @@ end
 
 function LocalizationManager.text( self, str, macros )
 
-	-- log( "Localizer: " .. tostring(Localizer.__index) )
-	-- log( "SystemInfo:language():key(): " )
-	-- lang_mods[Idstring("german"):key()]
-	-- lang_mods[Idstring("french"):key()]
-	-- lang_mods[Idstring("italian"):key()]
-	-- lang_mods[Idstring("spanish"):key()]
-	-- lang_mods[Idstring("english"):key()]
-
 	if self._custom_localizations[str] then
 
 		local return_str = self._custom_localizations[str]
