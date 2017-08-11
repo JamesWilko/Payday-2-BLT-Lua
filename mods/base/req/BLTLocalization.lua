@@ -145,3 +145,33 @@ Hooks:Add("LocalizationManagerPostInit", "BLTLocalization.LocalizationManagerPos
 	BLT.Localization:load_localization( loc_manager )
 
 end)
+
+--------------------------------------------------------------------------------
+-- Add the language selector to the mod options menu
+
+Hooks:Add("BLTOnBuildOptions", "BLTLocalization.BLTOnBuildOptions", function( node )
+
+	-- Create multiple choice item
+	local item = {
+		_meta = "item",
+		type = "MenuItemMultiChoice",
+		name = "blt_localization_choose",
+		text_id = "blt_language_select",
+		help_id = "blt_language_select_desc",
+		callback = "blt_choose_language",
+	}
+
+	-- Add languages as options
+	for _, lang in ipairs( BLT.Localization:languages() ) do
+		local option = {
+			_meta = "option",
+			text_id = "blt_language_" .. tostring(lang.language),
+			value = tostring(lang.language)
+		}
+		table.insert( item, option )
+	end
+
+	table.insert( node, item )
+
+end)
+

@@ -185,3 +185,12 @@ end
 function MenuCallbackHandler:blt_show_keybinds_item()
 	return BLT.Keybinds and BLT.Keybinds:has_menu_keybinds()
 end
+
+--------------------------------------------------------------------------------
+-- Add language callback
+
+function MenuCallbackHandler:blt_choose_language( item )
+	if BLT.Localization then
+		BLT.Localization:set_language( item:value() )
+	end
+end
