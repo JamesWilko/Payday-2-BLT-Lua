@@ -150,6 +150,8 @@
 	"blt_download_downloading" : "Downloading... $bytes;b/$total_bytes;b",
 	"blt_download_saving" : "Saving to disk...",
 	"blt_download_extracting" : "Extracting...",
+	"blt_download_verifying" : "Verifying...",
+	"blt_download_failed" : "Failed! Try again?",
 	"blt_download_done" : "Done!",
 	"blt_download_dependency" : "$dependency, required by $mod",
 

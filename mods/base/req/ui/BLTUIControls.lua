@@ -416,6 +416,10 @@ function BLTDownloadControl:update_download( download )
 	local percent = (download.bytes or 0) / (download.total_bytes or 1)
 	if download.state == "complete" then
 		self:_update_complete( download, percent )
+	elseif download.state == "failed" then
+		self:_update_failed( download, percent )
+	elseif download.state == "verifying" then
+		self:_update_verifying( download, percent )
 	elseif download.state == "extracting" then
 		self:_update_extracting( download, percent )
 	elseif download.state == "saving" then
@@ -430,6 +434,18 @@ end
 
 function BLTDownloadControl:_update_complete( download, percent )
 	self._download_state:set_text( managers.localization:text("blt_download_done") )
+	self._download_progress:set_text( "100%" )
+	self._download_progress_bg:set_visible( false )
+end
+
+function BLTDownloadControl:_update_failed( download, percent )
+	self._download_state:set_text( managers.localization:text("blt_download_failed") )
+	self._download_progress:set_text( "100%" )
+	self._download_progress_bg:set_visible( false )
+end
+
+function BLTDownloadControl:_update_verifying( download, percent )
+	self._download_state:set_text( managers.localization:text("blt_download_verifying") )
 	self._download_progress:set_text( "100%" )
 	self._download_progress_bg:set_visible( false )
 end

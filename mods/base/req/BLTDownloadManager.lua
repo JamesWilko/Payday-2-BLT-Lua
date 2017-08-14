@@ -111,8 +111,8 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 
 	local save = function()
 
-		local wait = function()
-			for i = 1, 5 do
+		local wait = function( x )
+			for i = 1, (x or 5) do
 				coroutine.yield()
 			end
 		end
@@ -128,20 +128,10 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 		if SystemFS:exists( file_path ) then
 			SystemFS:delete_file( file_path )
 		end
-		local file = io.open( file_path, "wb+" )
-		if file then
-			file:write( data )
-			file:close()
-		end
-
-		-- TODO: Verify downloaded file hash
-
-		-- Remove old installation
-		log("[Downloads] Removing old installation...")
-		wait()
-
-		if download.update.GetInstallFolder then
-			SystemFS:delete_file( Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), false ) )
+		local f = io.open( file_path, "wb+" )
+		if f then
+			f:write( data )
+			f:close()
 		end
 
 		-- Start download extraction
@@ -149,7 +139,40 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 		download.state = "extracting"
 		wait()
 
-		unzip( file_path, download.update:GetInstallDirectory() )
+		local temp_install_dir = Application:nice_path( download.update:GetInstallDirectory() .. "_temp", true )
+		unzip( file_path, temp_install_dir )
+
+		-- Verify content hash with the server hash
+		log("[Downloads] Verifying...")
+		download.state = "verifying"
+		wait()
+
+		local local_hash = file.DirectoryHash( temp_install_dir )
+		local verified_ok = download.update:GetServerHash() == local_hash
+		if not verified_ok then
+			log("[Downloads] Failed!")
+			download.state = "failed"
+			SystemFS:delete_file( temp_install_dir )
+			return
+		end
+
+		-- Remove old installation
+		log("[Downloads] Removing old installation...")
+		wait()
+
+		if download.update.GetInstallFolder then
+			SystemFS:delete_file( Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), false ) )
+			wait()
+		end
+
+		-- Move the temporary installation
+		local move_success = file.MoveDirectory( Application:nice_path( temp_install_dir .. "/".. download.update:GetInstallFolder(), false ), Application:nice_path( download.update:GetInstallDirectory() .. "/".. download.update:GetInstallFolder(), false ) )
+		if not move_success then
+			log("[Downloads] Failed!")
+			download.state = "failed"
+			SystemFS:delete_file( temp_install_dir )
+			return
+		end
 
 		-- Mark download as complete
 		log("[Downloads] Complete!")
@@ -158,7 +181,6 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 	end
 
 	download.coroutine:animate( save )
-	download.state = "complete"
 
 end
 

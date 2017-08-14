@@ -69,6 +69,7 @@ function BLTUpdate:clbk_got_update_data( clbk, json_data, http_id )
 			if data.ident == self:GetId() then
 
 				if data.release then
+					self._server_hash = data.release.contentHash
 					local local_hash = self:GetHash()
 					log(string.format("[Updates] Comparing hash data:\nServer: %s\n Local: %s", data.release.contentHash, local_hash))
 					if data.release.contentHash ~= local_hash then
@@ -117,6 +118,10 @@ function BLTUpdate:GetHash()
 		local directory = Application:nice_path( self:GetInstallDirectory() .. "/" .. self:GetInstallFolder(), true )
 		return file.DirectoryHash(directory)
 	end
+end
+
+function BLTUpdate:GetServerHash()
+	return self._server_hash
 end
 
 function BLTUpdate:GetInstallDirectory()
