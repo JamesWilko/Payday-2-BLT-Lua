@@ -12,13 +12,11 @@
 	"disable_safe_mode" : true,
 	"updates" : [
 		{
-			"revision" : 14,
 			"identifier" : "payday2blt"
 		},
 		{
-			"revision" : "./mods/saves/blt_revision.txt",
 			"identifier" : "payday2bltdll",
-			"install_dir" : ".",
+			"hash_file" : "./IPHLPAPI.dll",
 			"display_name" : "Payday 2 BLT Hook DLL",
 			"disallow_update" : "blt_update_dll_dialog"
 		}

@@ -17,49 +17,15 @@ function BLTUpdate:init( parent_mod, data )
 	self.parent_mod = parent_mod
 	self.id = data["identifier"]
 	self.name = data["display_name"] or parent_mod:GetName()
-	self.revision = data["revision"] or 1
 	self.dir = data["install_dir"] or "mods/"
 	self.folder = data["install_folder"] or parent_mod:GetId()
 	self.disallow_update = data["disallow_update"] or false
-
-	if type(self.revision) == "string" then
-		self:LoadRevision()
-	end
+	self.hash_file = data["hash_file"] or false
 
 end
 
 function BLTUpdate:__tostring()
 	return string.format("[BLTUpdate %s (%s)]", self:GetName(), self:GetId())
-end
-
-function BLTUpdate:LoadRevision()
-
-	local path = self.revision
-	if self.revision:sub(1, 2) == "./" then
-		path = self.revision:sub( 3, self.revision:len() )
-		self.revision = path
-	else
-		path = self:GetInstallDirectory() .. self:GetInstallFolder() .. "/" .. self.revision
-	end
-
-	local file = io.open( path, "r" )
-	if file then
-		local data = file:read("*all")
-		data = tonumber(data)
-		if data then
-			self.revision = data
-		else
-			self.revision = nil
-		end
-	else
-		self.revision = nil
-	end
-
-	if self.revision == nil then
-		log(string.format("[Error] Could not load revision file for %s!", self:GetName()))
-		self.revision = 1
-	end
-
 end
 
 function BLTUpdate:IsEnabled()
@@ -80,7 +46,7 @@ function BLTUpdate:CheckForUpdates( clbk )
 	self._requesting_updates = true
 
 	-- Perform the request from the server
-	local url = "http://api.paydaymods.com/updates/retrieve/?mod[0]=" .. self:GetId()
+	local url = "https://api.paydaymods.com/mod/details?mod[0]=" .. self:GetId()
 	dohttpreq( url, function( json_data, http_id )
 		self:clbk_got_update_data( clbk, json_data, http_id )
 	end)
@@ -98,13 +64,14 @@ function BLTUpdate:clbk_got_update_data( clbk, json_data, http_id )
 
 	local server_data = json.decode( json_data )
 	if server_data then
-		for id, data in pairs( server_data ) do
-			log(string.format("[Updates] Received update data for '%s', server revision: %i", id, data.revision))
-			if id == self:GetId() then
+		for _, data in pairs( server_data ) do
+			log(string.format("[Updates] Received update data for '%s'", data.ident))
+			if data.ident == self:GetId() then
 
-				local revision_number = tonumber(data.revision)
-				if revision_number then
-					if revision_number > self:GetRevision() then
+				if data.release then
+					local local_hash = self:GetHash()
+					log(string.format("[Updates] Comparing hash data:\nServer: %s\n Local: %s", data.release.contentHash, local_hash))
+					if data.release.contentHash ~= local_hash then
 						return self:_run_update_callback( clbk, true )
 					else
 						return self:_run_update_callback( clbk, false )
@@ -143,8 +110,13 @@ function BLTUpdate:GetName()
 	return self.name
 end
 
-function BLTUpdate:GetRevision()
-	return self.revision
+function BLTUpdate:GetHash()
+	if self.hash_file then
+		return file.FileHash(self.hash_file)
+	else
+		local directory = Application:nice_path( self:GetInstallDirectory() .. "/" .. self:GetInstallFolder(), true )
+		return file.DirectoryHash(directory)
+	end
 end
 
 function BLTUpdate:GetInstallDirectory()
