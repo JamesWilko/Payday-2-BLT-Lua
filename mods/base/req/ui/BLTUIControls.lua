@@ -94,6 +94,9 @@ function BLTUIButton:init( panel, parameters )
 	desc:set_w( self._panel:w() )
 	desc:set_center_x( self._panel:w() * 0.5 )
 	desc:set_top( title:bottom() + 5 )
+	if parameters.center_text then
+		desc:set_center_y( self._panel:h() * 0.5 )
+	end
 
 	if parameters.image then
 

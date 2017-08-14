@@ -154,6 +154,7 @@
 	"blt_download_failed" : "Failed! Try again?",
 	"blt_download_done" : "Done!",
 	"blt_download_dependency" : "$dependency, required by $mod",
+	"blt_download_all" : "Update All",
 
 	"blt_checking_updates" : "Checking for Updates",
 	"blt_checking_updates_help" : "Checking with the PaydayMods server for updates to your mods, please wait...",

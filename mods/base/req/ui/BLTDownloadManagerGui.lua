@@ -129,9 +129,28 @@ function BLTDownloadManagerGui:_setup()
 
 	end
 
+	local num_downloads = table.size( BLT.Downloads:pending_downloads() )
+	if num_downloads > 0 then
+		local w, h = 80, 80
+		local button = BLTUIButton:new( self._scroll:canvas(), {
+			x = self._scroll:canvas():w() - w,
+			y = (h + padding) * num_downloads,
+			w = w,
+			h = h,
+			text = managers.localization:text("blt_download_all"),
+			center_text = true,
+			callback = callback( self, self, "clbk_download_all" )
+		} )
+		table.insert( self._buttons, button )
+	end
+
 	-- Update scroll
 	self._scroll:update_canvas_size()
 
+end
+
+function BLTDownloadManagerGui:clbk_download_all()
+	BLT.Downloads:download_all()
 end
 
 --------------------------------------------------------------------------------

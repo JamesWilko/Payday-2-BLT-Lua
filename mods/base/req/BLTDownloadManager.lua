@@ -69,6 +69,14 @@ function BLTDownloadManager:get_download_from_http_id( http_id )
 	return false
 end
 
+function BLTDownloadManager:download_all()
+	for _, download in ipairs( self:pending_downloads() ) do
+		if not download.update:DisallowsUpdate() then
+			self:start_download( download.update )
+		end
+	end
+end
+
 function BLTDownloadManager:start_download( update )
 
 	-- Check if the download already going
