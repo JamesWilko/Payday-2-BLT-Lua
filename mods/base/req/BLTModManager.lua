@@ -48,6 +48,25 @@ function BLTModManager:RunAutoCheckForUpdates()
 	end
 	self._has_checked_for_updates = true
 
+	call_on_next_update( callback(self, self, "_RunAutoCheckForUpdates") )
+
+end
+
+function BLTModManager:_RunAutoCheckForUpdates()
+
+	-- Place a notification that we're checking for autoupdates
+	if BLT.Notifications then 
+		local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
+		self._updates_notification = BLT.Notifications:add_notification( {
+			title = managers.localization:text("blt_checking_updates"),
+			text = managers.localization:text("blt_checking_updates_help"),
+			icon = icon,
+			icon_texture_rect = rect,
+			color = Color.white,
+			priority = 1000,
+		} )
+	end
+
 	-- Start checking all enabled mods for updates
 	local count = 0
 	for _, mod in ipairs( self:Mods() ) do
@@ -59,19 +78,10 @@ function BLTModManager:RunAutoCheckForUpdates()
 		end
 	end
 
-	-- Place a notification that we're checking for autoupdates
-	if count > 0 and BLT.Downloads and BLT.Notifications then
-
-		local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
-		self._updates_notification = BLT.Notifications:add_notification( {
-			title = managers.localization:text("blt_checking_updates"),
-			text = managers.localization:text("blt_checking_updates_help"),
-			icon = icon,
-			icon_texture_rect = rect,
-			color = Color.white,
-			priority = 1000,
-		} )
-
+	-- -- Remove notification if not getting updates
+	if count < 1 and self._updates_notification then
+		BLT.Notifications:remove_notification( self._updates_notification )
+		self._updates_notification = nil
 	end
 
 end

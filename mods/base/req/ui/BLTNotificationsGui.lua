@@ -284,9 +284,14 @@ end
 function BLTNotificationsGui:remove_notification( uid )
 	local _, idx = self:_get_notification( uid )
 	if idx then
+
+		local notif = self._notifications[idx]
+		self._content_panel:remove( notif.panel )
+
 		table.remove( self._notifications, idx )
 		self._notifications_count = table.size( self._notifications )
 		self:_update_bars()
+
 	end
 end
 

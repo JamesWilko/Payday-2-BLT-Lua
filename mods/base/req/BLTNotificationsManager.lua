@@ -15,14 +15,12 @@ function BLTNotificationsManager:_get_uid()
 end
 
 function BLTNotificationsManager:_get_notification( uid )
-	local idx
 	for i, data in ipairs( self._notifications ) do
 		if data.id == uid then
-			idx = i
-			break
+			return self._notifications[i], i
 		end
 	end
-	return self._notifications[idx], idx
+	return nil, -1
 end
 
 function BLTNotificationsManager:get_notifications()
@@ -57,7 +55,7 @@ function BLTNotificationsManager:remove_notification( uid )
 
 	-- Remove the notification
 	local _, idx = self:_get_notification( uid )
-	if idx then
+	if idx > 0 then
 
 		table.remove( self._notifications, idx )
 
