@@ -310,7 +310,7 @@ function BLTDownloadControl:init( panel, parameters )
 		font = medium_font,
 		layer = 10,
 		blend_mode = "add",
-		color = tweak_data.screen_colors.title,
+		color = parameters.update:IsCritical() and tweak_data.screen_colors.important_1 or tweak_data.screen_colors.title,
 		text = download_name,
 		align = "left",
 		vertical = "top",

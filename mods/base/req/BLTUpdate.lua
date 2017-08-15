@@ -21,6 +21,7 @@ function BLTUpdate:init( parent_mod, data )
 	self.folder = data["install_folder"] or parent_mod:GetId()
 	self.disallow_update = data["disallow_update"] or false
 	self.hash_file = data["hash_file"] or false
+	self.critical = data["critical"] or false
 
 end
 
@@ -138,6 +139,10 @@ end
 
 function BLTUpdate:GetDisallowCallback()
 	return self.disallow_update
+end
+
+function BLTUpdate:IsCritical()
+	return self.critical
 end
 
 function BLTUpdate:ViewPatchNotes()

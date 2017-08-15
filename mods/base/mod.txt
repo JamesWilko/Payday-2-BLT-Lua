@@ -18,7 +18,8 @@
 			"identifier" : "payday2bltdll",
 			"hash_file" : "./IPHLPAPI.dll",
 			"display_name" : "Payday 2 BLT Hook DLL",
-			"disallow_update" : "blt_update_dll_dialog"
+			"disallow_update" : "blt_update_dll_dialog",
+			"critical" : true
 		}
 	],
 	"pre_hooks" : [
