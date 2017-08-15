@@ -354,25 +354,6 @@ function BLTViewModGui:_setup_buttons( mod )
 
 	end
 
-	if not mod:DisableSafeMode() and not mod:IsUndisablable() then
-		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_absorb" )
-		btn = BLTUIButton:new( buttons_panel, {
-			x = button_w + padding,
-			y = 0,
-			w = button_w,
-			h = button_h,
-			title = managers.localization:text("blt_mod_safemode_enabled"),
-			text = managers.localization:text("blt_mod_safemode_enabled_help"),
-			image = icon,
-			image_size = 96,
-			texture_rect = rect,
-			callback = callback( self, self, "clbk_toggle_safemode_state" )
-		} )
-		table.insert( self._buttons, btn )
-		self._safemode_button = btn
-		next_row_height = button_h + padding
-	end
-
 	if self._mod:HasUpdates() then
 
 		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )

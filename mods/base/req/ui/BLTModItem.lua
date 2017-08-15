@@ -181,25 +181,6 @@ function BLTModItem:init( panel, index, mod )
 
 	end
 
-	if not mod:DisableSafeMode() and not mod:IsUndisablable() then
-
-		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_absorb" )
-		local icon_safemode = self._panel:bitmap({
-			name = "",
-			texture = icon,
-			texture_rect = rect,
-			color = Color.white,
-			alpha = mod:IsSafeModeEnabled() and 1 or 0.4,
-			layer = 10,
-			w = icon_size,
-			h = icon_size,
-		})
-		icon_safemode:set_left( padding )
-		icon_safemode:set_top( icon_y )
-		icon_y = icon_y + icon_size + 4
-
-	end
-
 	if mod:HasUpdates() then
 
 		local icon, rect = tweak_data.hud_icons:get_icon_data( "csb_pagers" )
