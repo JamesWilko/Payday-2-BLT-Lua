@@ -2,7 +2,11 @@
 Hooks:Register( "BLTOnBuildOptions" )
 
 -- Add the menu nodes for various menus
-Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function( menu )
+Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function( menu_id, menu )
+
+	if menu_id ~= "start_menu" then
+		return
+	end
 
 	-- Create the menu node for BLT mods
 	local new_node = {

@@ -541,7 +541,11 @@ end
 --------------------------------------------------------------------------------
 -- Patch main menu to add notifications menu component
 
-Hooks:Add("CoreMenuData.LoadDataMenu", "BLTNotificationsGui.CoreMenuData.LoadDataMenu", function( menu )
+Hooks:Add("CoreMenuData.LoadDataMenu", "BLTNotificationsGui.CoreMenuData.LoadDataMenu", function( menu_id, menu )
+
+	if menu_id ~= "start_menu" then
+		return
+	end
 
 	for _, node in ipairs( menu ) do
 		if node.name == "main" then

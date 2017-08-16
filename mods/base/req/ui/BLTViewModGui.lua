@@ -659,7 +659,11 @@ end
 --------------------------------------------------------------------------------
 -- Create the menu node for the BLT Mods menu
 
-Hooks:Add("CoreMenuData.LoadDataMenu", "BLTViewModGui.CoreMenuData.LoadDataMenu", function( menu )
+Hooks:Add("CoreMenuData.LoadDataMenu", "BLTViewModGui.CoreMenuData.LoadDataMenu", function( menu_id, menu )
+
+	if menu_id ~= "start_menu" then
+		return
+	end
 
 	local new_node = {
 		["_meta"] = "node",

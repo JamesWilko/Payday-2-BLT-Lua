@@ -22,7 +22,7 @@ function Data:load_data( file_path, menu_id )
 	end
 	
 	-- Call a hook here to let us mutate the menu data before it is parsed
-	Hooks:Call( "CoreMenuData.LoadDataMenu", menu )
+	Hooks:Call( "CoreMenuData.LoadDataMenu", menu_id, menu )
 
 	-- Parse the nodes
 	for _,c in ipairs( menu ) do
