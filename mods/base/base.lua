@@ -89,7 +89,9 @@ function BLT:Setup()
 
 	-- Some backwards compatibility for v1 mods
 	local C = self.Mods.Constants
-	_G.LuaModManager = self.Mods
+	_G.LuaModManager = {}
+	_G.LuaModManager.Constants = C
+	_G.LuaModManager.Mods = {} -- No mods are available via old api
 	rawset(_G, C.logs_path_global, C.mods_directory .. C.logs_directory)
 	rawset(_G, C.save_path_global, C.mods_directory .. C.saves_directory)
 
