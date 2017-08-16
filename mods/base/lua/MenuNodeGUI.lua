@@ -139,7 +139,7 @@ function MenuNodeGui._key_press(self, o, key, input_id, item, no_add)
 	end
 
 	if connection then
-		local key_button = connection._input_name_list[1]
+		local key_button = item:parameters().binding
 		Hooks:Call( "CustomizeControllerOnKeySet", item:parameters().connection_name, key_button )
 	end
 
