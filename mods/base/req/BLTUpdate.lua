@@ -47,7 +47,7 @@ function BLTUpdate:CheckForUpdates( clbk )
 	self._requesting_updates = true
 
 	-- Perform the request from the server
-	local url = "https://api.paydaymods.com/mod/details?mod[0]=" .. self:GetId()
+	local url = "http://api.paydaymods.com/updates/retrieve/?mod[0]=" .. self:GetId()
 	dohttpreq( url, function( json_data, http_id )
 		self:clbk_got_update_data( clbk, json_data, http_id )
 	end)
@@ -65,25 +65,23 @@ function BLTUpdate:clbk_got_update_data( clbk, json_data, http_id )
 
 	local server_data = json.decode( json_data )
 	if server_data then
+
 		for _, data in pairs( server_data ) do
 			log(string.format("[Updates] Received update data for '%s'", data.ident))
 			if data.ident == self:GetId() then
 
-				if data.release then
-					self._server_hash = data.release.contentHash
-					local local_hash = self:GetHash()
-					log(string.format("[Updates] Comparing hash data:\nServer: %s\n Local: %s", data.release.contentHash, local_hash))
-					if data.release.contentHash ~= local_hash then
-						return self:_run_update_callback( clbk, true )
-					else
-						return self:_run_update_callback( clbk, false )
-					end
+				self._server_hash = data.hash
+				local local_hash = self:GetHash()
+				log(string.format("[Updates] Comparing hash data:\nServer: %s\n Local: %s", data.hash, local_hash))
+				if data.hash ~= local_hash then
+					return self:_run_update_callback( clbk, true )
 				else
-					return self:_run_update_callback( clbk, false, "Could not retrieve a valid version number from the server." )
+					return self:_run_update_callback( clbk, false )
 				end
 
 			end
 		end
+		
 	end
 
 	return self:_run_update_callback( clbk, false, "No valid mod ID was returned by the server." )

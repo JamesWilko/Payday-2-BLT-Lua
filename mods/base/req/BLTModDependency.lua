@@ -51,7 +51,7 @@ function BLTModDependency:Retrieve( clbk )
 	self._retrieving = true
 
 	-- Perform the request from the server
-	local url = "https://payday.genj.io/mod/details?mod[0]=" .. self:GetId()
+	local url = "http://api.paydaymods.com/updates/retrieve/?mod[0]=" .. self:GetId()
 	dohttpreq( url, function( json_data, http_id )
 		self:clbk_got_data( clbk, json_data, http_id )
 	end)
