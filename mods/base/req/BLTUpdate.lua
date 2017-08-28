@@ -73,8 +73,12 @@ function BLTUpdate:clbk_got_update_data( clbk, json_data, http_id )
 				self._server_hash = data.hash
 				local local_hash = self:GetHash()
 				log(string.format("[Updates] Comparing hash data:\nServer: %s\n Local: %s", data.hash, local_hash))
-				if data.hash ~= local_hash then
-					return self:_run_update_callback( clbk, true )
+				if data.hash then
+					if data.hash ~= local_hash then
+						return self:_run_update_callback( clbk, true )
+					else
+						return self:_run_update_callback( clbk, false )
+					end
 				else
 					return self:_run_update_callback( clbk, false )
 				end
