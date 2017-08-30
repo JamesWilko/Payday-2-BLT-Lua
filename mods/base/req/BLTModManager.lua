@@ -123,6 +123,18 @@ function BLTModManager:clbk_got_update( update, required, reason )
 				priority = 1000,
 			} )
 
+		else
+
+			local icon, rect = tweak_data.hud_icons:get_icon_data("csb_pagers")
+			self._updates_notification = BLT.Notifications:add_notification( {
+				title = managers.localization:text("blt_checking_updates_none_required"),
+				text = managers.localization:text("blt_checking_updates_none_required_help"),
+				icon = icon,
+				icon_texture_rect = rect,
+				color = Color.white,
+				priority = 0,
+			} )
+
 		end
 
 	end
