@@ -75,7 +75,7 @@
 	"base_language_de" : "Jerman",
 	"base_language_fr" : "Perancis",
 	"base_language_id" : "Indonesia",
-	"base_language_ru" : "Rusia",	
-	"base_language_tr" : "Turki",
+	"base_language_ru" : "Rusia",
+	"base_language_tr" : "Turki"
 
 }

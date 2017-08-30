@@ -39,11 +39,3 @@ function MenuComponentManager.mouse_moved( self, o, x, y )
 	end
 	return hover, pointer
 end
-
-Hooks:RegisterHook("MenuComponentManagerOnCommunityChallengesCreated")
-if MenuComponentManager.create_community_challenges_gui then
-	function MenuComponentManager.create_community_challenges_gui( self, ... )
-		self.orig.create_community_challenges_gui( self, ... )
-		Hooks:Call( "MenuComponentManagerOnCommunityChallengesCreated", self, ... )
-	end
-end

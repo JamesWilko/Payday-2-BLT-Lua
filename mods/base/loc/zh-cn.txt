@@ -91,6 +91,6 @@
 	"base_language_ru" : "俄语",
 	"base_language_tr" : "土耳其语",
 	"base_language_id" : "印度尼西亚语",
-	"base_language_zh-cn" : "简体中文",
+	"base_language_zh-cn" : "简体中文"
 
 }

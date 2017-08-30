@@ -1,45 +1,43 @@
 
 _G.LuaNetworking = _G.LuaNetworking or {}
-local LNetwork = _G.LuaNetworking
+LuaNetworking.HiddenChannel = 4
+LuaNetworking.AllPeers = "GNAP"
+LuaNetworking.AllPeersString = "{1}/{2}/{3}"
+LuaNetworking.SinglePeer = "GNSP"
+LuaNetworking.SinglePeerString = "{1}/{2}/{3}/{4}"
+LuaNetworking.ExceptPeer = "GNEP"
+LuaNetworking.ExceptPeerString = "{1}/{2}/{3}/{4}"
+LuaNetworking.Split = "[/]"
 
-LNetwork.HiddenChannel = 4
-LNetwork.AllPeers = "GNAP"
-LNetwork.AllPeersString = "{1}/{2}/{3}"
-LNetwork.SinglePeer = "GNSP"
-LNetwork.SinglePeerString = "{1}/{2}/{3}/{4}"
-LNetwork.ExceptPeer = "GNEP"
-LNetwork.ExceptPeerString = "{1}/{2}/{3}/{4}"
-LNetwork.Split = "[/]"
-
-function LNetwork:IsMultiplayer()
+function LuaNetworking:IsMultiplayer()
 	if not managers.network then
 		return false
 	end
 	return managers.network:session()
 end
 
-function LNetwork:IsHost()
+function LuaNetworking:IsHost()
 	if not Network then
 		return false
 	end
 	return not Network:is_client()
 end
 
-function LNetwork:IsClient()
+function LuaNetworking:IsClient()
 	if not Network then
 		return false
 	end
 	return Network:is_client()
 end
 
-function LNetwork:LocalPeerID()
+function LuaNetworking:LocalPeerID()
 	if managers.network == nil or managers.network:session() == nil or managers.network:session():local_peer() == nil then
 		return 0
 	end
 	return managers.network:session():local_peer():id() or 0
 end
 
-function LNetwork:TableToString(tbl)
+function LuaNetworking:TableToString(tbl)
 	local str = ""
 	for k, v in pairs(tbl) do
 		if str ~= "" then
@@ -50,7 +48,7 @@ function LNetwork:TableToString(tbl)
 	return str
 end
 
-function LNetwork:StringToTable(str)
+function LuaNetworking:StringToTable(str)
 	local tbl = {}
 	local tblPairs = string.split( str, "[,]" )
 	for k, v in pairs(tblPairs) do
@@ -60,7 +58,7 @@ function LNetwork:StringToTable(str)
 	return tbl
 end
 
-function LNetwork:GetNameFromPeerID(id)
+function LuaNetworking:GetNameFromPeerID(id)
 
 	if managers.network and managers.network:session() and managers.network:session():peers() then
 		
@@ -76,11 +74,11 @@ function LNetwork:GetNameFromPeerID(id)
 	
 end
 
-function LNetwork:GetPeers()
+function LuaNetworking:GetPeers()
 	return managers.network:session():peers()
 end
 
-function LNetwork:GetNumberOfPeers()
+function LuaNetworking:GetNumberOfPeers()
 	local i = 0
 	for k, v in pairs( managers.network:session():peers() ) do
 		i = i + 1
@@ -88,25 +86,25 @@ function LNetwork:GetNumberOfPeers()
 	return i
 end
 
-function LNetwork:SendToPeers(type_prm, data)
-	local dataString = LNetwork.AllPeersString
-	dataString = dataString:gsub("{1}", LNetwork.AllPeers)
+function LuaNetworking:SendToPeers(type_prm, data)
+	local dataString = LuaNetworking.AllPeersString
+	dataString = dataString:gsub("{1}", LuaNetworking.AllPeers)
 	dataString = dataString:gsub("{2}", type_prm)
 	dataString = dataString:gsub("{3}", data)
-	LNetwork:SendStringThroughChat(dataString)
+	LuaNetworking:SendStringThroughChat(dataString)
 end
 
-function LNetwork:SendToPeer(peer, type_prm, data)
-	local dataString = LNetwork.SinglePeerString
-	dataString = dataString:gsub("{1}", LNetwork.SinglePeer)
+function LuaNetworking:SendToPeer(peer, type_prm, data)
+	local dataString = LuaNetworking.SinglePeerString
+	dataString = dataString:gsub("{1}", LuaNetworking.SinglePeer)
 	dataString = dataString:gsub("{2}", peer)
 	dataString = dataString:gsub("{3}", type_prm)
 	dataString = dataString:gsub("{4}", data)
-	LNetwork:SendStringThroughChat(dataString)
+	LuaNetworking:SendStringThroughChat(dataString)
 end
 
-function LNetwork:SendToPeersExcept(peer, type_prm, data)
-	local dataString = LNetwork.ExceptPeerString
+function LuaNetworking:SendToPeersExcept(peer, type_prm, data)
+	local dataString = LuaNetworking.ExceptPeerString
 	local peerStr = peer
 	if type(peer) == "table" then
 		peerStr = ""
@@ -118,32 +116,32 @@ function LNetwork:SendToPeersExcept(peer, type_prm, data)
 		end
 	end
 
-	dataString = dataString:gsub("{1}", LNetwork.ExceptPeer)
+	dataString = dataString:gsub("{1}", LuaNetworking.ExceptPeer)
 	dataString = dataString:gsub("{2}", peerStr)
 	dataString = dataString:gsub("{3}", type_prm)
 	dataString = dataString:gsub("{4}", data)
-	LNetwork:SendStringThroughChat(dataString)
+	LuaNetworking:SendStringThroughChat(dataString)
 end
 
-function LNetwork:SendStringThroughChat(message)
+function LuaNetworking:SendStringThroughChat(message)
 	if ChatManager._receivers == nil then
 		ChatManager._receivers = {}
 	end
-	ChatManager:send_message( LNetwork.HiddenChannel, tostring(LNetwork:LocalPeerID()), message )
+	ChatManager:send_message( LuaNetworking.HiddenChannel, tostring(LuaNetworking:LocalPeerID()), message )
 end
 
 Hooks:Add("ChatManagerOnReceiveMessage", "ChatManagerOnReceiveMessage_Network", function(channel_id, name, message, color, icon)
 
-	name = name:gsub("%%", "%%%%")
-	message = message:gsub("%%", "%%%%")
+	name = name:gsub( "%%", "%%%%" )
+	message = message:gsub( "%%", "%%%%" )
 	local s = string.format("[%s] %s: %s", channel_id, name, message)
 	log(s)
 
 	local senderID = nil
-	if LNetwork:IsMultiplayer() then
+	if LuaNetworking:IsMultiplayer() then
 
 		if name == managers.network:session():local_peer():name() then
-			senderID = LNetwork:LocalPeerID()
+			senderID = LuaNetworking:LocalPeerID()
 		end
 
 		for k, v in pairs( managers.network:session():peers() ) do
@@ -154,55 +152,57 @@ Hooks:Add("ChatManagerOnReceiveMessage", "ChatManagerOnReceiveMessage_Network", 
 
 	end
 
-	if senderID == LNetwork:LocalPeerID() then return end
+	if senderID == LuaNetworking:LocalPeerID() then
+		return
+	end
 
-	if tonumber(channel_id) == LNetwork.HiddenChannel then
-		LNetwork:ProcessChatString(senderID or name, message, color, icon)
+	if tonumber(channel_id) == LuaNetworking.HiddenChannel then
+		LuaNetworking:ProcessChatString(senderID or name, message, color, icon)
 	end
 
 end)
 
 Hooks:RegisterHook("NetworkReceivedData")
-function LNetwork:ProcessChatString(sender, message, color, icon)
+function LuaNetworking:ProcessChatString(sender, message, color, icon)
 
-	local splitData = string.split( message, LNetwork.Split )
+	local splitData = string.split( message, LuaNetworking.Split )
 	local msgType = splitData[1]
-	if msgType == LNetwork.AllPeers then
-		LNetwork:ProcessAllPeers(sender, message, color, icon)
+	if msgType == LuaNetworking.AllPeers then
+		LuaNetworking:ProcessAllPeers(sender, message, color, icon)
 	end
-	if msgType == LNetwork.SinglePeer then
-		LNetwork:ProcessSinglePeer(sender, message, color, icon)
+	if msgType == LuaNetworking.SinglePeer then
+		LuaNetworking:ProcessSinglePeer(sender, message, color, icon)
 	end
-	if msgType == LNetwork.ExceptPeer then
-		LNetwork:ProcessExceptPeer(sender, message, color, icon)
+	if msgType == LuaNetworking.ExceptPeer then
+		LuaNetworking:ProcessExceptPeer(sender, message, color, icon)
 	end
 	
 end
 
-function LNetwork:ProcessAllPeers(sender, message, color, icon)
-	local splitData = string.split( message, LNetwork.Split )
+function LuaNetworking:ProcessAllPeers(sender, message, color, icon)
+	local splitData = string.split( message, LuaNetworking.Split )
 	Hooks:Call("NetworkReceivedData", sender, splitData[2], splitData[3])
 end
 
-function LNetwork:ProcessSinglePeer(sender, message, color, icon)
+function LuaNetworking:ProcessSinglePeer(sender, message, color, icon)
 
-	local splitData = string.split( message, LNetwork.Split )
+	local splitData = string.split( message, LuaNetworking.Split )
 	local toPeer = tonumber( splitData[2] )
 
-	if toPeer == LNetwork:LocalPeerID() then
+	if toPeer == LuaNetworking:LocalPeerID() then
 		Hooks:Call("NetworkReceivedData", sender, splitData[3], splitData[4])
 	end
 
 end
 
-function LNetwork:ProcessExceptPeer(sender, message, color, icon)
+function LuaNetworking:ProcessExceptPeer(sender, message, color, icon)
 	
-	local splitData = string.split( message, LNetwork.Split )
+	local splitData = string.split( message, LuaNetworking.Split )
 	local exceptedPeers = string.split( splitData[2], "[,]" )
 
 	local excepted = false
 	for k, v in pairs(exceptedPeers) do
-		if tonumber(v) == LNetwork:LocalPeerID() then
+		if tonumber(v) == LuaNetworking:LocalPeerID() then
 			excepted = true
 		end
 	end
@@ -214,9 +214,9 @@ function LNetwork:ProcessExceptPeer(sender, message, color, icon)
 end
 
 -- Extensions
-LNetwork._networked_colour_string = "r:{1}|g:{2}|b:{3}|a:{4}"
-function LNetwork:ColourToString(col)
-	local dataString = LNetwork._networked_colour_string
+LuaNetworking._networked_colour_string = "r:{1}|g:{2}|b:{3}|a:{4}"
+function LuaNetworking:ColourToString(col)
+	local dataString = LuaNetworking._networked_colour_string
 	dataString = dataString:gsub("{1}", math.round_with_precision(col.r, 4))
 	dataString = dataString:gsub("{2}", math.round_with_precision(col.g, 4))
 	dataString = dataString:gsub("{3}", math.round_with_precision(col.b, 4))
@@ -224,7 +224,7 @@ function LNetwork:ColourToString(col)
 	return dataString
 end
 
-function LNetwork:StringToColour(str)
+function LuaNetworking:StringToColour(str)
 
 	local data = string.split( str, "[|]" )
 	if #data < 4 then
