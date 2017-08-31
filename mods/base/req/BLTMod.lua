@@ -6,11 +6,11 @@ BLTMod._enabled = true
 BLTMod.path = ""
 BLTMod.json_data = ""
 BLTMod.id = "blt_mod"
-BLTMod.name = "BLT Mod"
+BLTMod.name = "Unnamed BLT Mod"
 BLTMod.desc = "No description."
 BLTMod.version = "1.0"
-BLTMod.author = "James Wilkinson"
-BLTMod.contact = "jw@jameswilko.com"
+BLTMod.author = "Unknown"
+BLTMod.contact = "N/A"
 BLTMod.priority = 0
 
 function BLTMod:init( ident, data )
@@ -30,7 +30,7 @@ function BLTMod:init( ident, data )
 	self.blt_version = data["blt_version"] or "unknown"
 	self.author = data["author"] or self.author
 	self.contact = data["contact"] or self.contact
-	self.priority = data["priority"] or 0
+	self.priority = tonumber(data["priority"]) or 0
 	self.dependencies = data["dependencies"] or {}
 	self.image_path = data["image"] or nil
 	self.disable_safe_mode = data["disable_safe_mode"] or false
@@ -214,11 +214,11 @@ function BLTMod:GetId()
 end
 
 function BLTMod:GetName()
-	return self.name or managers.localization:text("base_mod_info_no_name")
+	return self.name
 end
 
 function BLTMod:GetDescription()
-	return self.desc or managers.localization:text("base_mod_info_no_desc")
+	return self.desc
 end
 
 function BLTMod:GetVersion()
@@ -230,11 +230,11 @@ function BLTMod:GetBLTVersion()
 end
 
 function BLTMod:GetAuthor()
-	return self.author or managers.localization:text("base_mod_info_no_author")
+	return self.author
 end
 
 function BLTMod:GetContact()
-	return self.contact or managers.localization:text("base_mod_info_no_contact")
+	return self.contact
 end
 
 function BLTMod:GetPriority()
