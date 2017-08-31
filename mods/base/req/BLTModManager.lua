@@ -283,8 +283,8 @@ BLTModManager.Constants.mod_path_global = "ModPath"
 BLTModManager.Constants.logs_path_global = "LogsPath"
 BLTModManager.Constants.save_path_global = "SavePath"
 
-BLTModManager.Constants.lua_mods_menu_id = "base_lua_mods_menu"
-BLTModManager.Constants.lua_mod_options_menu_id = "lua_mod_options_menu"
+BLTModManager.Constants.lua_mods_menu_id = "blt_mods_new"
+BLTModManager.Constants.lua_mod_options_menu_id = "blt_options"
 
 function BLTModManager.Constants:ModsDirectory()
 	return self["mods_directory"]
