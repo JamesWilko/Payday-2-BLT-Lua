@@ -74,7 +74,7 @@
 	"blt_checking_updates_required_help" : "Existen actualizaciones para tus mods, verifica el Administrador de Descargas!",
 	"blt_view_patch_notes" : "Ver notas de Act.",
 	"blt_checking_updates_none_required" : "[Todos los Mods BLT estan actualizados]",
-	"blt_checking_updates_none_required_help" : "Ningun mods necesita actualizacion",
+	"blt_checking_updates_none_required_help" : "Ningun mod necesita actualizacion",
 
 	"blt_language_select" : "Lenguaje",
 	"blt_language_select_desc" : "Escoge el Lenguaje de tu preferencia",
