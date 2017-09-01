@@ -202,7 +202,15 @@ function BLTModManager:ConvertOldSaveFiles()
 
 	-- Load old files
 	local enabled_mods = io.load_as_json( BLTModManager.Constants:OldModManagerSaveFile() )
+	if enabled_mods == nil or type(enabled_mods) ~= "table" then
+		enabled_mods = {}
+	end
+	--[[ TODO
 	local keybinds_data = io.load_as_json( BLTModManager.Constants:OldModManagerKeybindsFile() )
+	if keybinds_data == nil or type(keybinds_data) ~= "table" then
+		keybinds_data = {}
+	end
+	]]
 
 	-- Convert enabled mods data
 	for mod_id, enabled in pairs( enabled_mods ) do
@@ -283,8 +291,8 @@ BLTModManager.Constants.mod_path_global = "ModPath"
 BLTModManager.Constants.logs_path_global = "LogsPath"
 BLTModManager.Constants.save_path_global = "SavePath"
 
-BLTModManager.Constants.lua_mods_menu_id = "base_lua_mods_menu"
-BLTModManager.Constants.lua_mod_options_menu_id = "lua_mod_options_menu"
+BLTModManager.Constants.lua_mods_menu_id = "blt_mods_new"
+BLTModManager.Constants.lua_mod_options_menu_id = "blt_options"
 
 function BLTModManager.Constants:ModsDirectory()
 	return self["mods_directory"]
