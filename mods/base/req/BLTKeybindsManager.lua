@@ -1,5 +1,5 @@
 
-BLTKeybind = BLTKeybind or class()
+BLTKeybind = BLTKeybind or blt_class()
 BLTKeybind.StateMenu = 1
 BLTKeybind.StateGame = 2
 
@@ -132,7 +132,7 @@ end
 
 --------------------------------------------------------------------------------
 
-BLTKeybindsManager = BLTKeybindsManager or class( BLTModule )
+BLTKeybindsManager = BLTKeybindsManager or blt_class( BLTModule )
 BLTKeybindsManager.__type = "BLTKeybindsManager"
 
 function BLTKeybindsManager:init()
@@ -319,7 +319,7 @@ end)
 --------------------------------------------------------------------------------
 -- MenuInitiator for the keybinds menu which adds all the existing binds
 
-BLTKeybindMenuInitiator = BLTKeybindMenuInitiator or class()
+BLTKeybindMenuInitiator = BLTKeybindMenuInitiator or blt_class()
 function BLTKeybindMenuInitiator:modify_node( node )
 
 	-- Clear all previous keybinds

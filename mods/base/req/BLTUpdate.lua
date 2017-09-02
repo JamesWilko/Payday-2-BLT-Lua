@@ -1,6 +1,6 @@
 
 -- BLT Update
-BLTUpdate = class()
+BLTUpdate = blt_class()
 BLTUpdate.enabled = true
 BLTUpdate.parent_mod = nil
 BLTUpdate.id = ""

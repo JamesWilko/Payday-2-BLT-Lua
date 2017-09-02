@@ -1,5 +1,5 @@
 
-BLTModDependency = BLTModDependency or class()
+BLTModDependency = BLTModDependency or blt_class()
 
 function BLTModDependency:init( parent_mod, id )
 

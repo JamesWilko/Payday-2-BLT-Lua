@@ -1,5 +1,5 @@
 
-BLTDownloadManager = BLTDownloadManager or class( BLTModule )
+BLTDownloadManager = BLTDownloadManager or blt_class( BLTModule )
 BLTDownloadManager.__type = "BLTDownloadManager"
 
 function BLTDownloadManager:init()

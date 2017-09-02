@@ -1,5 +1,5 @@
 
-BLTViewModGui = BLTViewModGui or class( MenuGuiComponentGeneric )
+BLTViewModGui = BLTViewModGui or blt_class( MenuGuiComponentGeneric )
 
 local padding = 10
 

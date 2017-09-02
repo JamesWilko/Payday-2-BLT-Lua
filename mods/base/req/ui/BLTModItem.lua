@@ -1,5 +1,5 @@
 
-BLTModItem = BLTModItem or class()
+BLTModItem = BLTModItem or blt_class()
 
 local padding = 10
 

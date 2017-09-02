@@ -19,7 +19,7 @@ end
 
 --------------------------------------------------------------------------------
 
-BLTUIButton = BLTUIButton or class()
+BLTUIButton = BLTUIButton or blt_class()
 
 function BLTUIButton:init( panel, parameters )
 
@@ -154,7 +154,7 @@ end
 
 --------------------------------------------------------------------------------
 
-BLTDownloadControl = BLTDownloadControl or class( BLTUIButton )
+BLTDownloadControl = BLTDownloadControl or blt_class( BLTUIButton )
 
 function BLTDownloadControl:init( panel, parameters )
 

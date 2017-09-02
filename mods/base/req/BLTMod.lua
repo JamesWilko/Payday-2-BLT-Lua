@@ -1,6 +1,6 @@
 
 -- BLT Mod
-BLTMod = class()
+BLTMod = blt_class()
 BLTMod.enabled = true
 BLTMod._enabled = true
 BLTMod.path = ""

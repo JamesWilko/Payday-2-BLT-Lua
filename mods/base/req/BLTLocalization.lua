@@ -1,5 +1,5 @@
 
-BLTLocalization = BLTLocalization or class( BLTModule )
+BLTLocalization = BLTLocalization or blt_class( BLTModule )
 BLTLocalization.__type = "BLTLocalization"
 BLTLocalization.default_language_code = "en"
 BLTLocalization.directory = "mods/base/loc/"

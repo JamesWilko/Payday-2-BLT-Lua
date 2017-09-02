@@ -1,5 +1,5 @@
 
-QuickMenu = QuickMenu or class()
+QuickMenu = QuickMenu or blt_class()
 QuickMenu._menu_id_key = "quick_menu_id_"
 QuickMenu._menu_id_index = 0
 

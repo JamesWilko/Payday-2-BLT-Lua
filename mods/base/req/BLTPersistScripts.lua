@@ -1,5 +1,5 @@
 
-BLTPersistScripts = class(BLTModule)
+BLTPersistScripts = blt_class(BLTModule)
 BLTPersistScripts.__type = "BLTPersistScripts"
 
 function BLTPersistScripts:init()

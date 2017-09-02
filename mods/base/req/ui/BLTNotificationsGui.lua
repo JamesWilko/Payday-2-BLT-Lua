@@ -1,5 +1,5 @@
 
-BLTNotificationsGui = BLTNotificationsGui or class( MenuGuiComponentGeneric )
+BLTNotificationsGui = BLTNotificationsGui or blt_class( MenuGuiComponentGeneric )
 
 local padding = 10
 

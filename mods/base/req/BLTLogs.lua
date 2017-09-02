@@ -1,5 +1,5 @@
 
-BLTLogs = class(BLTModule)
+BLTLogs = blt_class(BLTModule)
 BLTLogs.__type = "BLTLogs"
 
 function BLTLogs:init()

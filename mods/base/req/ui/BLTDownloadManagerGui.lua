@@ -1,5 +1,5 @@
 
-BLTDownloadManagerGui = BLTDownloadManagerGui or class( MenuGuiComponentGeneric )
+BLTDownloadManagerGui = BLTDownloadManagerGui or blt_class( MenuGuiComponentGeneric )
 
 local padding = 10
 

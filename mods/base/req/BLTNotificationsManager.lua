@@ -1,5 +1,5 @@
 
-BLTNotificationsManager = BLTNotificationsManager or class()
+BLTNotificationsManager = BLTNotificationsManager or blt_class()
 
 function BLTNotificationsManager:init()
 

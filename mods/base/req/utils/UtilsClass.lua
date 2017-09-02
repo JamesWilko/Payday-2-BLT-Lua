@@ -4,7 +4,7 @@
 BLT.__overrides = {}
 BLT.__everyclass = {}
 
-function class(...)
+function blt_class(...)
 
 	local super = (...)
 	if select("#", ...) >= 1 and super == nil then

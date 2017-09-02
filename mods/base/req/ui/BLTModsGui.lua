@@ -3,7 +3,7 @@ BLT:Require("req/ui/BLTUIControls")
 BLT:Require("req/ui/BLTModItem")
 BLT:Require("req/ui/BLTViewModGui")
 
-BLTModsGui = BLTModsGui or class( MenuGuiComponentGeneric )
+BLTModsGui = BLTModsGui or blt_class( MenuGuiComponentGeneric )
 
 local padding = 10
 
