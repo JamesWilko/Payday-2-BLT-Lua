@@ -205,12 +205,6 @@ function BLTModManager:ConvertOldSaveFiles()
 	if enabled_mods == nil or type(enabled_mods) ~= "table" then
 		enabled_mods = {}
 	end
-	--[[ TODO
-	local keybinds_data = io.load_as_json( BLTModManager.Constants:OldModManagerKeybindsFile() )
-	if keybinds_data == nil or type(keybinds_data) ~= "table" then
-		keybinds_data = {}
-	end
-	]]
 
 	-- Convert enabled mods data
 	for mod_id, enabled in pairs( enabled_mods ) do
@@ -221,9 +215,6 @@ function BLTModManager:ConvertOldSaveFiles()
 			end
 		end
 	end
-
-	-- Convert keybinds data
-	-- TODO
 
 	-- Only remove old files if we sucessfully save the new data
 	if self:Save() then
