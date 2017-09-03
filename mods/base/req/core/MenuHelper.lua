@@ -511,8 +511,23 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 
 					local key = ""
 					if item.keybind_id then
-						-- key = LuaModManager:GetPlayerKeybind( item.keybind_id ) or ""
-						key = ""
+						local mod = BLT.Mods:GetModOwnerOfFile( file_path )
+						if mod then
+							local params = {
+								id = item.keybind_id,
+								allow_menu = item.run_in_menu,
+								allow_game = item.run_in_game,
+								show_in_menu = item.show_in_menu,
+								name = title,
+								desc = desc,
+								localize = true,
+								callback = item.func and MenuCallbackHandler[item.func],
+							}
+							BLT.Keybinds:register_keybind( mod, params )
+						end
+
+						local bind = BLT.Keybinds:get_keybind( item.keybind_id )
+						key = bind and bind:Key() or ""
 					end
 
 					MenuHelper:AddKeybinding({
@@ -526,8 +541,6 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 						priority = priority,
 						localized = localized,
 					})
-
-					-- LuaModManager:AddKeybinding( item.keybind_id, parent_class[item.func] )
 
 				end
 
