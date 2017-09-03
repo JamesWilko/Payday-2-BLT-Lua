@@ -41,7 +41,7 @@ function BLTMod:init( ident, data )
 	-- Stored as a table until first requested due to Color not existing yet
 	if data["color"] and type(data["color"]) == "string" then
 		local colors = string.blt_split( data["color"], ' ' )
-		local cp = {}
+		local cp = {255}
 		for i = 1, 3 do
 			table.insert( cp, tonumber(colors[i] or 0) )
 		end
@@ -246,7 +246,7 @@ function BLTMod:GetColor()
 		return tweak_data.screen_colors.button_stage_3
 	end
 	if type(self.color) == "table" then
-		self.color = Color(unpack(self.color))
+		self.color = Color(unpack(self.color)) / 255
 	end
 	return self.color
 end
