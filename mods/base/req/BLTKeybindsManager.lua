@@ -232,8 +232,8 @@ function BLTKeybindsManager:update( t, dt, state )
 		if bind:HasKey() and bind:CanExecuteInState( state ) then
 
 			local key = bind:Key()
-			if string.find(key, "mouse ") ~= nil then
-				key_pressed = self._input_mouse:pressed( key:sub(7) )
+			if string.find(key, "mouse ") == 1 then
+				key_pressed = self._input_mouse:pressed( Idstring(key:sub(7)) )
 			else
 				key_pressed = self._input_keyboard:pressed( Idstring(key) )
 			end
