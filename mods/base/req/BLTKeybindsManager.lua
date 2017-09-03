@@ -332,9 +332,11 @@ function BLTKeybindMenuInitiator:modify_node( node )
 		if bind:ShowInMenu() then
 
 			-- Seperate keybinds by mod
-			if last_mod and last_mod ~= bind:ParentMod() then
-				self:create_divider( node, tostring(i), nil, 16 )
-				self:create_divider( node, tostring(i) .. '_modname', bind:ParentMod():GetName(), nil, Color.white, false )
+			if last_mod ~= bind:ParentMod() then
+				if last_mod then
+					self:create_divider( node, tostring(i) , nil, 16)
+				end
+				self:create_divider( node, tostring(i), bind:ParentMod():GetName(), nil, Color.white, false )
 			end
 			last_mod = bind:ParentMod()
 
