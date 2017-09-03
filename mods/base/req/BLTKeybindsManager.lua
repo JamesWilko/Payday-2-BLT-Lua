@@ -333,7 +333,8 @@ function BLTKeybindMenuInitiator:modify_node( node )
 
 			-- Seperate keybinds by mod
 			if last_mod and last_mod ~= bind:ParentMod() then
-				self:create_divider( node, tostring(i) )
+				self:create_divider( node, tostring(i), nil, 16 )
+				self:create_divider( node, tostring(i) .. '_modname', bind:ParentMod():GetName(), nil, Color.white, false )
 			end
 			last_mod = bind:ParentMod()
 
@@ -377,7 +378,7 @@ function BLTKeybindMenuInitiator:create_item( node, params )
 	node:add_item( new_item )
 end
 
-function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color )
+function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color, localize )
 
 	local params = {
 		name = "divider_" .. id,
@@ -385,8 +386,9 @@ function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color 
 		text_id = text_id,
 		size    = size or 8,
 		color   = color,
+		localize = localize
 	}
-	
+
 	local data_node = { type = "MenuItemDivider" }
 	local new_item = node:create_item( data_node, params )
 	node:add_item( new_item )
