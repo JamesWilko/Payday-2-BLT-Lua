@@ -4,23 +4,41 @@ Hooks:Register( "BLTOnBuildOptions" )
 -- Add the menu nodes for various menus
 Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function( menu_id, menu )
 
-	if menu_id ~= "start_menu" then
+	if menu_id ~= "start_menu" and menu_id ~= "pause_menu" then
 		return
 	end
 
-	-- Create the menu node for BLT mods
-	local new_node = {
-		_meta = "node",
-		name = "blt_mods",
-		back_callback = "perform_blt_save close_blt_mods",
-		menu_components = "blt_mods",
-		scene_state = "crew_management",
-		[1] = {
-			["_meta"] = "default_item",
-			["name"] = "back"
+	if menu_id == "start_menu" then
+
+		-- Create the menu node for BLT mods
+		local new_node = {
+			_meta = "node",
+			name = "blt_mods",
+			back_callback = "perform_blt_save close_blt_mods",
+			menu_components = "blt_mods",
+			scene_state = "crew_management",
+			[1] = {
+				["_meta"] = "default_item",
+				["name"] = "back"
+			}
 		}
-	}
-	table.insert( menu, new_node )
+		table.insert( menu, new_node )
+
+		-- Create the menu node for the download manager
+		local new_node = {
+			_meta = "node",
+			name = "blt_download_manager",
+			menu_components = "blt_download_manager",
+			back_callback = "close_blt_download_manager",
+			scene_state = "crew_management",
+			[1] = {
+				_meta = "default_item",
+				name = "back"
+			}
+		}
+		table.insert( menu, new_node )
+
+	end
 
 	-- Create the menu node for BLT mod options
 	local new_node = {
@@ -83,27 +101,14 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	}
 	table.insert( menu, new_node )
 
-	-- Create the menu node for the download manager
-	local new_node = {
-		_meta = "node",
-		name = "blt_download_manager",
-		menu_components = "blt_download_manager",
-		back_callback = "close_blt_download_manager",
-		scene_state = "crew_management",
-		[1] = {
-			_meta = "default_item",
-			name = "back"
-		}
-	}
-	table.insert( menu, new_node )
-
 	-- Create options menu items
 	for _, node in ipairs( menu ) do
 		if node.name == "options" then
 
 			-- Insert menu item
 			for i, item in ipairs( node ) do
-				if item.name == "quickplay_settings" then
+				if (menu_id == "start_menu" and item.name == "quickplay_settings") or
+						(menu_id == "pause_menu" and item.name == "gameplay") then
 
 					-- Insert items in reverse order
 					table.insert( node, i + 1, {
@@ -123,13 +128,17 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 						next_node = "blt_options",
 					} )
 
-					table.insert( node, i + 1, {
-						_meta = "item",
-						name = "blt_mods_new",
-						text_id = "blt_options_menu_blt_mods",
-						help_id = "blt_options_menu_blt_mods_desc",
-						next_node = "blt_mods",
-					} )
+					if menu_id == "start_menu" then
+
+						table.insert( node, i + 1, {
+							_meta = "item",
+							name = "blt_mods_new",
+							text_id = "blt_options_menu_blt_mods",
+							help_id = "blt_options_menu_blt_mods_desc",
+							next_node = "blt_mods",
+						} )
+
+					end
 
 					table.insert( node, i + 1, {
 						_meta = "item",
