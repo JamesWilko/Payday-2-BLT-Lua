@@ -85,3 +85,7 @@ end
 function BLTModDependency:ViewPatchNotes()
 	BLTUpdate.ViewPatchNotes( self )
 end
+
+function BLTModDependency:IsCritical()
+	return true
+end
