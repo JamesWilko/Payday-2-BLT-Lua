@@ -232,8 +232,8 @@ function BLTKeybindsManager:update( t, dt, state )
 		if bind:HasKey() and bind:CanExecuteInState( state ) then
 
 			local key = bind:Key()
-			if string.find(key, "mouse ") ~= nil then
-				key_pressed = self._input_mouse:pressed( key:sub(7) )
+			if string.find(key, "mouse ") == 1 then
+				key_pressed = self._input_mouse:pressed( Idstring(key:sub(7)) )
 			else
 				key_pressed = self._input_keyboard:pressed( Idstring(key) )
 			end
@@ -332,8 +332,11 @@ function BLTKeybindMenuInitiator:modify_node( node )
 		if bind:ShowInMenu() then
 
 			-- Seperate keybinds by mod
-			if last_mod and last_mod ~= bind:ParentMod() then
-				self:create_divider( node, tostring(i) )
+			if last_mod ~= bind:ParentMod() then
+				if last_mod then
+					self:create_divider( node, tostring(i) , nil, 16)
+				end
+				self:create_divider( node, tostring(i), bind:ParentMod():GetName(), nil, Color.white, false )
 			end
 			last_mod = bind:ParentMod()
 
@@ -377,7 +380,7 @@ function BLTKeybindMenuInitiator:create_item( node, params )
 	node:add_item( new_item )
 end
 
-function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color )
+function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color, localize )
 
 	local params = {
 		name = "divider_" .. id,
@@ -385,8 +388,9 @@ function BLTKeybindMenuInitiator:create_divider( node, id, text_id, size, color 
 		text_id = text_id,
 		size    = size or 8,
 		color   = color,
+		localize = localize
 	}
-	
+
 	local data_node = { type = "MenuItemDivider" }
 	local new_item = node:create_item( data_node, params )
 	node:add_item( new_item )
