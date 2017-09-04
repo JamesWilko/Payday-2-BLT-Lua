@@ -75,12 +75,16 @@ function LuaNetworking:GetNameFromPeerID(id)
 end
 
 function LuaNetworking:GetPeers()
-	return managers.network:session():peers()
+	if managers.network and managers.network:session() then
+		return managers.network:session():peers()
+	else
+		return {}
+	end
 end
 
 function LuaNetworking:GetNumberOfPeers()
 	local i = 0
-	for k, v in pairs( managers.network:session():peers() ) do
+	for k, v in pairs( self:GetPeers() ) do
 		i = i + 1
 	end
 	return i
