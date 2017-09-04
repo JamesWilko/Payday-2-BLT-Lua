@@ -1,14 +1,9 @@
 
 Hooks:Register( "BLTOnBuildOptions" )
 
--- Add the menu nodes for various menus
-Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function( menu_id, menu )
+-- Create the menu node for BLT mods
+local function add_blt_mods_node( menu )
 
-	if menu_id ~= "start_menu" then
-		return
-	end
-
-	-- Create the menu node for BLT mods
 	local new_node = {
 		_meta = "node",
 		name = "blt_mods",
@@ -22,7 +17,13 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	}
 	table.insert( menu, new_node )
 
-	-- Create the menu node for BLT mod options
+	return new_node
+
+end
+
+-- Create the menu node for BLT mod options
+local function add_blt_options_node( menu )
+
 	local new_node = {
 		_meta = "node",
 		name = "blt_options",
@@ -50,10 +51,13 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	}
 	table.insert( menu, new_node )
 
-	-- All mods to hook into the options menu to add items
-	Hooks:Call( "BLTOnBuildOptions", new_node )
+	return new_node
 
-	-- Create the menu node for BLT mod keybinds
+end
+
+-- Create the menu node for BLT mod keybinds
+local function add_blt_keybinds_node( menu )
+
 	local new_node = {
 		_meta = "node",
 		name = "blt_keybinds",
@@ -83,7 +87,13 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	}
 	table.insert( menu, new_node )
 
-	-- Create the menu node for the download manager
+	return new_node
+
+end
+
+-- Create the menu node for the download manager
+local function add_blt_downloads_node( menu )
+
 	local new_node = {
 		_meta = "node",
 		name = "blt_download_manager",
@@ -97,52 +107,91 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	}
 	table.insert( menu, new_node )
 
-	-- Create options menu items
+	return new_node
+
+end
+
+local function inject_menu_options( menu, node_name, injection_point, items )
+
 	for _, node in ipairs( menu ) do
-		if node.name == "options" then
-
-			-- Insert menu item
+		if node.name == node_name then
 			for i, item in ipairs( node ) do
-				if item.name == "quickplay_settings" then
+				if item.name == injection_point then
 
-					-- Insert items in reverse order
-					table.insert( node, i + 1, {
-						_meta = "item",
-						name = "blt_keybinds",
-						text_id = "blt_options_menu_keybinds",
-						help_id = "blt_options_menu_keybinds_desc",
-						visible_callback = "blt_show_keybinds_item",
-						next_node = "blt_keybinds",
-					} )
-
-					table.insert( node, i + 1, {
-						_meta = "item",
-						name = "blt_options",
-						text_id = "blt_options_menu_lua_mod_options",
-						help_id = "blt_options_menu_lua_mod_options_desc",
-						next_node = "blt_options",
-					} )
-
-					table.insert( node, i + 1, {
-						_meta = "item",
-						name = "blt_mods_new",
-						text_id = "blt_options_menu_blt_mods",
-						help_id = "blt_options_menu_blt_mods_desc",
-						next_node = "blt_mods",
-					} )
-
-					table.insert( node, i + 1, {
-						_meta = "item",
-						name = "blt_divider",
-						type = "MenuItemDivider",
-						no_text = true,
-						size = 8,
-					} )	
+					for k = #items, 1, -1 do
+						table.insert( node, i + 1, items[k] )
+					end
 
 				end
 			end
-
 		end
+	end
+
+end
+
+-- Add the menu nodes for various menus
+Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function( menu_id, menu )
+
+	-- Create menu items
+	local menu_item_divider = {
+		_meta = "item",
+		name = "blt_divider",
+		type = "MenuItemDivider",
+		no_text = true,
+		size = 8,
+	}
+
+	local menu_item_options = {
+		_meta = "item",
+		name = "blt_options",
+		text_id = "blt_options_menu_lua_mod_options",
+		help_id = "blt_options_menu_lua_mod_options_desc",
+		next_node = "blt_options",
+	}
+
+	local menu_item_mods = {
+		_meta = "item",
+		name = "blt_mods_new",
+		text_id = "blt_options_menu_blt_mods",
+		help_id = "blt_options_menu_blt_mods_desc",
+		next_node = "blt_mods",
+	}
+
+	local menu_item_keybinds = {
+		_meta = "item",
+		name = "blt_keybinds",
+		text_id = "blt_options_menu_keybinds",
+		help_id = "blt_options_menu_keybinds_desc",
+		visible_callback = "blt_show_keybinds_item",
+		next_node = "blt_keybinds",
+	}
+
+	-- Inject menu nodes and items
+	if menu_id == "start_menu" then
+
+		add_blt_mods_node( menu )
+		local options_node = add_blt_options_node( menu )
+		Hooks:Call( "BLTOnBuildOptions", options_node ) -- All mods to hook into the options menu to add items
+		add_blt_keybinds_node( menu )
+		add_blt_downloads_node( menu )
+		inject_menu_options( menu, "options", "quickplay_settings", {
+			menu_item_divider,
+			menu_item_mods,
+			menu_item_options,
+			menu_item_keybinds
+		} )
+
+	elseif menu_id == "pause_menu" then
+
+		local options_node = add_blt_options_node( menu )
+		Hooks:Call( "BLTOnBuildOptions", options_node ) -- All mods to hook into the options menu to add items
+		add_blt_keybinds_node( menu )
+		inject_menu_options( menu, "options", "ban_list", {
+			menu_item_divider,
+			menu_item_options,
+			menu_item_keybinds
+		} )
+
 	end
 
 end)
