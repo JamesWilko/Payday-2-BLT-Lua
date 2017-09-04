@@ -116,10 +116,10 @@ end
 
 function BLTUpdate:GetHash()
 	if self.hash_file then
-		return file.FileHash(self.hash_file)
+		return SystemFS:exists(self.hash_file) and file.FileHash(self.hash_file) or nil
 	else
 		local directory = Application:nice_path( self:GetInstallDirectory() .. "/" .. self:GetInstallFolder(), true )
-		return file.DirectoryHash(directory)
+		return SystemFS:exists(directory) and file.DirectoryHash(directory) or nil
 	end
 end
 
