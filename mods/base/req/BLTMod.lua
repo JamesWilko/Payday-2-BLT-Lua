@@ -42,8 +42,18 @@ function BLTMod:init( ident, data )
 	if data["color"] and type(data["color"]) == "string" then
 		local colors = string.blt_split( data["color"], ' ' )
 		local cp = {}
+		local divisor = 1
 		for i = 1, 3 do
-			table.insert( cp, tonumber(colors[i] or 0) )
+			local c = tonumber(colors[i] or 0)
+			table.insert( cp, c )
+			if c > 1 then
+				divisor = 255
+			end
+		end
+		if divisor > 1 then
+			for i, val in ipairs( cp ) do
+				cp[i] = val / divisor
+			end
 		end
 		self.color = cp
 	end
