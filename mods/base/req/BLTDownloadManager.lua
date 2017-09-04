@@ -126,27 +126,27 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 			end
 		end
 
-		local temp_dir = Application:nice_path( download.update:GetInstallDirectory() .. "_temp/" )
-		local file_path = Application:nice_path( BLTModManager.Constants:DownloadsDirectory() .. tostring(download.update:GetId()) .. ".zip", false )
-		local temp_install_dir = Application:nice_path( temp_dir .. download.update:GetInstallFolder(), false )
-		local install_path = Application:nice_path( download.update:GetInstallDirectory() .. download.update:GetInstallFolder(), false )
-		local extract_path = Application:nice_path( temp_install_dir .. "/" .. download.update:GetInstallFolder(), false )
+		local temp_dir = Application:nice_path( download.update:GetInstallDirectory() .. "_temp" )
+		local file_path = Application:nice_path( BLTModManager.Constants:DownloadsDirectory() .. tostring(download.update:GetId()) .. ".zip" )
+		local temp_install_dir = Application:nice_path( temp_dir .. "/" .. download.update:GetInstallFolder() )
+		local install_path = Application:nice_path( download.update:GetInstallDirectory() .. download.update:GetInstallFolder() )
+		local extract_path = Application:nice_path( temp_install_dir .. "/" .. download.update:GetInstallFolder() )
 
 		local cleanup = function()
-			SystemFS:delete_file( file_path )
 			SystemFS:delete_file( temp_install_dir )
-			SystemFS:delete_file( temp_dir )
 		end
 
 		wait()
+
+		-- Prepare
+		SystemFS:make_dir( temp_dir ) -- we dont wanna delete the temp dir at all, as it would not be thread safe. just make sure it exists.
+		SystemFS:delete_file( file_path )
+		cleanup()
 
 		-- Save download to disk
 		log("[Downloads] Saving to downloads...")
 		download.state = "saving"
 		wait()
-
-		-- Perform initial cleanup first
-		cleanup()
 
 		-- Save file to downloads
 		local f = io.open( file_path, "wb+" )
@@ -160,7 +160,6 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 		download.state = "extracting"
 		wait()
 
-		SystemFS:make_dir( temp_dir )
 		unzip( file_path, temp_install_dir )
 
 		-- Verify content hash with the server hash
