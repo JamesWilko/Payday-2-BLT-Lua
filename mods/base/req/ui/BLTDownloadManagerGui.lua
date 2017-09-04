@@ -212,10 +212,10 @@ function BLTDownloadManagerGui:mouse_moved( button, x, y )
 	end
 
 	for _, item in ipairs( self._buttons ) do
+		if item.mouse_moved then
+			item:mouse_moved( button, x, y )
+		end
 		if not used and item:inside( x, y ) then
-			if item.mouse_moved then
-				item:mouse_moved( button, x, y )
-			end
 			item:set_highlight( true )
 			used, pointer = true, "link"
 		else
