@@ -29,7 +29,7 @@
 	"blt_mod_state_disabled_on_restart_desc" : "模组将在下次游戏重启时禁用。",
 
 	"blt_mod_safemode_enabled" : "安全模式:\n启用",
-	"blt_mod_safemode_enabled_help" : "当游戏有重大更新时自动禁用模组已防止游戏崩溃。",
+	"blt_mod_safemode_enabled_help" : "当游戏有重大更新时自动禁用模组以防止游戏崩溃。",
 	"blt_mod_safemode_disabled" : "安全模式:\n禁用",
 	"blt_mod_safemode_disabled_help" : "当游戏有重大更新时不自动禁用模组。",
 
