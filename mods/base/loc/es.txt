@@ -52,7 +52,7 @@
 
 	"blt_update_dll_title" : "Actualizacion Critica",
 	"blt_update_dll_text" : "Una actualizacion esta disponible para la DLL de BLT, necesitas actualizarlo manualmente descargandolo e instalandolo nuevamente desde el sitio web.\n\nPor favor actualiza cuanto antes ya que es una actualizacion critica y puede resolver crashes en el juego.",
-	"blt_update_dll_goto_website" : "Ir a la descarga en PaydayMods",
+	"blt_update_dll_goto_website" : "Ir al sitio de descarga en PaydayMods",
 	"blt_update_later" : "Actualizar Luego",
 	
 	"blt_download_manager" : "Gestor de Descargas",
@@ -63,7 +63,7 @@
 	"blt_download_saving" : "Guardando...",
 	"blt_download_extracting" : "Extrayendo...",
 	"blt_download_verifying" : "Verficando...",
-	"blt_download_failed" : "Error! Intentar Nuevamente?",
+	"blt_download_failed" : "¡Error! ¿Intentar Nuevamente?",
 	"blt_download_done" : "Listo!",
 	"blt_download_dependency" : "$dependency es requerido por $mod",
 	"blt_download_all" : "Actualizar Todo",
@@ -73,7 +73,7 @@
 	"blt_checking_updates_required" : "Actualizaciones requeridas",
 	"blt_checking_updates_required_help" : "Hay actualizaciones disponibles para tus mods, visita el Gestor de Descargas para obtenerlas!",
 	"blt_view_patch_notes" : "Ver notas de Act.",
-	"blt_checking_updates_none_required" : "Actualizado",
+	"blt_checking_updates_none_required" : "Todos los Mods BLT estan actualizados",
 	"blt_checking_updates_none_required_help" : "¡Ninguno de tus mods necesitan actualizarse!",
 
 	"blt_language_select" : "Idioma",
