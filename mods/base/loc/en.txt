@@ -79,6 +79,7 @@
 	"blt_language_select" : "Language",
 	"blt_language_select_desc" : "Select the language for the BLT to be displayed in",
 	"blt_language_en" : "English",
+	"blt_language_es" : "Spanish",
 	"blt_language_cht" : "Chinese (Traditional)",
 	"blt_language_de" : "German",
 	"blt_language_fr" : "French",
