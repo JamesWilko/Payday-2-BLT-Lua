@@ -121,7 +121,7 @@ function BLTDownloadManagerGui:_setup()
 			w = self._scroll:canvas():w(),
 			h = h,
 			update = download.update,
-		} 
+		}
 		local button = BLTDownloadControl:new( self._scroll:canvas(), data )
 		table.insert( self._buttons, button )
 
@@ -169,6 +169,13 @@ end
 
 function BLTDownloadManagerGui:mouse_clicked( o, button, x, y )
 
+	if alive(self._back_button) and self._back_button:visible() then
+		if self._back_button:inside(x, y) then
+			managers.menu:back()
+			return true
+		end
+	end
+
 	for _, item in ipairs( self._buttons ) do
 		if item:inside( x, y ) then
 			if item:parameters().callback then
@@ -178,13 +185,6 @@ function BLTDownloadManagerGui:mouse_clicked( o, button, x, y )
 				item:mouse_clicked( button, x, y )
 			end
 			managers.menu_component:post_event( "menu_enter" )
-			return true
-		end
-	end
-
-	if alive(self._back_button) and self._back_button:visible() then
-		if self._back_button:inside(x, y) then
-			managers.menu:back()
 			return true
 		end
 	end
@@ -199,18 +199,6 @@ function BLTDownloadManagerGui:mouse_moved( button, x, y )
 
 	local used, pointer
 
-	for _, item in ipairs( self._buttons ) do
-		if item.mouse_moved then
-			item:mouse_moved( button, x, y )
-		end
-		if item:inside( x, y ) then
-			item:set_highlight( true )
-			used, pointer = true, "link"
-		else
-			item:set_highlight( false )
-		end
-	end
-
 	if alive(self._back_button) and self._back_button:visible() then
 		if self._back_button:inside(x, y) then
 			if self._back_button:color() ~= tweak_data.screen_colors.button_stage_2 then
@@ -220,6 +208,18 @@ function BLTDownloadManagerGui:mouse_moved( button, x, y )
 			used, pointer = true, "link"
 		else
 			self._back_button:set_color( tweak_data.screen_colors.button_stage_3 )
+		end
+	end
+
+	for _, item in ipairs( self._buttons ) do
+		if item.mouse_moved then
+			item:mouse_moved( button, x, y )
+		end
+		if not used and item:inside( x, y ) then
+			item:set_highlight( true )
+			used, pointer = true, "link"
+		else
+			item:set_highlight( false )
 		end
 	end
 

@@ -162,16 +162,6 @@ function BLTModsGui:mouse_moved( button, x, y )
 
 	local used, pointer
 
-	local inside_scroll = alive(self._scroll) and self._scroll:panel():inside( x, y )
-	for _, item in ipairs( self._buttons ) do
-		if item:inside( x, y ) and inside_scroll then
-			item:set_highlight( true )
-			used, pointer = true, "link"
-		else
-			item:set_highlight( false )
-		end
-	end
-
 	if alive(self._back_button) and self._back_button:visible() then
 		if self._back_button:inside(x, y) then
 			if self._back_button:color() ~= tweak_data.screen_colors.button_stage_2 then
@@ -181,6 +171,16 @@ function BLTModsGui:mouse_moved( button, x, y )
 			used, pointer = true, "link"
 		else
 			self._back_button:set_color( tweak_data.screen_colors.button_stage_3 )
+		end
+	end
+
+	local inside_scroll = alive(self._scroll) and self._scroll:panel():inside( x, y )
+	for _, item in ipairs( self._buttons ) do
+		if not used and item:inside( x, y ) and inside_scroll then
+			item:set_highlight( true )
+			used, pointer = true, "link"
+		else
+			item:set_highlight( false )
 		end
 	end
 
@@ -205,9 +205,16 @@ function BLTModsGui:mouse_clicked( o, button, x, y )
 end
 
 function BLTModsGui:mouse_pressed( button, x, y )
-	
+
 	if managers.menu_scene and managers.menu_scene:input_focus() then
 		return false
+	end
+
+	if alive(self._back_button) and self._back_button:visible() then
+		if self._back_button:inside(x, y) then
+			managers.menu:back()
+			return true
+		end
 	end
 
 	if alive(self._scroll) and self._scroll:panel():inside( x, y ) then
@@ -232,13 +239,6 @@ function BLTModsGui:mouse_pressed( button, x, y )
 
 	end
 
-	if alive(self._back_button) and self._back_button:visible() then
-		if self._back_button:inside(x, y) then
-			managers.menu:back()
-			return true
-		end
-	end
-
 	if alive(self._scroll) then
 		return self._scroll:mouse_pressed( button, x, y )
 	end
@@ -246,7 +246,7 @@ function BLTModsGui:mouse_pressed( button, x, y )
 end
 
 function BLTModsGui:mouse_released( button, x, y )
-	
+
 	if managers.menu_scene and managers.menu_scene:input_focus() then
 		return false
 	end
