@@ -78,7 +78,8 @@
 
 	"blt_language_select" : "Idioma",
 	"blt_language_select_desc" : "Elige el Idioma que desees",
-	"blt_language_en" : "Español",
+	"blt_language_en" : "Ingles",
+	"blt_language_es" : "Español",
 	"blt_language_cht" : "Chino (Tradicional)",
 	"blt_language_de" : "Aleman",
 	"blt_language_fr" : "Francés",
