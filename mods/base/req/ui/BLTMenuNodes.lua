@@ -28,6 +28,7 @@ local function add_blt_options_node( menu )
 		_meta = "node",
 		name = "blt_options",
 		back_callback = "perform_blt_save",
+		modifier = "BLTOptionsMenuCreator",
 		[1] = {
 			_meta = "legend",
 			name = "menu_legend_select"
@@ -195,3 +196,24 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 	end
 
 end)
+
+BLTOptionsMenuCreator = BLTOptionsMenuCreator or class()
+function BLTOptionsMenuCreator:modify_node( node )
+	local old_items = node:items()
+	local blt_languages = table.remove( old_items, 1 )
+
+	node:clean_items()
+	node:add_item(blt_languages)
+
+	table.sort(old_items, function(a, b)
+		local text_a = managers.localization:text( a:parameters().text_id )
+		local text_b = managers.localization:text( b:parameters().text_id )
+		return text_a < text_b
+	end)
+
+	for _, item in pairs(old_items) do
+		node:add_item(item)
+	end
+
+	return node
+end
