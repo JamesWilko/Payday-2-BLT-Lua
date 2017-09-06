@@ -126,6 +126,11 @@ function BLTKeybind:Execute()
 	end
 end
 
+function BLTKeybind:IsActive()
+	local mod = self:ParentMod()
+	return mod:WasEnabledAtStart() and mod:IsEnabled()
+end
+
 function BLTKeybind:__tostring()
 	return "[BLTKeybind " .. tostring(self:Id()) .. "]"
 end
@@ -229,7 +234,7 @@ function BLTKeybindsManager:update( t, dt, state )
 	
 	-- Run keybinds
 	for _, bind in ipairs( self:keybinds() ) do
-		if bind:HasKey() and bind:CanExecuteInState( state ) then
+		if bind:IsActive() and bind:HasKey() and bind:CanExecuteInState( state ) then
 
 			local key = bind:Key()
 			if string.find(key, "mouse ") == 1 then
@@ -329,7 +334,7 @@ function BLTKeybindMenuInitiator:modify_node( node )
 	local last_mod
 	for i, bind in ipairs( BLT.Keybinds:keybinds() ) do
 
-		if bind:ShowInMenu() then
+		if bind:IsActive() and bind:ShowInMenu() then
 
 			-- Seperate keybinds by mod
 			if last_mod ~= bind:ParentMod() then
