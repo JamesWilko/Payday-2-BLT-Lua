@@ -85,3 +85,15 @@ end
 function BLTModDependency:ViewPatchNotes()
 	BLTUpdate.ViewPatchNotes( self )
 end
+
+function BLTModDependency:IsCritical()
+	return true
+end
+
+function BLTModDependency:GetInstallFolder()
+	return self._server_data.name
+end
+
+function BLTModDependency:GetServerHash()
+	return self._server_data.hash
+end
