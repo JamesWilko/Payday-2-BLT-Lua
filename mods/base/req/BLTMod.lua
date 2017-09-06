@@ -416,10 +416,14 @@ function BLTMod:AreDependenciesInstalled()
 
 		local found = false
 		for _, mod in ipairs( BLT.Mods:Mods() ) do
-			for _, update in ipairs( mod:GetUpdates() ) do
-				if update:GetId() == id then
-					found = true
-					break
+			if mod:GetId() == id then
+				found = true
+			else
+				for _, update in ipairs( mod:GetUpdates() ) do
+					if update:GetId() == id then
+						found = true
+						break
+					end
 				end
 			end
 			if found then
