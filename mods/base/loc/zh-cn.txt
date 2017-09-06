@@ -29,7 +29,7 @@
 	"blt_mod_state_disabled_on_restart_desc" : "模组将在下次游戏重启时禁用。",
 
 	"blt_mod_safemode_enabled" : "安全模式:\n启用",
-	"blt_mod_safemode_enabled_help" : "当游戏有重大更新时自动禁用模组已防止游戏崩溃。",
+	"blt_mod_safemode_enabled_help" : "当游戏有重大更新时自动禁用模组以防止游戏崩溃。",
 	"blt_mod_safemode_disabled" : "安全模式:\n禁用",
 	"blt_mod_safemode_disabled_help" : "当游戏有重大更新时不自动禁用模组。",
 
@@ -56,7 +56,7 @@
 	"blt_update_later" : "稍后更新",
 	
 	"blt_download_manager" : "下载管理器",
-	"blt_download_manager_help" : "更新 BLT 模组。\n希望你有个愉快的更新体验。",
+	"blt_download_manager_help" : "更新 BLT 模组。\n看在上帝的份上请更新你的模组。",
 	"blt_download_ready" : "准备下载",
 	"blt_download_waiting" : "等待中...",
 	"blt_download_downloading" : "下载中... $bytes;b/$total_bytes;b",
@@ -74,7 +74,7 @@
 	"blt_checking_updates_required_help" : "模组新版本已发布，打开下载管理器进行更新！",
 	"blt_view_patch_notes" : "查看更新日志",
 	"blt_checking_updates_none_required" : "已是最新版",
-	"blt_checking_updates_none_required_help" : "没有需要更新的模组！ None of your mods need updating!",
+	"blt_checking_updates_none_required_help" : "没有需要更新的模组！",
 
 	"blt_language_select" : "语言",
 	"blt_language_select_desc" : "选择 BLT 的显示语言",
