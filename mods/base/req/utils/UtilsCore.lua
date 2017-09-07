@@ -1,9 +1,4 @@
 
-local mvec3_add = mvector3.add
-local mvec3_mul = mvector3.multiply
-local mvec3_set = mvector3.set
-local tmp_vec1 = Vector3()
-
 _G.Utils = _G.Utils or {}
 
 if false then
@@ -296,10 +291,10 @@ function Utils:GetCrosshairRay( from, to, slot_mask )
 	end
 
 	if not to then
-		to = tmp_vec1
-		mvec3_set( to, player:camera():forward() )
-		mvec3_mul( to, 20000 )
-		mvec3_add( to, from )
+		to = Vector3()
+		mvector3.set( to, player:camera():forward() )
+		mvector3.multiply( to, 20000 )
+		mvector3.add( to, from )
 	end
 
 	local colRay = World:raycast("ray", from, to, "slot_mask", managers.slot:get_mask(slot_mask))
