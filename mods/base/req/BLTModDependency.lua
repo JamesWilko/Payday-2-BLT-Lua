@@ -1,15 +1,20 @@
 
 BLTModDependency = BLTModDependency or blt_class()
 
-function BLTModDependency:init( parent_mod, id )
+function BLTModDependency:init( parent_mod, id, is_not_blt_updated )
 
 	self._id = id
 	self._parent_mod = parent_mod
+	self._is_blt_updated = not is_not_blt_updated or true
 
 end
 
 function BLTModDependency:GetId()
 	return self._id
+end
+
+function BLTModDependency:IsBLTUpdated()
+	return self._is_blt_updated
 end
 
 function BLTModDependency:GetParentMod()
