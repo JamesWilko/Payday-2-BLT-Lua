@@ -197,13 +197,25 @@ Hooks:Add("CoreMenuData.LoadDataMenu", "BLT.CoreMenuData.LoadDataMenu", function
 
 end)
 
+--------------------------------------------------------------------------------
+
 BLTOptionsMenuCreator = BLTOptionsMenuCreator or class()
 function BLTOptionsMenuCreator:modify_node( node )
 	local old_items = node:items()
-	local blt_languages = table.remove( old_items, 1 )
+
+	local blt_languages
+	for k, item in pairs(old_items) do
+		if item:parameters().name == 'blt_localization_choose' then
+			blt_languages = table.remove( old_items, k )
+			break
+		end
+	end
 
 	node:clean_items()
-	node:add_item(blt_languages)
+
+	if blt_languages then
+		node:add_item(blt_languages)
+	end
 
 	table.sort(old_items, function(a, b)
 		local text_a = managers.localization:text( a:parameters().text_id )
