@@ -320,7 +320,7 @@ function BLTDownloadControl:init( panel, parameters )
 		h = self._info_panel:h() - padding * 3,
 	})
 
-	local state = self._panel:text({
+	local state = self._info_panel:text({
 		name = "state",
 		font_size = small_font_size,
 		font = small_font,
