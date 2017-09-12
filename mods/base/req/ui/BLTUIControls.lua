@@ -398,16 +398,20 @@ end
 
 function BLTDownloadControl:mouse_clicked( button, x, y )
 
-	if self._download_panel:inside( x, y ) then
-		if not BLT.Downloads:get_download( self._parameters.update ) then
-			BLT.Downloads:start_download( self._parameters.update )
+	if button == Idstring( "0" ) then -- left click
+
+		if self._download_panel:inside( x, y ) then
+			if not BLT.Downloads:get_download( self._parameters.update ) then
+				BLT.Downloads:start_download( self._parameters.update )
+				return true
+			end
+		end
+
+		if self._patch_panel:inside( x, y ) then
+			self._parameters.update:ViewPatchNotes()
 			return true
 		end
-	end
 
-	if self._patch_panel:inside( x, y ) then
-		self._parameters.update:ViewPatchNotes()
-		return true
 	end
 
 end

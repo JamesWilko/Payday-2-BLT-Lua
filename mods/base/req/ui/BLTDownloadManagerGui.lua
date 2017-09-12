@@ -169,25 +169,39 @@ end
 
 function BLTDownloadManagerGui:mouse_clicked( o, button, x, y )
 
-	if alive(self._back_button) and self._back_button:visible() then
-		if self._back_button:inside(x, y) then
-			managers.menu:back()
-			return true
-		end
-	end
+	local result = false
 
 	for _, item in ipairs( self._buttons ) do
 		if item:inside( x, y ) then
-			if item:parameters().callback then
-				item:parameters().callback()
-			end
 			if item.mouse_clicked then
-				item:mouse_clicked( button, x, y )
+				result = item:mouse_clicked( button, x, y )
 			end
-			managers.menu_component:post_event( "menu_enter" )
-			return true
+			break
 		end
 	end
+
+	if button == Idstring( "0" ) then
+
+		if alive(self._back_button) and self._back_button:visible() then
+			if self._back_button:inside(x, y) then
+				managers.menu:back()
+				return true
+			end
+		end
+
+		for _, item in ipairs( self._buttons ) do
+			if item:inside( x, y ) then
+				if item:parameters().callback then
+					item:parameters().callback()
+				end
+				managers.menu_component:post_event( "menu_enter" )
+				return true
+			end
+		end
+
+	end
+
+	return result
 
 end
 
