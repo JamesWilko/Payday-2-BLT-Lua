@@ -19,6 +19,18 @@ local function make_fine_text( text )
 	text:set_position( math.round( text:x() ), math.round( text:y() ) )
 end
 
+-- attaches white corners to panel, which will align correctly when 'panel' changes size
+local function attach_corners(parent)
+	local top_left = BoxGuiObject:new( parent, { sides = { 3, 0, 3, 0 } } )
+	top_left:set_aligns("left", "top")
+	local bottom_left = BoxGuiObject:new( parent, { sides = { 4, 0, 0, 3 } } )
+	bottom_left:set_aligns("left", "bottom")
+	local top_right = BoxGuiObject:new( parent, { sides = { 0, 3, 4, 0 } } )
+	top_right:set_aligns("right", "top")
+	local bottom_right = BoxGuiObject:new( parent, { sides = { 0, 4, 0, 4 } } )
+	bottom_right:set_aligns("right", "bottom")
+end
+
 function BLTViewModGui:init( ws, fullscreen_ws, node )
 
 	self._ws = ws
@@ -135,12 +147,11 @@ function BLTViewModGui:_setup_mod_info( mod )
 	-- Mod info panel
 	local info_panel = self._panel:panel({
 		x = padding,
-		y = padding,
+		y = title:bottom() + padding,
 		w = self._panel:w() * 0.5 - padding * 2,
-		h = self._panel:h() * 0.4 - padding * 2,
+		h = self._panel:h() - title:bottom() - padding * 2,
 	})
-	info_panel:set_top( title:bottom() + padding )
-	BoxGuiObject:new( info_panel:panel({ layer = 100 }), { sides = { 1, 1, 1, 1 } } )
+	attach_corners(info_panel)
 	self._info_panel = info_panel
 
 	self._info_panel:rect({
@@ -157,6 +168,9 @@ function BLTViewModGui:_setup_mod_info( mod )
 		halign = "scale",
 		valign = "scale"
 	})
+
+	self._info_scroll = ScrollablePanel:new( info_panel, "info_scroll" )
+	local info_canvas = self._info_scroll:canvas()
 
 	-- Load error
 	local error_text
@@ -182,11 +196,11 @@ function BLTViewModGui:_setup_mod_info( mod )
 		error_str = error_str .. (#mod:GetDisabledDependencies() > 0 and "\n" or "")
 
 		-- Create the error text
-		error_text = info_panel:text({
+		error_text = info_canvas:text({
 			name = "error",
 			x = padding,
 			y = padding,
-			w = info_panel:w() - padding * 2,
+			w = info_canvas:w() - padding * 2,
 			font_size = medium_font_size,
 			font = medium_font,
 			layer = 10,
@@ -203,11 +217,11 @@ function BLTViewModGui:_setup_mod_info( mod )
 	end
 
 	-- Mod description
-	local desc = info_panel:text({
+	local desc = info_canvas:text({
 		name = "desc",
 		x = padding,
 		y = padding,
-		w = info_panel:w() - padding * 2,
+		w = info_canvas:w() - padding * 2,
 		font_size = medium_font_size,
 		font = medium_font,
 		layer = 10,
@@ -225,11 +239,11 @@ function BLTViewModGui:_setup_mod_info( mod )
 	end
 
 	-- Mod author
-	local author = info_panel:text({
+	local author = info_canvas:text({
 		name = "author",
 		x = padding,
 		y = padding,
-		w = info_panel:w() - padding * 2,
+		w = info_canvas:w() - padding * 2,
 		font_size = medium_font_size,
 		font = medium_font,
 		layer = 10,
@@ -245,11 +259,11 @@ function BLTViewModGui:_setup_mod_info( mod )
 	author:set_top( desc:bottom() )
 
 	-- Mod contact
-	local contact = info_panel:text({
+	local contact = info_canvas:text({
 		name = "contact",
 		x = padding,
 		y = padding,
-		w = info_panel:w() - padding * 2,
+		w = info_canvas:w() - padding * 2,
 		font_size = medium_font_size,
 		font = medium_font,
 		layer = 10,
@@ -264,6 +278,8 @@ function BLTViewModGui:_setup_mod_info( mod )
 	make_fine_text( contact )
 	contact:set_top( author:bottom() )
 
+	self._info_scroll:update_canvas_size()
+
 end
 
 function BLTViewModGui:_setup_dev_info( mod )
@@ -272,9 +288,9 @@ function BLTViewModGui:_setup_dev_info( mod )
 		x = padding,
 		y = padding,
 		w = self._panel:w() * 0.5 - padding * 2,
-		h = self._panel:h() - self._info_panel:bottom() - padding * 2,
+		h = (self._panel:h() - self._title:bottom() + padding) * 0.5 - padding * 2,
 	})
-	dev_panel:set_top( self._info_panel:bottom() + padding )
+	dev_panel:set_bottom( self._panel:h() - padding )
 	BoxGuiObject:new( dev_panel:panel({ layer = 100 }), { sides = { 1, 1, 1, 1 } } )
 	self._dev_panel = dev_panel
 
@@ -294,11 +310,13 @@ function BLTViewModGui:_setup_dev_info( mod )
 	})
 
 	self._dev_scroll = ScrollablePanel:new( dev_panel, "dev_scroll" )
+	local dev_canvas = self._dev_scroll:canvas()
 
-	local info = self._dev_scroll:canvas():text({
+	local info = dev_canvas:text({
 		name = "dev_info",
 		x = padding,
 		y = padding,
+		w = dev_canvas:w() - padding * 2,
 		font_size = small_font_size,
 		font = small_font,
 		layer = 10,
@@ -462,12 +480,18 @@ function BLTViewModGui:mouse_moved( button, x, y )
 end
 
 function BLTViewModGui:mouse_wheel_up( x, y )
+	if alive(self._info_scroll) then
+		self._info_scroll:scroll( x, y, 1 )
+	end
 	if alive(self._dev_scroll) then
 		self._dev_scroll:scroll( x, y, 1 )
 	end
 end
 
 function BLTViewModGui:mouse_wheel_down( x, y )
+	if alive(self._info_scroll) then
+		self._info_scroll:scroll( x, y, -1 )
+	end
 	if alive(self._dev_scroll) then
 		self._dev_scroll:scroll( x, y, -1 )
 	end
@@ -576,7 +600,19 @@ function BLTViewModGui:clbk_goto_download_manager()
 end
 
 function BLTViewModGui:clbk_toggle_dev_info()
-	self._dev_panel:set_visible( not self._dev_panel:visible() )
+	local show_dev = not self._dev_panel:visible() -- get new state
+
+	-- change info panel size
+	if show_dev then
+		self._info_panel:set_h(self._dev_panel:top() - self._title:bottom() - padding * 2)
+	else
+		self._info_panel:set_h(self._panel:h() - self._title:bottom() - padding * 2)
+	end
+	self._info_scroll:set_size(self._info_panel:size())
+	self._info_scroll:update_canvas_size()
+
+	-- change dev panel visibility
+	self._dev_panel:set_visible( show_dev )
 end
 
 function BLTViewModGui:refresh()
