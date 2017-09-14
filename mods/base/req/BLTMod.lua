@@ -275,6 +275,11 @@ function BLTMod:GetModImage()
 		return nil
 	end
 
+	-- BLT4L doesn't currently have DB support
+	if not DB or not DB.create_entry then
+		return nil
+	end
+
 	-- Check if the file exists on disk and generate if it does
 	if SystemFS:exists( Application:nice_path( self:GetModImagePath(), true ) ) then
 		
