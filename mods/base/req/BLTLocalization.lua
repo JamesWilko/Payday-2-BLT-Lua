@@ -65,6 +65,13 @@ function BLTLocalization:load_languages()
 	-- Load legacy support
 	self:_init_legacy_support()
 
+	-- Load the language that was loaded from the BLT save if it is available
+	self._languages_loaded = true
+	if self._desired_language_on_load then
+		self:set_language( self._desired_language_on_load )
+		self._desired_language_on_load = nil
+	end
+
 end
 
 function BLTLocalization:languages()
@@ -84,6 +91,12 @@ function BLTLocalization:get_language()
 end
 
 function BLTLocalization:set_language( lang_code )
+
+	if not self._languages_loaded then
+		self._desired_language_on_load = lang_code
+		return false
+	end
+
 	local lang = self:_get_language_from_code( lang_code )
 	if lang then
 		self._current = lang.language	
@@ -91,6 +104,7 @@ function BLTLocalization:set_language( lang_code )
 	else
 		return false
 	end
+
 end
 
 function BLTLocalization:load_localization( loc_manager )
