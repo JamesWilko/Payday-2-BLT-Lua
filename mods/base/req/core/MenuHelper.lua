@@ -247,6 +247,29 @@ function MenuHelper:AddKeybinding( bind_data )
 
 end
 
+function MenuHelper:AddInput( input_data )
+	local data = {
+		type = "MenuItemInput",
+	}
+
+	local params = {
+		name = input_data.id,
+		text_id = input_data.title,
+		help_id = input_data.desc,
+		callback = input_data.callback,
+		disabled_color = input_data.disabled_color or Color( 0.25, 1, 1, 1 ),
+		localize = input_data.localized,
+	}
+
+	local menu = self:GetMenu( input_data.menu_id )
+	local item = menu:create_item( data, params )
+	item._priority = input_data.priority
+	item:set_value( input_data.value or "" )
+
+	menu._items_list = menu._items_list or {}
+	table.insert( menu._items_list, item )
+end
+
 
 function MenuHelper:BuildMenu( menu_id, data )
 
@@ -558,6 +581,19 @@ function MenuHelper:LoadFromJsonFile( file_path, parent_class, data_table )
 					})
 				end
 
+				if type == "input" then
+					MenuHelper:AddInput({
+						id = id,
+						title = title,
+						desc = desc,
+						callback = callback,
+						value = value,
+						menu_id = menu_id,
+						priority = priority,
+						localized = localized,
+					})
+				end
+ 
 			end
 
 		end)
