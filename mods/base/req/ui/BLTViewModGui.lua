@@ -427,21 +427,25 @@ end
 
 function BLTViewModGui:mouse_clicked( o, button, x, y )
 
-	if alive(self._back_button) and self._back_button:visible() then
-		if self._back_button:inside(x, y) then
-			managers.menu:back()
-			return true
-		end
-	end
+	if button == Idstring( "0" ) then -- left click
 
-	for _, item in ipairs( self._buttons ) do
-		if item:inside( x, y ) then
-			if item:parameters().callback then
-				item:parameters().callback()
+		if alive(self._back_button) and self._back_button:visible() then
+			if self._back_button:inside(x, y) then
+				managers.menu:back()
+				return true
 			end
-			managers.menu_component:post_event( "menu_enter" )
-			return true
 		end
+
+		for _, item in ipairs( self._buttons ) do
+			if item:inside( x, y ) then
+				if item:parameters().callback then
+					item:parameters().callback()
+				end
+				managers.menu_component:post_event( "menu_enter" )
+				return true
+			end
+		end
+
 	end
 
 end

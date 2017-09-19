@@ -214,38 +214,45 @@ function BLTModsGui:mouse_pressed( button, x, y )
 		return false
 	end
 
-	if alive(self._back_button) and self._back_button:visible() then
-		if self._back_button:inside(x, y) then
-			managers.menu:back()
-			return true
-		end
+	local result
+	if alive(self._scroll) then
+		result = self._scroll:mouse_pressed( button, x, y )
 	end
 
-	if alive(self._scroll) and self._scroll:panel():inside( x, y ) then
+	if button == Idstring( "0" ) then
 
-		for _, item in ipairs( self._buttons ) do
-			if item:inside( x, y ) then
-
-				if item.mod then
-					self._inspecting = item:mod()
-					managers.menu:open_node( "view_blt_mod" )
-					managers.menu_component:post_event( "menu_enter" )
-				elseif item.parameters then
-					local clbk = item:parameters().callback
-					if clbk then
-						clbk()
-					end
-				end
-
+		if alive(self._back_button) and self._back_button:visible() then
+			if self._back_button:inside(x, y) then
+				managers.menu:back()
 				return true
 			end
 		end
 
+		if alive(self._scroll) and self._scroll:panel():inside( x, y ) then
+
+			for _, item in ipairs( self._buttons ) do
+				if item:inside( x, y ) then
+
+					if item.mod then
+						self._inspecting = item:mod()
+						managers.menu:open_node( "view_blt_mod" )
+						managers.menu_component:post_event( "menu_enter" )
+					elseif item.parameters then
+						local clbk = item:parameters().callback
+						if clbk then
+							clbk()
+						end
+					end
+
+					return true
+				end
+			end
+
+		end
+
 	end
 
-	if alive(self._scroll) then
-		return self._scroll:mouse_pressed( button, x, y )
-	end
+	return result
 
 end
 

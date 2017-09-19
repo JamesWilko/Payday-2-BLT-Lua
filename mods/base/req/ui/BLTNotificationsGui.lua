@@ -459,6 +459,10 @@ function BLTNotificationsGui:mouse_moved( o, x, y )
 		return
 	end
 
+	if alive(self._downloads_panel) and self._downloads_panel:visible() and self._downloads_panel:inside( x, y ) then
+		return true, "link"
+	end
+
 	if alive(self._content_panel) and self._content_panel:inside(x, y) then
 		self._content_outline:set_visible(true)
 		return true, "link"
@@ -472,16 +476,17 @@ function BLTNotificationsGui:mouse_moved( o, x, y )
 		end
 	end
 
-	if self._downloads_panel:inside( x, y ) then
-		return true, "link"
-	end
-
 end
 
 function BLTNotificationsGui:mouse_pressed( button, x, y )
 
 	if not self._enabled or button ~= Idstring( "0" ) then
 		return
+	end
+
+	if alive(self._downloads_panel) and self._downloads_panel:visible() and self._downloads_panel:inside( x, y ) then
+		managers.menu:open_node("blt_download_manager")
+		return true
 	end
 
 	if alive(self._content_panel) and self._content_panel:inside(x, y) then
@@ -498,11 +503,6 @@ function BLTNotificationsGui:mouse_pressed( button, x, y )
 			end
 			return true
 		end
-	end
-
-	if self._downloads_panel:inside( x, y ) then
-		managers.menu:open_node("blt_download_manager")
-		return true
 	end
 
 end
