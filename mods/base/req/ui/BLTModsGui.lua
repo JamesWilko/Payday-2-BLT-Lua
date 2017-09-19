@@ -4,6 +4,7 @@ BLT:Require("req/ui/BLTModItem")
 BLT:Require("req/ui/BLTViewModGui")
 
 BLTModsGui = BLTModsGui or blt_class( MenuGuiComponentGeneric )
+BLTModsGui.last_y_position = 0
 
 local padding = 10
 
@@ -39,6 +40,7 @@ function BLTModsGui:init( ws, fullscreen_ws, node )
 end
 
 function BLTModsGui:close()
+	BLTModsGui.last_y_position = self._scroll:canvas():y() * -1
 	self._ws:panel():remove( self._panel )
 	self._fullscreen_ws:panel():remove( self._fullscreen_panel )
 end
@@ -141,6 +143,8 @@ function BLTModsGui:_setup()
 
 	-- Update scroll size
 	self._scroll:update_canvas_size()
+
+	self._scroll:scroll_to(BLTModsGui.last_y_position)
 
 end
 
