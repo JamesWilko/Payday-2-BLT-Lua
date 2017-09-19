@@ -227,11 +227,25 @@ function BLTKeybindsManager:update( t, dt, state )
 		self._input_mouse = Input:mouse()
 	end
 
-	-- Don't run while chatting
-	if managers and managers.hud and managers.hud:chat_focus() then
-		return
+	if managers then
+		if managers.hud and managers.hud:chat_focus() then
+			-- Don't run while chatting ingame
+			return
+		elseif managers.menu_component and managers.menu_component:input_focut_game_chat_gui() then -- 'focut' is not a typo on our side
+			-- Don't run while chatting in lobby
+			return
+		elseif managers.menu then
+			local menu = managers.menu:active_menu()
+			if menu and menu.renderer then
+				local node_gui = menu.renderer:active_node_gui()
+				if node_gui and node_gui._listening_to_input then
+					-- Don't run while rebinding keys
+					return
+				end
+			end
+		end
 	end
-	
+
 	-- Run keybinds
 	for _, bind in ipairs( self:keybinds() ) do
 		if bind:IsActive() and bind:HasKey() and bind:CanExecuteInState( state ) then
