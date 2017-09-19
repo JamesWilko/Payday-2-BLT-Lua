@@ -171,3 +171,22 @@ function MenuCallbackHandler:blt_choose_language( item )
 		BLT.Localization:set_language( item:value() )
 	end
 end
+
+--------------------------------------------------------------------------------
+-- Menu Initiator for the Mod Options so that localization shows the selected language
+
+BLTModOptionsInitiator = BLTModOptionsInitiator or class( MenuInitiatorBase )
+function BLTModOptionsInitiator:modify_node( node )
+
+	local localization_item = node:item( "blt_localization_choose" )
+	if localization_item and BLT.Localization then
+		localization_item:set_value( tostring( BLT.Localization:get_language().language ) )
+	end
+
+	return node
+
+end
+
+function BLTModOptionsInitiator:refresh_node( node )
+	self:modify_node( node )
+end

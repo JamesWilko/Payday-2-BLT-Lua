@@ -27,6 +27,8 @@ local function add_blt_options_node( menu )
 	local new_node = {
 		_meta = "node",
 		name = "blt_options",
+		modifier = "BLTModOptionsInitiator",
+		refresh = "BLTModOptionsInitiator",
 		back_callback = "perform_blt_save",
 		[1] = {
 			_meta = "legend",
