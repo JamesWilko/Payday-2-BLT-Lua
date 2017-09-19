@@ -271,7 +271,7 @@ end
 
 function BLTMod:GetModImage()
 
-	if not self:HasModImage() then
+	if not self:HasModImage() or not DB or not DB.create_entry then
 		return nil
 	end
 
