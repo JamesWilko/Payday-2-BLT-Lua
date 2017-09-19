@@ -1,7 +1,6 @@
 
 CloneClass( MenuManager )
 CloneClass( MenuCallbackHandler )
-CloneClass( ModMenuCreator )
 CloneClass( MenuModInfoGui )
 
 Hooks:RegisterHook( "MenuManagerInitialize" )
@@ -103,28 +102,6 @@ function MenuManager._base_process_menu( menu_manager, menu_names, parent_menu_n
 		end
 
 	end
-
-end
-
--- Add lua mods menu
-function ModMenuCreator.modify_node(self, original_node, data)
-
-	ModMenuCreator._mod_menu_modifies = {}
-
-	local node_name = original_node._parameters.name
-	if self._mod_menu_modifies then
-		if self._mod_menu_modifies[node_name] then
-
-			local func = self._mod_menu_modifies[node_name]
-			local node = original_node
-			self[func](self, node, data)
-
-			return node
-
-		end
-	end
-
-	return self.orig.modify_node(self, original_node, data)
 
 end
 
