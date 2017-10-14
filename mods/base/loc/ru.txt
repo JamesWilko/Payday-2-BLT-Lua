@@ -9,7 +9,7 @@
 	"blt_mod_outdated" : "Данный мод предназначен для более старой версии BLT и больше не поддерживается; разработчик должен обновить данный мод до последней версии BLT. У вас возникнут ошибки и сбои, если вы оставите данный мод включенным.",
 	"blt_mod_missing_dependencies" : "Данный мод требует запуска других модов, которые не установлены, поэтому он отключен.",
 	"blt_mod_missing_dependency" : "    Отсутствует: $dependency",
-	"blt_mod_missing_dependency_download" : "    Отсутствует: $dependency, добавьте в Менджер Загрузок",
+	"blt_mod_missing_dependency_download" : "    Отсутствует: $dependency, добавьте в Менеджер Загрузок",
 	"blt_mod_dependency_disabled" : "Данный мод требует запуска других модов, которые не включены, поэтому он отключен.",
 	"blt_mod_disabled_dependency" : "    Отключен: $dependency",
 
