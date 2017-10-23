@@ -32,6 +32,7 @@ function BLTMod:init( ident, data )
 	self.contact = data["contact"] or self.contact
 	self.priority = tonumber(data["priority"]) or 0
 	self.dependencies = data["dependencies"] or {}
+	self.providing = data["providing"] or {}
 	self.image_path = data["image"] or nil
 	self.disable_safe_mode = data["disable_safe_mode"] or false
 	self.undisablable = data["undisablable"] or false
@@ -223,6 +224,22 @@ function BLTMod:GetId()
 	return self.id
 end
 
+function BLTMod:Provides(id)
+	-- check for provides first
+	for _, prov in pairs( self.providing ) do
+		if prov == id then
+			return true
+		end
+	end
+	-- if nothing found, check updates as well
+	for _, update in pairs( self:GetUpdates() ) do
+		if update:GetId() == id then
+			return true
+		end
+	end
+	return false
+end
+
 function BLTMod:GetName()
 	return self.name
 end
@@ -394,7 +411,17 @@ function BLTMod:HasDependencies()
 end
 
 function BLTMod:GetDependencies()
-	return self.dependencies or {}
+	local result = {}
+	for _, dependency in pairs(self.dependencies or {}) do
+		local dep_type = type(dependency)
+		if dep_type == "table" then
+			result[dependency.identifier] = dependency.is_not_blt_updated
+		elseif dep_type == "string" then
+			-- convert to key value pair
+			result[dependency] = false
+		else
+	end
+	return result
 end
 
 function BLTMod:GetMissingDependencies()
@@ -412,17 +439,12 @@ function BLTMod:AreDependenciesInstalled()
 	self.disabled_dependencies = {}
 
 	-- Iterate all mods and updates to find dependencies, store any that are missing
-	for _, id in ipairs( self:GetDependencies() ) do
+	for id, is_not_blt_updated in pairs( self:GetDependencies() ) do
 
 		local found = false
-		for _, mod in ipairs( BLT.Mods:Mods() ) do
-			for _, update in ipairs( mod:GetUpdates() ) do
-				if update:GetId() == id then
-					found = true
-					break
-				end
-			end
-			if found then
+		for _, mod in pairs( BLT.Mods:Mods() ) do
+			if mod:Provides( id ) then
+				found = true
 				if not mod:IsEnabled() then
 					installed = false
 					table.insert( self.disabled_dependencies, mod )
@@ -434,7 +456,7 @@ function BLTMod:AreDependenciesInstalled()
 
 		if not found then
 			installed = false
-			local dependency = BLTModDependency:new( self, id )
+			local dependency = BLTModDependency:new( self, id, is_not_blt_updated )
 			table.insert( self.missing_dependencies, dependency )
 		end
 
@@ -446,9 +468,11 @@ end
 
 function BLTMod:RetrieveDependencies()
 	for _, dependency in ipairs( self:GetMissingDependencies() ) do
-		dependency:Retrieve( function(dependency, exists_on_server)
-			self:clbk_retrieve_dependency( dependency, exists_on_server )
-		end )
+		if dependency:IsBLTUpdated() then
+			dependency:Retrieve( function(dependency, exists_on_server)
+				self:clbk_retrieve_dependency( dependency, exists_on_server )
+			end )
+		end
 	end
 end
 
