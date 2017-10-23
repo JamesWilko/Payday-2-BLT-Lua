@@ -73,8 +73,8 @@
 	"blt_checking_updates_required" : "Требуются обновления",
 	"blt_checking_updates_required_help" : "Обновления для ваших модов доступны, посетите Менеджер Загрузок!",
 	"blt_view_patch_notes" : "Посмотреть изменения",
-	"blt_checking_updates_none_required" : "Актуален",
-	"blt_checking_updates_none_required_help" : "Нет модов для обновления!",
+	"blt_checking_updates_none_required" : "Нет обновлений",
+	"blt_checking_updates_none_required_help" : "Все моды актуальны!",
 
 	"blt_language_select" : "Язык",
 	"blt_language_select_desc" : "Выберите язык для BLT",
