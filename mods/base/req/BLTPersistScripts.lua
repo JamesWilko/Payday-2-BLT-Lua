@@ -20,6 +20,11 @@ function BLTPersistScripts:update_persists()
 
 	-- Iterate through all mods and their persist scripts
 	for _, mod in ipairs( BLT.Mods:Mods() ) do
+		
+		if not mod:IsEnabled() then
+			return -- Do not update persist scripts if the mod is disabled!
+		end
+		
 		for _, persist in ipairs( mod:GetPersistScripts() ) do
 
 			-- Check if the persist global has not been set
