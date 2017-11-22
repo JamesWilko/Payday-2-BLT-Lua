@@ -1,0 +1,96 @@
+{
+	"blt_options_menu_blt_mods" : "BLT-moddar",
+	"blt_options_menu_blt_mods_desc" : "Uppdatera och hantera dina installerade BLT-moddar",
+	"blt_options_menu_lua_mod_options" : "Mod-inställningar",
+	"blt_options_menu_lua_mod_options_desc" : "Konfigurera och ställ in dina installerade BLT-moddar",
+	"blt_options_menu_keybinds" : "Mod-bundna tangenter",
+	"blt_options_menu_keybinds_desc" : "Ställ in dina tangenter bundna till dina BLT-moddar",
+
+	"blt_mod_outdated" : "Denna mod är till för en äldre BLT-version och stöds ej längre; utvecklaren måste uppdatera modden till den senaste versionen av BLT:n. Du kommer att få felmeddelande och kraschningar av att lämna denna mod installerad.",
+	"blt_mod_missing_dependencies" : "Denna mod kräver andra moddar som inte är installerade, för att fungera, så den har stängts av.",
+	"blt_mod_missing_dependency" : "    Saknas: $dependency",
+	"blt_mod_missing_dependency_download" : "    Saknas: $dependency, tillagt i nedladdningshanteraren",
+	"blt_mod_dependency_disabled" : "Denna mod kräver andra moddar som inte är påslagna, som den har stängs av.",
+	"blt_mod_disabled_dependency" : "    Avstängt: $dependency",
+
+	"blt_mod_info_author" : "Skapare",
+	"blt_mod_info_contact" : "Kontakt",
+
+	"blt_mod_state_enabled" : "Aktiv",
+	"blt_mod_state_enabled_desc" : "Denna mod laddas när spelet startas.",
+	"blt_mod_state_disabled" : "Avstängd",
+	"blt_mod_state_disabled_desc" : "Denna mod kommer inte att laddas av spelet.",
+	"blt_mod_state_forced_disabled" : "Avstängd",
+	"blt_mod_state_forced_disabled_desc" : "Denna mod är utdaterad och kan inte laddas av spelet.",
+
+	"blt_mod_state_enabled_on_restart" : "Aktiveras vid omstart",
+	"blt_mod_state_enabled_on_restart_desc" : "Denna mod kommer att laddas nästa gång spelet startas.",
+	"blt_mod_state_disabled_on_restart" : "Stängs av vid omstart",
+	"blt_mod_state_disabled_on_restart_desc" : "Denna mod kommer inte att laddas av spelet nästa gång det startas.",
+
+	"blt_mod_safemode_enabled" : "Säkert läge:\nAktivt",
+	"blt_mod_safemode_enabled_help" : "Stäng av denna mod efter stora speluppdateringar för att förhindra kraschande.",
+	"blt_mod_safemode_disabled" : "Säkert läge:\nAvstängt",
+	"blt_mod_safemode_disabled_help" : "Denna mod kommer inte att automatiskt stängas av efter stora speluppdateringar.",
+
+	"blt_mod_updates_enabled" : "Automatiska uppdateringar:\nAktivt",
+	"blt_mod_updates_enabled_help" : "Kolla automatiskt med PaydayMods-servern efter nyare versioner av denna mod.",
+	"blt_mod_updates_disabled" : "Automatiska uppdateringar:\nAvstängt",
+	"blt_mod_updates_disabled_help" : "This mod will not check with the PaydayMods server for newer versions.",
+
+	"blt_mod_check_for_updates" : "Sök efter uppdateringar",
+	"blt_mod_check_for_updates_desc" : "Sök efter uppdateringar på PaydayMods server nu.",
+
+	"blt_mod_toggle_dev" : "Växla utvecklarinfo",
+	"blt_mod_toggle_dev_desc" : "Visa/göm utvecklarinfo för denna mod.",
+
+	"blt_update_mod_title" : "$name uppdatering",
+	"blt_update_mod_up_to_date" : "$name är redan uppdaterad.",
+	"blt_update_mod_error" : "Kunde inte se om modden redan är uppdaterad.\n$reason",
+	"blt_update_mod_available" : "En uppdatering till $name finns tillgänglig! Det har lagts till i nedladdningshanteraren!",
+	"blt_update_mod_goto_manager" : "Gå till nedladdningshanteraren",
+
+	"blt_update_dll_title" : "Kritisk uppdatering",
+	"blt_update_dll_text" : "En uppdatering är tillgänglig för BLT-DLL:n, du kommer att behöva uppdatera denna själv genom att ladda ner och installera det igen från hemsidan.\n\nVänligen uppdatera direkt eftersom detta är en kritisk uppdatering som kan lösa kraschningar i ditt spel.",
+	"blt_update_dll_goto_website" : "Gå till PaydayMods-nedladdningen",
+	"blt_update_later" : "Uppdatera senare",
+	
+	"blt_download_manager" : "Nedladdningshanteraren",
+	"blt_download_manager_help" : "Uppdatera dina BLT-moddar.\nFör guds skull uppdatera dina moddar.",
+	"blt_download_ready" : "Färdig att laddas ner",
+	"blt_download_waiting" : "Väntar...",
+	"blt_download_downloading" : "Laddar ner... $bytes;b/$total_bytes;b",
+	"blt_download_saving" : "Sparar till disk...",
+	"blt_download_extracting" : "Extraherar...",
+	"blt_download_verifying" : "Verifierar...",
+	"blt_download_failed" : "Misslyckat! Försök igen?",
+	"blt_download_done" : "Klart!",
+	"blt_download_dependency" : "$dependency, krävs av $mod",
+	"blt_download_all" : "Uppdatera alla",
+
+	"blt_checking_updates" : "Söker efter uppdateringar",
+	"blt_checking_updates_help" : "Undersöker med PaydayMods-servern efter uppdateringar till dina moddar, var god vänta...",
+	"blt_checking_updates_required" : "Uppdateringar krävs",
+	"blt_checking_updates_required_help" : "Uppdateringar finns tillgängliga till dina moddar, besök nedladdningshanteraren för att uppdatera dem!",
+	"blt_view_patch_notes" : "Se patch-notes",
+	"blt_checking_updates_none_required" : "Up-to-date",
+	"blt_checking_updates_none_required_help" : "Inga av dina moddar behöver uppdateras!",
+
+	"blt_language_select" : "Språk",
+	"blt_language_select_desc" : "Välj språket som du vill att BLT visas på",
+	"blt_language_en" : "Engelska",
+	"blt_language_es" : "Spanska",
+	"blt_language_cht" : "Kinesiska (traditionell)",
+	"blt_language_de" : "Tyska",
+	"blt_language_fr" : "Franska",
+	"blt_language_ru" : "Ryska",
+	"blt_language_tr" : "Turkiska",
+	"blt_language_id" : "Indonesiska",
+	"blt_language_it" : "Italienska",
+	"blt_language_zh-cn" : "Kinesiska",
+  "blt_language_sv" : "Svenska"
+
+	"blt_no_image" : "Ingnen bild",
+	"blt_no_name" : "Inget namn",
+	"blt_no_desc" : "Ingen beskrivning"
+}
