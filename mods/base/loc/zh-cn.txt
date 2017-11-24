@@ -79,14 +79,15 @@
 	"blt_language_select" : "语言",
 	"blt_language_select_desc" : "选择 BLT 的显示语言",
 	"blt_language_en" : "英语（English）",
-	"blt_language_cht" : "繁体中文",
-	"blt_language_de" : "德语",
-	"blt_language_fr" : "法语",
-	"blt_language_ru" : "俄语",
-	"blt_language_tr" : "土耳其语",
-	"blt_language_id" : "印度尼西亚语",
-	"blt_language_it" : "意大利语",
-	"blt_language_zh-cn" : "简体中文"
+	"blt_language_es" : "西班牙语（Spanish）",
+	"blt_language_cht" : "繁体中文（Chinese Traditional）",
+	"blt_language_de" : "德语（German）",
+	"blt_language_fr" : "法语（French）",
+	"blt_language_ru" : "俄语（Russian）",
+	"blt_language_tr" : "土耳其语（Turkish）",
+	"blt_language_id" : "印度尼西亚语（Indonesian）",
+	"blt_language_it" : "意大利语（Italian）",
+	"blt_language_zh-cn" : "简体中文（Chinese）"
 
 	"blt_no_image" : "无图片",
 	"blt_no_name" : "无名称",
