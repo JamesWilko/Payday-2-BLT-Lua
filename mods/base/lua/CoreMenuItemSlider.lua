@@ -18,7 +18,9 @@ end
 
 function ItemSlider.reload(self, row_item, node)
 	local r = self.orig.reload(self, row_item, node)
-	local value = self:show_value() and string.format("%.2f", math.round_with_precision(self:value(), 2)) or string.format("%.0f", self:percentage()) .. "%"
-	row_item.gui_slider_text:set_text(value)
+	if row_item then
+		local value = self:show_value() and string.format("%.2f", math.round_with_precision(self:value(), 2)) or string.format("%.0f", self:percentage()) .. "%"
+		row_item.gui_slider_text:set_text(value)
+	end
 	return r
 end
