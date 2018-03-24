@@ -9,6 +9,16 @@ function LocalizationManager.init( self )
 	Hooks:Call( "LocalizationManagerPostInit", self )
 end
 
+function LocalizationManager.exists( self, str )
+
+	if self._custom_localizations[str] then
+		return true
+	end
+
+	return self.orig.exists(self, str)
+
+end
+
 function LocalizationManager.text( self, str, macros )
 
 	if self._custom_localizations[str] then
