@@ -136,6 +136,16 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 			SystemFS:delete_file( temp_install_dir )
 		end
 
+		local is_zip = function(data)
+			if type(data) ~= 'string' then
+				return false
+			end
+			if data:sub(1, 2) ~= 'PK' then
+				return false
+			end
+			return true
+		end
+
 		wait()
 
 		-- Prepare
@@ -145,6 +155,11 @@ function BLTDownloadManager:clbk_download_finished( data, http_id )
 
 		-- Save download to disk
 		log("[Downloads] Saving to downloads...")
+		if not is_zip(data) then
+			log("[Downloads] Error: zip header not found!")
+			download.state = "failed"
+			return
+		end
 		download.state = "saving"
 		wait()
 
